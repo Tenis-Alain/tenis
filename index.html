@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1D4F78">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tenis">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icono-180.png?v=2">
+<link rel="icon" href="icono-192.png?v=2">
+<title>Clases de tenis</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#EEF2F4}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:#13222B;-webkit-text-size-adjust:100%}
+button,input{font:inherit}
+a{color:#1F5D8C}
+#app{min-height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;background:#EEF2F4}
+.cab{background:#1D4F78;color:#fff;padding:calc(env(safe-area-inset-top) + 16px) 16px 12px;display:flex;flex-direction:column;gap:10px;position:sticky;top:0;z-index:5}
+.cab .fila{display:flex;align-items:center;gap:10px}
+.cab h1{margin:0;font-size:22px;font-weight:700;line-height:1.15}
+.cab .sub{font-size:12.5px;color:#D6E3EE}
+.cab .salir{white-space:nowrap;background:transparent;color:#fff;border:1px solid #8FB0CB;border-radius:8px;padding:6px 10px;min-height:36px;font-size:13px}
+.seg{display:grid;gap:4px;background:#163E5F;border-radius:10px;padding:3px}
+.seg button{border:0;border-radius:8px;padding:7px 4px;min-height:38px;font-size:14px;background:transparent;color:#D6E3EE}
+.seg button.on{background:#fff;color:#1D4F78;font-weight:700}
+.cuerpo{flex:1 1 auto;padding:14px 12px calc(84px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #D5DCE1;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.tit{font-size:12px;font-weight:700;color:#4F5D66;letter-spacing:.06em}
+.gris{color:#4F5D66}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{text-align:left;border:0;border-radius:16px;padding:14px 14px 12px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:2px;background:#fff;color:#13222B;border:1px solid #D5DCE1}
+.tile .l{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.85}
+.tile .v{font-size:32px;font-weight:750;line-height:1.1}
+.tile .s{font-size:13px;opacity:.85}
+.t-azul{background:#1D4F78;color:#fff;border-color:#1D4F78}
+.t-verde{background:#DDEFE3;color:#22603A;border-color:#B9DCC4}
+.prev{font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#6B3A0C;background:#FFF1D6;border:1px dashed #E0B062;border-radius:8px;padding:4px 8px;align-self:flex-start}
+.proxima{background:#1D4F78;color:#fff;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.huecos button{font:inherit;font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border:0;border-radius:10px;padding:8px 12px;min-height:40px}
+.calm{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1.5px solid #9FB3C3;border-radius:10px;overflow:hidden;margin:4px 0 6px;background:#fff}
+.calm>div{min-height:44px;font-size:12.5px;padding:3px 4px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #C9D4DD;border-bottom:1px solid #C9D4DD}
+.calm>div:nth-child(7n){border-right:0}
+.calm .cab{min-height:0;font-size:11px;color:#4F5D66;text-align:center;font-weight:700;background:#E8EEF3;padding:4px 0;justify-content:center}
+.mesb{width:100%;font:inherit;background:transparent;border:0;text-align:left;color:inherit;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.t-nar{background:#FBE7D2;color:#7A3A05;border-color:#F2C9A4}
+.t-evo{padding:10px 12px 10px;gap:0}
+.t-evo .fila{display:flex;align-items:center;gap:6px}
+.t-evo svg{flex:0 0 auto}
+.evo-tabla{width:100%;border-collapse:collapse;font-size:15px}
+.evo-tabla th{font-size:11.5px;font-weight:700;color:#4F5D66;letter-spacing:.05em;text-align:right;padding:6px 4px;border-bottom:1px solid #E8ECEF}
+.evo-tabla th:first-child,.evo-tabla td:first-child{text-align:left}
+.evo-tabla td{padding:9px 4px;border-bottom:1px solid #EEF1F3;text-align:right}
+.evo-tabla tr.media td{font-weight:750;background:#F3F6F8}
+.sube{color:#22603A;font-weight:700}.baja{color:#9E2B2B;font-weight:700}.igual{color:#6B7780}
+.fechas{display:flex;flex-wrap:wrap;gap:8px}
+.fechas button{font:inherit;font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border:0;border-radius:10px;padding:8px 12px;min-height:40px}
+.fechas button.on{background:#1D4F78;color:#fff}
+.volver{align-self:flex-start;font:inherit;font-size:14px;font-weight:600;background:transparent;color:#1D4F78;border:0;padding:4px 0}
+.selcurso{font:inherit;font-size:12.5px;color:#fff;background:#163E5F;border:1px solid #8FB0CB;border-radius:7px;padding:3px 6px;margin-right:4px}
+.selcurso option{color:#13222B;background:#fff}
+.mesf{font-size:12px;font-weight:700;color:#4F5D66;letter-spacing:.06em;padding:14px 0 2px;border-top:1px solid #E8ECEF}
+.mesf:first-child{border-top:0;padding-top:8px}
+.chip.largo{white-space:normal;text-align:center;max-width:48%}
+.t-rojo{background:#FBE3E3;color:#9E2B2B;border-color:#EBB4B4}
+.lin{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #E8ECEF}
+.lin:first-of-type{border-top:0}
+.lin .x{flex-grow:1}
+.lin .n{font-size:15.5px;font-weight:600}
+.lin .d{font-size:13px;color:#4F5D66}
+.chip{font-size:12.5px;font-weight:600;padding:4px 9px;border-radius:12px;white-space:nowrap}
+.c-rec{background:#DDEFE3;color:#22603A}.c-pend{background:#FBE7D2;color:#7A3A05}.c-debe{background:#FBE3E3;color:#9E2B2B}.c-ok{background:#FCE4CD;color:#8A4208}
+.barra{height:10px;background:#E3E8EC;border-radius:5px;overflow:hidden}.barra>div{height:100%;background:#1D4F78}
+.persona{width:100%;background:transparent;border:0;border-top:1px solid #E8ECEF;padding:10px 0;display:flex;align-items:center;gap:10px;text-align:left;color:#13222B;min-height:44px}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tres>div{border-radius:12px;padding:10px 12px}
+.tres .k{font-size:12px}.tres .v{font-size:24px;font-weight:750}
+.estado{display:flex;align-items:center;gap:10px;border-radius:14px;padding:14px 16px}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #D5DCE1;display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(10px + env(safe-area-inset-bottom));z-index:6;max-width:560px;margin:0 auto}
+.nav button{background:transparent;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;min-height:48px;color:#6B7780;font-size:11.5px}
+.nav button.on{color:#1D4F78;font-weight:700}
+.portada{background:#1D4F78;color:#fff;padding:calc(env(safe-area-inset-top) + 48px) 24px 36px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.portada h1{margin:0;font-size:26px}
+.form{padding:24px 18px;display:flex;flex-direction:column;gap:14px}
+.form label{font-size:15px;font-weight:600}
+.form input[type=tel],.form input[type=password],.form .pw input{font-size:20px;padding:12px 14px;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;background:#fff}
+.pw{position:relative}.form .pw input{padding-right:54px}
+.ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:46px;height:46px;border:0;background:transparent;color:#4F5D66;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.form input:focus{outline:none;border-color:#1D4F78}
+.boton{font-size:17px;font-weight:650;background:#1D4F78;color:#fff;border:0;border-radius:10px;padding:14px;min-height:50px;width:100%}
+.boton2{font-size:16px;font-weight:600;background:#fff;color:#1D4F78;border:1.5px solid #1D4F78;border-radius:10px;padding:12px;min-height:48px;width:100%}
+.error{background:#FBE3E3;color:#9E2B2B;border-radius:10px;padding:10px 12px;font-size:14.5px}
+.aviso{background:#FFF6EE;border:1px solid #F2C9A4;color:#6B3A0C;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
+.check{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500!important}
+.check input{width:20px;height:20px}
+.capa{position:fixed;inset:0;background:rgba(19,34,43,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.capa .hoja{background:#EEF2F4;border-radius:18px 18px 0 0;width:100%;max-width:560px;padding:20px 16px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.paso{background:#fff;border:1px solid #D5DCE1;border-radius:14px;padding:14px;display:flex;gap:14px;align-items:center;font-size:16px;line-height:1.45}
+.paso b.num{width:34px;height:34px;border-radius:17px;background:#1D4F78;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cargando{padding:60px 20px;text-align:center;color:#4F5D66}
+form[hidden]{display:none}
+</style>
+</head>
+<body>
+<div id="app"><div class="cargando">Cargando…</div></div>
+<!-- buzón: aquí deja la página la llave envuelta con la contraseña nueva (nunca la contraseña). Lo recoge el programa de Alain. -->
+<form name="buzon" method="POST" data-netlify="true" netlify-honeypot="campo-trampa" hidden>
+<input name="campo-trampa"><input name="id"><input name="sal"><input name="iter"><input name="sobre"><input name="prueba">
+</form>
+<script>
+"use strict";
+const ITER_NUEVA = 150000;
+const DATOS = "";   // de dónde se leen los datos ("" = de aquí mismo: GitHub Pages)
+const BUZON = "https://tenis-alain.netlify.app/";   // a dónde se manda el sobre de la contraseña nueva (el buzón de Netlify; "" = aquí mismo)
+const MESES_CORTOS = ["Sep", "Oct", "Nov", "Dic", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago"];
+const $app = document.getElementById("app");
+const enc = new TextEncoder(), dec = new TextDecoder();
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
+
+// ---------- cifrado: PBKDF2-SHA256 + AES-256-CBC + HMAC-SHA256 (igual que el programa) ----------
+const b64 = { de(s) { const b = atob(s); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; },
+  a(u) { let s = ""; u = new Uint8Array(u); for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); } };
+const cat = (a, b) => { const u = new Uint8Array(a.length + b.length); u.set(a, 0); u.set(b, a.length); return u; };
+async function derivar(secreto, salB64, iter) {
+  const base = await crypto.subtle.importKey("raw", enc.encode(secreto), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: b64.de(salB64), iterations: iter }, base, 512));
+}
+async function hmac(clave32, datos) {
+  const k = await crypto.subtle.importKey("raw", clave32, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC", k, datos));
+}
+function iguales(a, b) { if (a.length !== b.length) return false; let d = 0; for (let i = 0; i < a.length; i++) d |= a[i] ^ b[i]; return d === 0; }
+async function abrir(caja, llave64) {
+  const iv = b64.de(caja.iv), ct = b64.de(caja.ct);
+  const m = await hmac(llave64.slice(32, 64), cat(iv, ct));
+  if (!iguales(m, b64.de(caja.mac))) throw new Error("llave");
+  const k = await crypto.subtle.importKey("raw", llave64.slice(0, 32), "AES-CBC", false, ["decrypt"]);
+  return new Uint8Array(await crypto.subtle.decrypt({ name: "AES-CBC", iv }, k, ct));
+}
+async function cerrar(datos, llave64) {
+  const iv = crypto.getRandomValues(new Uint8Array(16));
+  const k = await crypto.subtle.importKey("raw", llave64.slice(0, 32), "AES-CBC", false, ["encrypt"]);
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-CBC", iv }, k, datos));
+  return { iv: b64.a(iv), ct: b64.a(ct), mac: b64.a(await hmac(llave64.slice(32, 64), cat(iv, ct))) };
+}
+// el teléfono: solo sus 8 últimas cifras (vale con o sin prefijo, con espacios o sin ellos)
+const tel8 = s => { const d = String(s || "").replace(/\D/g, ""); return d.length >= 8 ? d.slice(-8) : ""; };
+async function idDe(t8) { const h = new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode("gd-id|" + t8))); return Array.from(h).map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 24); }
+// (3/11/2026) la versión de esta página. Los datos dicen cuál es la última: si esta es más vieja (GitHub tarda unos minutos
+// en dejar de dar la copia guardada), se vuelve a abrir pidiendo la nueva. Una sola vez por versión, para no dar vueltas.
+const PAGVER = "kAli0yzHk3as";
+function paginaVieja(f) {
+  try {
+    if (!f || !f.pag || PAGVER.indexOf("__") === 0 || f.pag === PAGVER) return false;
+    if (sessionStorage.getItem("gd_pv") === f.pag) return false;
+    sessionStorage.setItem("gd_pv", f.pag); location.replace(location.pathname + "?v=" + f.pag); return true;
+  } catch (e) { return false; }
+}
+async function leerFicha(id, mirarVersion) {
+  const r = await fetch((DATOS ? DATOS + "/" : "") + "datos/" + id + ".json?v=" + Date.now(), { cache: "no-store" });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error("red (HTTP " + r.status + ")");
+  const j = await r.json();
+  if (mirarVersion && paginaVieja(j)) await new Promise(() => {});   // se está recargando
+  return j;
+}
+
+// ---------- estado ----------
+let S = { pantalla: "entrar", tab: "Inicio", per: "Todos", ficha: null, id: null, llave: null, datos: null, cuenta: -1, error: "" };
+function guardarSesion(recordar) { if (recordar) ls.set("gd_sesion", { id: S.id, k: b64.a(S.llave) }); }
+async function abrirDatos() {
+  const bytes = await abrir(S.ficha.datos, S.llave);
+  S.datos = JSON.parse(dec.decode(bytes)); S.cargado = Date.now();
+}
+// al volver a la app (estaba en segundo plano): si ha pasado más de un minuto, trae los datos nuevos sin que se note.
+// Se queda en la misma pestaña y persona; si algo falla, sigue con lo que había.
+let refrescando = false;
+async function refrescar() {
+  if (refrescando || S.pantalla !== "app" || !S.id || !S.llave || Date.now() - (S.cargado || 0) < 60000) return;
+  refrescando = true;
+  try {
+    const f = await leerFicha(S.id, true); if (!f) return;
+    const nuevos = JSON.parse(dec.decode(await abrir(f.datos, S.llave)));
+    S.ficha = f; S.cargado = Date.now();
+    if (JSON.stringify(nuevos) !== JSON.stringify(S.datos)) { S.datos = nuevos; if (nuevos.admin && S.cuenta >= (nuevos.cuentas || []).length) S.cuenta = -1; const y = window.scrollY; pintar(); window.scrollTo(0, y); }
+  } catch (e) { } finally { refrescando = false; }
+}
+
+async function inicio() {
+  if (!window.crypto || !crypto.subtle) { $app.innerHTML = '<div class="cargando">Abre esta página en Safari o Chrome (con https).</div>'; return; }
+  const ses = ls.get("gd_sesion");
+  if (ses && ses.id && ses.k) {
+    try {
+      const f = await leerFicha(ses.id, true);
+      if (f) { S.ficha = f; S.id = ses.id; S.llave = b64.de(ses.k); await abrirDatos(); S.pantalla = "app"; await reintentarBuzon(); pintar(); return; }
+    } catch (e) { if (String(e.message) === "red") { S.error = "No hay conexión. Prueba otra vez en un momento."; } }
+    ls.del("gd_sesion");
+  }
+  S.pantalla = "entrar"; pintar();
+}
+
+// ---------- pantallas de entrada ----------
+function pintarEntrar() {
+  $app.innerHTML = `<div class="portada">
+<svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="#C6D82A"/><path d="M8 22 C 26 30, 26 42, 8 50" fill="none" stroke="#fff" stroke-width="4"/><path d="M64 22 C 46 30, 46 42, 64 50" fill="none" stroke="#fff" stroke-width="4"/></svg>
+<h1>${esc(document.title)}</h1><div style="color:#D6E3EE">Tus clases, tus faltas y tus pagos</div></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<label for="tel">Escribe tu teléfono</label>
+<div class="gris" style="font-size:14px;line-height:1.45">El mismo que tiene Alain apuntado. Si son tus hijos los que dan clase, el tuyo.</div>
+<input id="tel" type="tel" inputmode="numeric" autocomplete="tel" required>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Entrar</button></div>
+<div class="gris" style="font-size:13px;text-align:center;line-height:1.5">Solo puedes ver lo tuyo. Nadie más (ni siquiera la web donde está esta página) puede leer tus datos.</div></form>`;
+  const ut = ls.get("gd_ultimo_tel"); if (ut && typeof ut === "string") document.getElementById("tel").value = ut;
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault(); const telEscrito = document.getElementById("tel").value, t8 = tel8(telEscrito);
+    if (!t8) { S.error = "Ese teléfono no parece completo."; pintar(); return; }
+    espera("Buscando…");
+    let paso = "buscar";
+    try {
+      S.id = await idDe(t8); paso = "descargar"; const f = await leerFicha(S.id);
+      if (!f) { S.error = "Ese teléfono no está en la lista. Escríbelo como lo tiene Alain, o pregúntale."; S.pantalla = "entrar"; pintar(); return; }
+      S.ficha = f; S.error = ""; ls.set("gd_ultimo_tel", telEscrito.trim());
+      const pend = ls.get("gd_pendiente_" + S.id);
+      if (f.modo === "clave" || pend) { S.pantalla = "clave"; pintar(); return; }
+      paso = "llave"; const kek = await derivar(t8, f.sal, f.iter);
+      paso = "sobre"; S.llave = await abrir(f.sobre, kek);
+      paso = "datos"; await abrirDatos();
+      S.pantalla = "nueva"; pintar();
+    } catch (e) {
+      // el detalle (paso y error) es para que Alain sepa qué ha pasado
+      const det = " [" + paso + ": " + (e && (e.name + " " + e.message) || e) + "]";
+      S.error = String(e && e.message) === "red" || paso === "descargar" ? "No he podido conectar para traer tus datos. Mira que tienes internet y prueba otra vez." + det : "No he podido abrir tus datos. Pregúntale a Alain." + det;
+      S.pantalla = "entrar"; pintar();
+    }
+  };
+}
+const OJO='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const OJO_NO='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.8 10.8 0 0 1 12 19c-7 0-11-7-11-7a19.8 19.8 0 0 1 5.1-5.9M9.9 5.2A10 10 0 0 1 12 5c7 0 11 7 11 7a19.6 19.6 0 0 1-2.4 3.4M14.1 14.1a3 3 0 1 1-4.2-4.2"/><path d="M1 1l22 22"/></svg>';
+function ojos() {
+  document.querySelectorAll('.form input[type=password]').forEach(i => {
+    const w = document.createElement("div"); w.className = "pw"; i.parentNode.insertBefore(w, i); w.appendChild(i);
+    const b = document.createElement("button"); b.type = "button"; b.className = "ojo"; b.innerHTML = OJO; b.setAttribute("aria-label", "Ver contraseña");
+    b.onclick = () => { const ver = i.type === "password"; i.type = ver ? "text" : "password"; b.innerHTML = ver ? OJO_NO : OJO; b.setAttribute("aria-label", ver ? "Ocultar contraseña" : "Ver contraseña"); };
+    w.appendChild(b);
+  });
+}
+function espera(t) { $app.innerHTML = `<div class="cargando">${esc(t)}</div>`; }
+function pintarClave() {
+  $app.innerHTML = `<div class="portada" style="padding-bottom:28px"><h1>Tu contraseña</h1></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<label for="c1">Escribe tu contraseña</label>
+<input id="c1" type="password" autocomplete="current-password" required>
+<label class="check"><input type="checkbox" id="rec" checked> No volver a pedírmela en este móvil</label>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Entrar</button>
+<button class="boton2" type="button" id="otro">Otro teléfono</button></div>
+<div class="gris" style="font-size:13.5px;text-align:center;line-height:1.5">¿La has olvidado? Pídele a Alain que te «reactive el acceso» y podrás elegir otra con tu teléfono.</div></form>`;
+  ojos();
+  document.getElementById("otro").onclick = () => { ls.del("gd_ultimo_tel"); S.error = ""; S.pantalla = "entrar"; pintar(); };
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault(); const pw = document.getElementById("c1").value, rec = document.getElementById("rec").checked;
+    espera("Comprobando…");
+    try {
+      const pend = ls.get("gd_pendiente_" + S.id);
+      const sobre = S.ficha.modo === "clave" ? S.ficha : pend;
+      let llave = null;
+      try { llave = await abrir(sobre.sobre, await derivar(pw, sobre.sal, sobre.iter)); } catch (e) {}
+      if (!llave && pend && S.ficha.modo === "clave") { try { llave = await abrir(pend.sobre, await derivar(pw, pend.sal, pend.iter)); } catch (e) {} }
+      if (!llave) { S.error = "Esa contraseña no es."; S.pantalla = "clave"; pintar(); return; }
+      S.llave = llave;
+      try { await abrirDatos(); }
+      catch (e) { ls.del("gd_pendiente_" + S.id); S.error = "Alain te ha reactivado el acceso: entra otra vez con tu teléfono."; S.pantalla = "entrar"; pintar(); return; }
+      if (S.ficha.modo === "clave") ls.del("gd_pendiente_" + S.id);
+      guardarSesion(rec); S.error = ""; S.pantalla = "app"; await reintentarBuzon(); pintar();
+    } catch (e) { S.error = "No he podido comprobarla. Prueba otra vez."; S.pantalla = "clave"; pintar(); }
+  };
+}
+function pintarNueva() {
+  const saludo = S.datos && S.datos.saludo ? S.datos.saludo : "";
+  $app.innerHTML = `<div class="portada" style="align-items:flex-start;text-align:left;padding-bottom:28px"><h1>¡Hola${saludo ? ", " + esc(saludo) : ""}!</h1><div style="color:#D6E3EE">Es la primera vez que entras.</div></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<div style="font-size:17px;font-weight:650">Elige tu contraseña</div>
+<div class="gris" style="font-size:14px;line-height:1.45">Desde ahora entrarás con tu teléfono y esta contraseña. Así nadie más puede ver lo tuyo aunque sepa tu número.</div>
+<label for="c1">Contraseña (mínimo 6 letras o números)</label>
+<input id="c1" type="password" autocomplete="new-password" minlength="6" required>
+<label for="c2">Repítela</label>
+<input id="c2" type="password" autocomplete="new-password" minlength="6" required>
+<label class="check"><input type="checkbox" id="rec" checked> No volver a pedírmela en este móvil</label>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Guardar y entrar</button></div>
+<div class="aviso">Apúntala bien. Si la olvidas, Alain te la puede «reactivar» y volverás a elegir una nueva con tu teléfono.</div></form>`;
+  ojos();
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault();
+    const a = document.getElementById("c1").value, b = document.getElementById("c2").value, rec = document.getElementById("rec").checked;
+    if (a.length < 6) { S.error = "Tiene que tener al menos 6 letras o números."; pintar(); return; }
+    if (a !== b) { S.error = "Las dos no coinciden. Escríbelas otra vez."; pintar(); return; }
+    espera("Guardando…");
+    const sal = b64.a(crypto.getRandomValues(new Uint8Array(16)));
+    const sobre = await cerrar(S.llave, await derivar(a, sal, ITER_NUEVA));
+    const pend = { sal, iter: ITER_NUEVA, sobre };
+    ls.set("gd_pendiente_" + S.id, pend);
+    await enviarBuzon(pend);
+    guardarSesion(rec); S.error = ""; S.pantalla = "app"; await avisarApp(); avisarUso(); pintar();
+  };
+}
+// el sobre con la contraseña nueva va al buzón (y se reintenta si no había conexión)
+async function enviarBuzon(pend) {
+  const sobreTxt = JSON.stringify(pend.sobre);
+  const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("buzon|" + S.id + "|" + pend.sal + "|" + pend.iter + "|" + sobreTxt)));
+  const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: pend.sal, iter: String(pend.iter), sobre: sobreTxt, prueba });
+  try {
+    // el buzón está en otra dirección (Netlify): se manda como un formulario normal; la respuesta no se puede leer
+    const r = await fetch(BUZON || "./", { method: "POST", mode: BUZON ? "no-cors" : "cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: cuerpo.toString() });
+    if (r.ok || r.type === "opaque") { pend.enviado = hoyTxt(); ls.set("gd_pendiente_" + S.id, pend); }
+  } catch (e) {}
+}
+// mientras Alain no la haya recogido (la ficha sigue «con el teléfono»), se vuelve a mandar una vez al día
+const hoyTxt = () => new Date().toISOString().slice(0, 10);
+async function reintentarBuzon() { const p = ls.get("gd_pendiente_" + S.id); if (p && p.enviado !== hoyTxt() && S.ficha.modo !== "clave") await enviarBuzon(p); await avisarApp(); avisarUso(); }
+// uso (beta, 31/10/2026): cada vez que se abre la app (como mucho una vez cada media hora) se avisa a Alain por el buzón,
+// con las pestañas que se miraron desde el aviso anterior. Solo cuándo y qué pestaña: nada de lo que se escribe.
+function contarPest(n) { if (!S.id || !S.datos || S.datos.admin) return; const k = "gd_pest_" + S.id, o = ls.get(k) || {}; o[n] = (o[n] || 0) + 1; ls.set(k, o); }
+async function avisarUso() {
+  try {
+    if (!S.llave || !S.id || !S.datos || S.datos.admin) return;
+    const ahora = Date.now(), ult = ls.get("gd_uso_" + S.id) || 0; if (ahora - ult < 30 * 60 * 1000) return;
+    const d = new Date(), dd = x => String(x).padStart(2, "0");
+    const comoApp = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+    const sobre = JSON.stringify({ f: d.getFullYear() + "-" + dd(d.getMonth() + 1) + "-" + dd(d.getDate()) + " " + dd(d.getHours()) + ":" + dd(d.getMinutes()), app: comoApp ? 1 : 0, p: ls.get("gd_pest_" + S.id) || {} });
+    const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("uso|" + S.id + "|" + sobre)));
+    const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "uso", iter: "0", sobre, prueba });
+    ls.set("gd_uso_" + S.id, ahora);
+    const r = await fetch(BUZON || "./", { method: "POST", mode: BUZON ? "no-cors" : "cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: cuerpo.toString() });
+    if (r.ok || r.type === "opaque") ls.del("gd_pest_" + S.id); else ls.set("gd_uso_" + S.id, ult);
+  } catch (e) { }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.pantalla === "app") { avisarUso(); refrescar(); } });
+window.addEventListener("pageshow", ev => { if (ev.persisted) refrescar(); });
+// la primera vez que se abre como app (desde el icono de la pantalla de inicio) se avisa a Alain por el buzón
+async function avisarApp() {
+  try {
+    const comoApp = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+    if (!comoApp || !S.llave || !S.id || (S.datos && S.datos.app) || ls.get("gd_app_" + S.id) === hoyTxt()) return;
+    const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("instalada|" + S.id)));
+    const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "app", iter: "0", sobre: "instalada", prueba });
+    const r = await fetch(BUZON || "./", { method: "POST", mode: BUZON ? "no-cors" : "cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: cuerpo.toString() });
+    if (r.ok || r.type === "opaque") ls.set("gd_app_" + S.id, hoyTxt());
+  } catch (e) {}
+}
+
+
+// ---------- avisos al móvil (31/10/2026) ----------
+// El PC manda los avisos; aquí solo se activan: el móvil da su «dirección de avisos» y se la pasamos a Alain por el buzón,
+// firmada con la llave de la cuenta (como la contraseña). S.datos.push = { k: clave pública del PC, on: puede activarlos }
+const b64u = { de(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return b64.de(s); } };
+const pushPosible = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+async function mandarPush(o) {
+  const sobre = JSON.stringify(o);
+  const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("push|" + S.id + "|" + sobre)));
+  const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "push", iter: "0", sobre, prueba });
+  const r = await fetch(BUZON || "./", { method: "POST", mode: BUZON ? "no-cors" : "cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: cuerpo.toString() });
+  if (!(r.ok || r.type === "opaque")) throw new Error("no se ha podido avisar a Alain (" + r.status + ")");
+}
+async function activarAvisos() {
+  S.avMsg = "";
+  try {
+    const perm = await Notification.requestPermission();   // lo primero: el iPhone solo lo pregunta justo al pulsar
+    if (perm !== "granted") { S.avMsg = perm === "denied" ? "Has dicho que no. Para activarlos, permite las notificaciones de esta app en los ajustes del móvil." : ""; pintar(); return; }
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    const clave = b64u.de(S.datos.push.k);
+    if (sub && sub.options && sub.options.applicationServerKey) { const a = new Uint8Array(sub.options.applicationServerKey); if (a.length !== clave.length || a.some((x, i) => x !== clave[i])) { await sub.unsubscribe(); sub = null; } }
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: clave });
+    const j = sub.toJSON();
+    await mandarPush({ e: j.endpoint, p: j.keys.p256dh, a: j.keys.auth, q: "alta" });
+    ls.set("gd_push_" + S.id, j.endpoint); S.avMsg = ""; S.avListo = true;
+  } catch (e) { S.avMsg = "No se han podido activar: " + (e && e.message ? e.message : e); }
+  pintar();
+}
+async function quitarAvisos() {
+  S.avMsg = "";
+  try {
+    const reg = await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription();
+    const e = sub ? sub.endpoint : ls.get("gd_push_" + S.id);
+    if (sub) await sub.unsubscribe();
+    if (e) await mandarPush({ e, q: "baja" });
+    ls.del("gd_push_" + S.id); ls.del("gd_avisos_" + S.id); S.avMsg = "";
+  } catch (x) { S.avMsg = "No se han podido quitar: " + (x && x.message ? x.message : x); }
+  pintar();
+}
+function bloqueAvisos() {
+  const P = S.datos && S.datos.push; if (!P || !P.on || !P.k) return "";
+  const msg = S.avMsg ? `<div style="font-size:13px;color:#1D4F78">${esc(S.avMsg)}</div>` : "";
+  const campana = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+  if (!pushPosible()) return esIOS() && !esApp() ? `<div class="card" style="flex-direction:row;gap:12px;align-items:center">${campana}<div style="font-size:14px">Para recibir avisos de Alain en el móvil, primero ponla como app en la pantalla de inicio y ábrela desde el icono.</div></div>` : "";
+  const activo = ls.get("gd_push_" + S.id) && Notification.permission === "granted";
+  if (activo) return msg;
+  if (Notification.permission === "denied") return `<div class="card" style="flex-direction:row;gap:12px;align-items:center">${campana}<div style="font-size:14px">Los avisos están bloqueados. Para recibirlos, permite las notificaciones de esta app en los ajustes del móvil.</div></div>`;
+  return `<div class="card" style="gap:8px"><div style="display:flex;gap:12px;align-items:center">${campana}<div><div class="tit">AVISOS EN EL MÓVIL</div><div style="font-size:14px">Recibe en el móvil los avisos de tus clases. Luego eliges cuáles quieres.</div></div></div><button type="button" id="avActivar" class="btn" style="background:#1D4F78;color:#fff;border:0;border-radius:12px;padding:12px;font-size:15.5px;font-weight:650">Activar avisos</button>${msg}</div>`;
+}
+// vista previa para Alain (1/11/2026): al entrar en la cuenta de un alumno ve el recuadro tal como lo verá el alumno
+function previaAvisos() {
+  const P = S.datos && S.datos.push; if (!P || !P.k) return "";
+  const campana = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+  return `<div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#6B7780;text-align:center;padding-top:4px">VISTA PREVIA · SOLO LA VES TÚ</div><div class="card" style="gap:8px;border-style:dashed"><div style="display:flex;gap:12px;align-items:center">${campana}<div><div class="tit">AVISOS EN EL MÓVIL</div><div style="font-size:14px">Recibe en el móvil los avisos de tus clases. Luego eliges cuáles quieres.</div></div></div><button type="button" id="avPrevio" style="background:#1D4F78;color:#fff;border:0;border-radius:12px;padding:12px;font-size:15.5px;font-weight:650">Activar avisos</button>${S.avPrev ? `<div style="font-size:13px;color:#1D4F78">Es una vista previa: el alumno lo verá así${P.solo ? " cuando quites «Solo a mí» en el programa y publiques" : ""}. Al pulsarlo, su móvil le preguntará si permite las notificaciones; luego el recuadro desaparece y le sale la campanita arriba (pulsa la campanita de arriba para verla).</div>` : ""}</div>`;
+}
+
+// ---------- la campanita (1/11/2026): una vez activados, arriba a la derecha; ahí cada uno elige qué avisos quiere ----------
+const CAMPANA = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+const avisosActivos = () => { const P = S.datos && S.datos.push; return !!(P && P.on && P.k && pushPosible() && ls.get("gd_push_" + S.id) && Notification.permission === "granted"); };
+function botonCampana(previa) { return `<button class="salir" id="${previa ? "avCampPrev" : "avCamp"}" aria-label="Avisos" style="padding:6px 9px;margin-right:6px">${CAMPANA}</button>`; }
+function misAvisos() {
+  const P = S.datos.push, l = ls.get("gd_avisos_" + S.id) || P.mis;
+  return l ? l.slice() : (P.tipos || []).filter(t => t[2]).map(t => t[0]);
+}
+function hojaListo() {
+  const capa = document.createElement("div"); capa.className = "capa";
+  capa.innerHTML = `<div class="hoja"><div style="display:flex;gap:10px;align-items:center;font-size:20px;font-weight:700;color:#1D4F78">${CAMPANA.replace('width="20" height="20"', 'width="26" height="26"')} ¡Listo!</div><div style="font-size:15.5px;line-height:1.45">Arriba a la derecha tienes la campanita. Ahí eliges qué avisos quieres recibir o no.</div><button class="boton" id="avOk">Entendido</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove(); capa.onclick = e => { if (e.target === capa) quitar(); }; document.getElementById("avOk").onclick = quitar;
+}
+function hojaCampana(previa) {
+  const P = S.datos.push || {}, tipos = P.tipos || []; let mis = previa ? tipos.filter(t => t[2]).map(t => t[0]) : misAvisos();
+  const capa = document.createElement("div"); capa.className = "capa";
+  const fila = (k, n, on, fijo) => `<label style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #D5DCE1;border-radius:12px;padding:12px 14px;font-size:15.5px"><input type="checkbox" data-av="${esc(k)}" ${on ? "checked" : ""} ${fijo ? "disabled" : ""} style="width:22px;height:22px;accent-color:#1D4F78"><span style="flex-grow:1">${esc(n)}</span>${fijo ? `<span class="gris" style="font-size:13px">siempre</span>` : ""}</label>`;
+  capa.innerHTML = `<div class="hoja" style="max-height:88vh;overflow-y:auto"><div style="display:flex;gap:10px;align-items:center;font-size:20px;font-weight:700">${CAMPANA} Avisos</div>${previa ? `<div style="font-size:13px;color:#6B7780">Vista previa: así lo verá el alumno. Aquí no se guarda nada.</div>` : ""}<div class="gris" style="font-size:14px">Elige qué avisos quieres recibir en el móvil.</div>`
+    + tipos.map(t => fila(t[0], t[1], mis.indexOf(t[0]) >= 0, false)).join("")
+    + `<div id="avHojaMsg" style="font-size:13px;color:#1D4F78"></div><button class="boton" id="avGuardar">Guardar</button><button class="boton2" id="avDejar" style="color:#9E2B2B">Dejar de recibir avisos</button><button class="boton2" id="avCerrar">Cerrar</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove(); capa.onclick = e => { if (e.target === capa) quitar(); };
+  const msg = t => { const m = document.getElementById("avHojaMsg"); if (m) m.textContent = t; };
+  document.getElementById("avCerrar").onclick = quitar;
+  document.getElementById("avGuardar").onclick = async () => {
+    const sel = [...capa.querySelectorAll("[data-av]")].filter(x => x.checked && x.dataset.av !== "_m").map(x => x.dataset.av);
+    if (previa) { msg("Es una vista previa: el alumno lo guardaría así."); return; }
+    msg("Guardando…");
+    try { const reg = await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription(); const e = sub ? sub.endpoint : ls.get("gd_push_" + S.id);
+      await mandarPush({ e, q: "prefs", t: sel }); ls.set("gd_avisos_" + S.id, sel); quitar(); }
+    catch (x) { msg("No se ha podido guardar: " + (x && x.message ? x.message : x)); }
+  };
+  document.getElementById("avDejar").onclick = async () => { if (previa) { msg("Es una vista previa: el alumno dejaría de recibirlos."); return; } quitar(); await quitarAvisos(); };
+}
+
+// franja «instálala» (1/11/2026): solo a quien la abre desde el navegador, solo en Inicio. Si la cierra, vuelve a la semana;
+// después de cerrarla 3 veces ya no sale (queda el enlace de abajo). Alain la ve siempre como vista previa.
+function franjaInstalar() {
+  if (esApp() || S.franjaFuera) return "";
+  if (!S.datos.admin) { const f = ls.get("gd_franja") || { n: 0, hasta: 0 }; if (f.n >= 3 || Date.now() < f.hasta) return ""; }
+  return `<div id="franja" style="display:flex;align-items:center;gap:10px;background:#E3ECF4;border:1px solid #C3D5E6;color:#1D4F78;border-radius:12px;padding:10px 12px"><span style="font-size:20px" aria-hidden="true">📲</span><div style="flex-grow:1;font-size:14px;font-weight:600;line-height:1.3">Instálala en tu móvil para recibir los avisos de tus clases.${S.datos.admin ? `<div style="font-size:12px;font-weight:400;color:#6B7780">Vista previa: la ven solo los que la usan desde el navegador.</div>` : ""}</div><button type="button" id="franjaComo" style="background:#1D4F78;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600">Cómo</button><button type="button" id="franjaX" aria-label="Cerrar" style="background:transparent;border:0;color:#1D4F78;font-size:20px;padding:4px 6px">✕</button></div>`;
+}
+function enlazarFranja() {
+  const c = document.getElementById("franjaComo"); if (c) c.onclick = () => verInstalar(true);
+  const x = document.getElementById("franjaX"); if (x) x.onclick = () => {
+    if (!S.datos.admin) { const f = ls.get("gd_franja") || { n: 0, hasta: 0 }; f.n++; f.hasta = Date.now() + 7 * 24 * 3600 * 1000; ls.set("gd_franja", f); }
+    S.franjaFuera = true; const el = document.getElementById("franja"); if (el) el.remove();
+  };
+}
+function enlazarAvisos() {
+  enlazarFranja();
+  const pv = document.getElementById("avPrevio"); if (pv) pv.onclick = () => { S.avPrev = true; pintar(); };
+  const a = document.getElementById("avActivar"); if (a) a.onclick = () => { a.disabled = true; a.textContent = "Activando…"; activarAvisos(); };
+  const q = document.getElementById("avQuitar"); if (q) q.onclick = ev => { ev.preventDefault(); quitarAvisos(); };
+  const c1 = document.getElementById("avCamp"); if (c1) c1.onclick = () => hojaCampana(false);
+  const c2 = document.getElementById("avCampPrev"); if (c2) c2.onclick = () => hojaCampana(true);
+  const sp = document.getElementById("salirPrev"); if (sp) sp.onclick = () => {
+    const capa = document.createElement("div"); capa.className = "capa";
+    capa.innerHTML = `<div class="hoja"><div style="font-size:13px;color:#6B7780">Vista previa: así lo verá el alumno. Aquí no se cierra nada.</div><div style="font-size:20px;font-weight:700">¿Cerrar sesión?</div><div class="gris" style="font-size:15px;line-height:1.45">Solo hace falta si este móvil no es tuyo. Para cerrar la app, ciérrala como cualquier otra: la próxima vez entrarás directamente. Si cierras la sesión, tendrás que escribir otra vez tu contraseña.</div><button class="boton" id="pvOk">Cerrar sesión</button><button class="boton2" id="pvNo">Cancelar</button></div>`;
+    document.body.appendChild(capa); const q = () => capa.remove(); capa.onclick = e => { if (e.target === capa) q(); };
+    document.getElementById("pvOk").onclick = q; document.getElementById("pvNo").onclick = q;
+  };
+  if (S.avListo) { S.avListo = false; hojaListo(); }
+}
+
+// ---------- la app ----------
+const fmt = v => String(Math.round(v * 10) / 10).replace(".", ",");
+const pct = (d, f) => d + f > 0 ? Math.round(100 * d / (d + f)) + " %" : "—";
+function agg(D, l, varios) {
+  const meses = [];
+  l.forEach(p => p.meses.forEach(m => { let x = meses.find(y => y[0] === m[0]); if (!x) { x = [m[0], 0, 0]; meses.push(x); } x[1] += m[1]; x[2] += m[2]; }));
+  const faltas = [];
+  l.forEach(p => p.faltas.forEach(f => faltas.push({ dia: f[0], motivo: (varios ? p.nombre + " · " : "") + f[1], est: f[2], orden: f[3] || 0, m: f[1], recEl: f[4] || "", mes: f[5] || "" })));
+  faltas.sort((a, b) => b.orden - a.orden);
+  const mot = {}; faltas.forEach(f => { mot[f.m] = (mot[f.m] || 0) + 1; });
+  const dadas = meses.reduce((s, x) => s + x[1], 0), netas = meses.reduce((s, x) => s + x[2], 0);
+  return { dadas, netas, meses, faltas, rec: faltas.filter(f => f.est === 1).length, porRec: faltas.filter(f => f.est === 2).length, motivos: Object.keys(mot).map(k => k + " " + mot[k]).join(" · ") };
+}
+const IC = { Horario: "M3 5h18v16H3zM3 10h18M8 3v4M16 3v4", Inicio: "M3 11l9-7 9 7v9h-6v-6h-6v6H3z", Clases: "M4 20V11M10 20V5M16 20v-6M2 20h20", Faltas: "M12 9v4M12 17h.01M10.3 4l-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0z", Pagos: "M2 7h20v12H2zM2 11h20M6 15h4" };
+// ---------- vista previa (solo Alain, al ver la cuenta de un alumno): horario, cambios y huecos ----------
+const DIASL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], MESC = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+function fechaDe(f, h) { const a = f.split("-").map(Number), b = (h || "0:00").split(":").map(Number); return new Date(a[0], a[1] - 1, a[2], b[0] || 0, b[1] || 0); }
+function diaTxt(f) { const d = fechaDe(f); return DIASL[d.getDay()] + " " + d.getDate() + " " + MESC[d.getMonth()]; }
+const PREV = "";   // (antes, etiqueta «VISTA PREVIA · SOLO LA VES TÚ»; desde el 31/10/2026 lo ven todos)
+function proximaClase(P) {
+  const ahora = new Date(); let mejor = null;
+  P.semanas.forEach(w => w.clases.forEach(c => { if ((c[2] === "futura" || c[2] === "validar") && c[1]) { const t = fechaDe(c[0], c[1]); if (t > ahora && (!mejor || t < mejor.t)) mejor = { t, c }; } }));
+  return mejor;
+}
+const esAnulada = c => (c[2] === "falta" || c[2] === "lesion") && c[5] === "La anuló Alain";
+// clases futuras anuladas por Alain (las próximas dos semanas)
+function anuladas(P) {
+  const ahora = new Date(); return P.semanas.reduce((a, w) => a.concat(w.clases), []).filter(c => esAnulada(c) && fechaDe(c[0], c[1] || "23:59") > ahora);
+}
+function cambiosSemana(P) {
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const lim = new Date(hoy); lim.setDate(lim.getDate() + 8); const r = [];
+  P.semanas.reduce((a, w) => a.concat(w.clases), []).forEach(c => {
+    if (fechaDe(c[0]) < hoy || fechaDe(c[0]) >= lim) return;
+    const q = c[4] ? c[4] + ": " : "";
+    if (c[2] === "movida") {   // (7/11/2026, Alain) una sola línea: de dónde a dónde
+      const m = /(\d{1,2})\/(\d{1,2})\s+(\d{1,2}:\d{2})/.exec(c[3] || ""), g = c[6] ? " (" + esc(c[6]) + ")" : "";
+      if (m) { const fd = new Date(fechaDe(c[0]).getFullYear(), +m[2] - 1, +m[1]), mismo = fd.toDateString() === fechaDe(c[0]).toDateString();
+        r.push(mismo ? `<b>${esc(diaTxt(c[0]))}</b>${g}: ${esc(q)}de ${esc(c[1])} a ${esc(m[3])}` : `<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>${g}: ${esc(q)}pasa al ${esc(diaTxt(fd.getFullYear() + "-" + String(fd.getMonth() + 1).padStart(2, "0") + "-" + String(fd.getDate()).padStart(2, "0")))} · ${esc(m[3])}`); }
+      else r.push(`<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>: ${esc(q)}pasa ${esc(c[3].replace(/^→\s*/, "al "))}`);
+    }
+    else if (c[2] === "festivo") r.push(`<b>${esc(diaTxt(c[0]))}</b>: no hay clase (festivo)`);
+    else if (c[3].indexOf("cambio, era") === 0) { /* ya sale en la línea de la que se mueve */ }
+    else if (c[2] === "falta" && !esAnulada(c) && fechaDe(c[0], c[1]) > new Date()) r.push(`<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>: ${esc(q)}${c[5] === "La anuló Alain" ? "no hay clase, la ha anulado Alain" : "no vienes (" + esc(c[5]) + ")"}`);
+  });
+  return r;
+}
+const MESL = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+// calendario de un mes (vista previa): días dados, faltas y recuperaciones, con bordes; debajo, cada falta/recuperación en palabras
+function calendarioMes(PV, mesNombre, curso, per) {
+  const mi = MESL.indexOf(mesNombre); if (mi < 0) return "";
+  const y0 = parseInt(String(curso).slice(0, 4), 10), anio = mi >= 8 ? y0 : y0 + 1;
+  const dias = (PV.dias || []).filter(d => { const f = fechaDe(d[0]); return f.getFullYear() === anio && f.getMonth() === mi && (per === "Todos" || !d[2] || d[2] === per); });
+  const porDia = {}; dias.forEach(d => { const n = fechaDe(d[0]).getDate(); (porDia[n] = porDia[n] || []).push(d); });
+  const ini = (new Date(anio, mi, 1).getDay() + 6) % 7, nd = new Date(anio, mi + 1, 0).getDate();
+  let h = `<div class="calm">` + ["L", "M", "X", "J", "V", "S", "D"].map(x => `<div class="cab">${x}</div>`).join(""); let n = 0;
+  for (let i = 0; i < ini; i++, n++) h += `<div style="background:#F6F8FA"></div>`;
+  for (let d = 1; d <= nd; d++, n++) {
+    const l = porDia[d];
+    if (!l) { h += `<div style="color:#8A96A0">${d}</div>`; continue; }
+    const f = l.find(x => x[1] === "f"), r = l.find(x => x[1] === "r");
+    const bg = f ? "#FBE3E3" : r ? "#DDEFE3" : "#DCE8F3", fg = f ? "#9E2B2B" : r ? "#22603A" : "#1D4F78";
+    const ic = l.map(x => x[1] === "f" ? (x[4] ? "✗↺" : "✗") : x[1] === "r" ? "↺" : "✓").join(" ");
+    h += `<div style="background:${bg};color:${fg}"><span style="font-weight:600">${d}</span><span style="font-size:12px;font-weight:700;text-align:right">${ic}</span></div>`;
+  }
+  while (n % 7) { h += `<div style="background:#F6F8FA"></div>`; n++; }
+  h += `</div>`;
+  const varios = per === "Todos" && dias.some(d => d[2]) && new Set(dias.map(d => d[2])).size > 1;
+  h += dias.filter(d => d[1] !== "d").map(d => `<div style="font-size:13px;color:#4F5D66;padding:2px 2px">Día ${fechaDe(d[0]).getDate()}: ${varios && d[2] ? esc(d[2]) + " · " : ""}${d[1] === "r" ? "clase de recuperación" + (d[4] ? " (" + esc(d[4]) + ")" : "") : "falta · " + esc(d[3]) + (d[4] ? " · " + esc(d[4]) : "")}</div>`).join("");
+  return h + `<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:#4F5D66;padding:4px 2px 8px"><span>✓ dada</span><span>✗ falta</span><span>✗↺ falta recuperada</span><span>↺ recuperación</span></div>`;
+}
+const tagG = n => n ? ` <span style="display:inline-block;font-size:11.5px;font-weight:700;background:#E3ECF4;color:#1D4F78;border-radius:8px;padding:2px 8px;vertical-align:2px">${esc(n)}</span>` : "";   // (7/11/2026) clase de grupo
+function lineaClase(c) {
+  if (esAnulada(c)) return `<div class="lin"><div class="x"><div class="n" style="text-decoration:line-through;color:#6B7780;font-weight:500">${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}${tagG(c[6])}</div><div class="d" style="color:#9E2B2B">${c[4] ? esc(c[4]) + " · " : ""}anulada por Alain</div></div><span class="chip c-debe">Anulada</span></div>`;
+  const chip = c[2] === "dada" ? `<span class="chip c-rec">Dada</span>` : c[2] === "falta" || c[2] === "lesion" ? `<span class="chip c-debe">Falta</span>` : c[2] === "movida" ? `<span class="chip c-pend">Cambiada</span>` : c[2] === "festivo" ? `<span class="chip c-pend">Festivo</span>` : c[3].indexOf("cambio") === 0 || c[3].indexOf("recuper") >= 0 ? `<span class="chip c-pend">${c[3].indexOf("recuper") >= 0 ? "Recuperación" : "Cambiada"}</span>` : "";
+  const sub = [c[4], c[2] === "movida" ? c[3].replace(/^→\s*/, "pasa al ") : c[3].indexOf("cambio") === 0 ? c[3] : ""].filter(x => x).join(" · ");
+  const tit = (c[2] === "movida" ? `<span style="text-decoration:line-through;color:#6B7780;font-weight:500">${esc(diaTxt(c[0]))} · ${esc(c[1])}</span>` : `${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}`) + tagG(c[6]);
+  return `<div class="lin"><div class="x"><div class="n">${tit}</div>${sub ? `<div class="d">${esc(sub)}</div>` : ""}</div>${chip}</div>`;
+}
+function pintarHorarioPrev(P) {
+  let h = PREV;
+  h += bloqueHoras();
+  h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">TU HORARIO FIJO</div>` + (P.fijo.length ? P.fijo.map(f => `<div class="lin"><div class="x"><div class="n">${esc(f[0])}${tagG(f[3])}</div>${f[2] ? `<div class="d">${esc(f[2])}</div>` : ""}</div><span style="font-size:15.5px">${esc(f[1])}</span></div>`).join("") : `<div class="gris" style="padding:8px 0">Sin horario fijo.</div>`) + `</div>`;
+  ["ESTA SEMANA", "LA SEMANA QUE VIENE"].forEach((t, i) => { const w = P.semanas[i]; if (!w) return; const l0 = fechaDe(w.lunes), l1 = new Date(l0); l1.setDate(l1.getDate() + 5);
+    h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">${t} · ${l0.getDate()} ${MESC[l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div>` + (w.clases.length ? w.clases.map(lineaClase).join("") : `<div class="gris" style="padding:8px 0">No hay clases.</div>`) + `</div>`; });
+  return h;
+}
+// una falta solo se recupera en SU MISMA semana (en otra semana sería una clase extra): por cada semana con faltas sin
+// recuperar que aún no ha terminado, sus faltas y las horas disponibles de esa misma semana
+function recuperables(P) {
+  const ahora = new Date(), res = [];
+  P.semanas.forEach(w => {
+    const l0 = fechaDe(w.lunes), fin = new Date(l0); fin.setDate(fin.getDate() + 7); if (fin <= ahora) return;
+    const fal = w.clases.filter(c => (c[2] === "falta" || c[2] === "lesion") && c[3].indexOf("recuperada") < 0 && c[5] !== "Festivo");
+    const hu = (((typeof cuentaActual === "function" && cuentaActual()) || {}).disponibles || S.datos.disponibles || []).filter(x => { const t = fechaDe(x[0], x[1]); return t > ahora && t >= l0 && t < fin; });
+    // sin faltas esa semana, las horas libres salen igual: por si quiere hacer una clase extra
+    if (!fal.length && !hu.length) return;
+    res.push({ l0, fin, fal, hu });
+  });
+  return res;
+}
+// (7/11/2026, Alain) «HORAS LIBRES» y las horas, nada más (de hoy en adelante, hasta dos semanas)
+function bloqueHoras() {
+  const ahora = new Date(), hu = (((typeof cuentaActual === "function" && cuentaActual()) || {}).disponibles || S.datos.disponibles || []).filter(x => fechaDe(x[0], x[1]) > ahora);
+  if (!hu.length) return "";
+  const dias = []; hu.forEach(x => { let d = dias.find(y => y.f === x[0]); if (!d) { d = { f: x[0], h: [] }; dias.push(d); } d.h.push(x); });
+  return `<div class="aviso huecos" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">HORAS LIBRES</div>`
+    + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px">${esc(x[1])}</span>`).join("")}</div>`).join("") + `</div>`;
+}
+function bloqueRecuperar(r) {
+  const l1 = new Date(r.l0); l1.setDate(l1.getDate() + 5);
+  const dias = []; r.hu.forEach(x => { let d = dias.find(y => y.f === x[0]); if (!d) { d = { f: x[0], h: [] }; dias.push(d); } d.h.push(x); });
+  if (!r.fal.length) return `<div class="aviso huecos" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">HORAS LIBRES · SEMANA DEL ${r.l0.getDate()} ${MESC[r.l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div><div style="font-size:13px">Por si quieres hacer una clase extra esa semana:</div>`
+    + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px"${x[2] ? ` title="${esc(x[2])}"` : ""}>${esc(x[1])}</span>`).join("")}</div>`).join("")
+    + `<div style="font-size:12px;opacity:.85">Díselo a Alain para que te la guarde.</div></div>`;
+  return `<div class="aviso huecos" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">PUEDES RECUPERAR · SEMANA DEL ${r.l0.getDate()} ${MESC[r.l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div>`
+    + r.fal.map(c => `<div style="font-size:14.5px"><b>${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}</b>${c[4] ? " · " + esc(c[4]) : ""} · ${esc(c[5] || "falta")}</div>`).join("")
+    + (dias.length ? `<div style="font-size:13px;padding-top:4px">Horas libres esa semana:</div>` + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px"${x[2] ? ` title="${esc(x[2])}"` : ""}>${esc(x[1])}</span>`).join("")}</div>`).join("") + `<div style="font-size:12px;opacity:.85">Díselo a Alain para que te la guarde. Recuperarla en otra semana contaría como clase extra.</div>`
+      : `<div style="font-size:13px">Esa semana no hay horas libres; pregúntale a Alain.</div>`) + `</div>`;
+}
+// recuadro FALTAS de Inicio: naranja solo si hay alguna que se puede recuperar esta semana
+function tileFaltas(tile, a) {
+  const n = a.faltas.length || a.netas, rec = a.rec;
+  if (a.porRec > 0) return tile("t-nar", "FALTAS", String(n), a.porRec === 1 ? "1 esta semana" : a.porRec + " esta semana", "Faltas");
+  return tile("", "FALTAS", String(n), n === 0 ? "ninguna este curso" : rec === 1 ? "1 recuperada" : rec > 1 ? rec + " recuperadas" : "este curso", "Faltas");
+}
+// pestaña Faltas: cifras arriba y la lista agrupada por meses (la más reciente arriba)
+function resumenFaltas(el) {
+  const n = el.faltas.length;
+  let h = `<div class="tres" style="grid-template-columns:repeat(${el.porRec ? 3 : 2},1fr)"><div style="background:#fff;border:1px solid #D5DCE1"><div class="k gris">Faltas</div><div class="v">${n || el.netas}</div></div><div style="background:#DDEFE3;color:#22603A"><div class="k">Recuperadas</div><div class="v">${el.rec}</div></div>`
+    + (el.porRec ? `<div style="background:#FBE7D2;color:#7A3A05"><div class="k">Esta semana</div><div class="v">${el.porRec}</div></div>` : "") + `</div>`;
+  if (el.motivos && n) h += `<div class="gris" style="font-size:13.5px;padding:0 4px">${esc(el.motivos)}</div>`;
+  return h;
+}
+function pintarFaltas(el) {
+  const n = el.faltas.length;
+  let h = resumenFaltas(el);
+  if (!n) {
+    // sin el detalle día a día (cursos antiguos): las faltas de cada mes
+    const conF = el.meses.filter(m => m[2] > 0);
+    return h + `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px">` + (conF.length ? `<div class="gris" style="font-size:13.5px;padding:10px 0 4px">De este curso solo tengo cuántas faltas hubo cada mes.</div>` + conF.map(m => `<div class="lin"><div class="x"><div class="n">${esc(m[0])}</div></div><span class="chip c-pend">${m[2]} ${m[2] === 1 ? "falta" : "faltas"}</span></div>`).join("") : `<div class="gris" style="padding:12px 0">Ninguna falta este curso.</div>`) + `</div>`;
+  }
+  const grupos = []; el.faltas.forEach(f => { let g = grupos.find(x => x.mes === f.mes); if (!g) { g = { mes: f.mes, l: [] }; grupos.push(g); } g.l.push(f); });
+  return h + `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px">` + grupos.map(g => `<div class="mesf">${esc((g.mes || "").toUpperCase())} · ${g.l.length} ${g.l.length === 1 ? "FALTA" : "FALTAS"}</div>`
+    + g.l.map(f => `<div class="lin"><div class="x"><div class="n">${esc(f.dia)}</div><div class="d">${esc(f.motivo)}</div></div>${f.est === 1 ? `<span class="chip c-rec largo">Recuperada${f.recEl ? " el " + esc(f.recEl) : ""}</span>` : f.est === 2 ? `<span class="chip c-pend largo">Puedes recuperarla esta semana</span>` : ""}</div>`).join("")).join("") + `</div>`;
+}
+// ---------------- Evolución (2/11/2026): puntuaciones por golpes en un gráfico de araña ----------------
+// d.evo = { cats: [7 nombres], personas: [ { nombre, lista: [ { f: "dd/MM/yyyy", c: [7 notas o null], m: media } ] } ] }
+function n1(v) { return v == null ? "—" : (Math.round(v * 10) / 10).toFixed(1).replace(".", ","); }
+function radarSVG(cats, vals, prev, tam, conTexto) {
+  // (2/11/2026) el nombre más largo (Competitividad) va abajo, donde cabe grande sin cortarse
+  {
+    const n0 = cats.length, abajo = [];
+    for (let i = 0; i < n0; i++) { const a = -Math.PI / 2 + 2 * Math.PI * i / n0; if (Math.sin(a) > 0.6) abajo.push(i); }
+    let L = 0; cats.forEach((c, i) => { if (c.length > cats[L].length) L = i; });
+    if (abajo.length && abajo.indexOf(L) < 0 && cats[L].length > 10) {   // (3/11/2026) solo si es muy largo: si no, se respeta el orden de Alain
+      const T = abajo.reduce((m, i) => Math.abs(i - L) < Math.abs(m - L) ? i : m, abajo[0]);
+      const sw = arr => { if (!arr) return arr; const b = arr.slice(); const t = b[L]; b[L] = b[T]; b[T] = t; return b; };
+      cats = sw(cats); vals = sw(vals); prev = sw(prev);
+    }
+  }
+  const n = cats.length, W = conTexto ? Math.round(tam * 1.3) : tam, H = tam, R = conTexto ? H * 0.40 : W * 0.44, cx = W / 2, cy = H / 2 + (conTexto ? 6 : 0);
+  const P = (i, v) => { const a = -Math.PI / 2 + 2 * Math.PI * i / n, r = R * Math.max(0, Math.min(10, v || 0)) / 10; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; };
+  const pol = arr => arr.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  let g = "";
+  for (let k = 2; k <= 10; k += 2) g += `<polygon points="${pol(cats.map((_, i) => P(i, k)))}" fill="none" stroke="${k === 10 ? "#C2CDD6" : "#E3E8EC"}" stroke-width="1"/>`;
+  // (3/11/2026) las puntas sin nota: eje claro y punteado, y la línea las salta (no baja a 0)
+  cats.forEach((_, i) => { const p = P(i, 10), sin = vals[i] == null; g += `<line x1="${cx}" y1="${cy}" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" stroke="${sin ? "#EEF1F3" : "#E3E8EC"}" stroke-width="1"${sin ? ' stroke-dasharray="4 4"' : ""}/>`; });
+  const conV = arr => arr.map((v, i) => v == null ? null : P(i, v)).filter(p => p);
+  if (prev && prev.filter(v => v != null).length >= 3) g += `<polygon points="${pol(conV(prev))}" fill="none" stroke="#8A96A0" stroke-width="${conTexto ? 1.6 : 1.2}" stroke-dasharray="4 3"/>`;
+  const pv = conV(vals);
+  if (pv.length >= 3) g += `<polygon points="${pol(pv)}" fill="rgba(29,79,120,.22)" stroke="#1D4F78" stroke-width="${conTexto ? 2.6 : 2}" stroke-linejoin="round"/>`;
+  else if (pv.length === 2) g += `<polyline points="${pol(pv)}" fill="none" stroke="#1D4F78" stroke-width="${conTexto ? 2.6 : 2}"/>`;
+  if (conTexto) {
+    vals.forEach((v, i) => { if (v == null) return; const p = P(i, v); g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.5" fill="#1D4F78" stroke="#fff" stroke-width="1.5"/>`; });
+    cats.forEach((c, i) => {
+      const a = -Math.PI / 2 + 2 * Math.PI * i / n, x = cx + Math.cos(a) * (R + 9), y = cy + Math.sin(a) * (R + 9);
+      const anc = Math.cos(a) > 0.25 ? "start" : Math.cos(a) < -0.25 ? "end" : "middle", dy = Math.sin(a) > 0.3 ? 11 : Math.sin(a) < -0.3 ? -14 : 0;
+      g += `<text x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anc}" font-size="11.5" font-weight="700" fill="${vals[i] == null ? "#AAB4BC" : "#13222B"}">${esc(c.toUpperCase())}</text>`;
+      g += `<text x="${x.toFixed(1)}" y="${(y + dy + 14).toFixed(1)}" text-anchor="${anc}" font-size="12.5" font-weight="750" fill="${vals[i] == null ? "#AAB4BC" : "#1D4F78"}">${vals[i] == null ? "aún no" : n1(vals[i])}</text>`;
+    });
+  }
+  return `<svg width="${conTexto ? "100%" : W}" ${conTexto ? "" : `height="${H}"`} viewBox="0 0 ${W} ${H}" style="overflow:visible" role="img" aria-label="Gráfico de araña de las puntuaciones">${g}</svg>`;
+}
+// la persona de la que se enseña la evolución (en una cuenta con varios: la elegida o la primera que tenga puntuaciones)
+function evoPersona(evo, per) {
+  const l = evo.personas, conDatos = l.filter(p => p.lista.length);
+  return l.find(p => p.nombre === per && p.lista.length) || l.find(p => p.nombre === S.evoPer) || conDatos[0] || l[0];
+}
+function flecha(a, b) {
+  if (a == null || b == null) return "";
+  const d = Math.round((b - a) * 10) / 10;
+  return d > 0 ? `<span class="sube">▲ +${n1(d)}</span>` : d < 0 ? `<span class="baja">▼ −${n1(-d)}</span>` : `<span class="igual">= 0,0</span>`;
+}
+// (3/11/2026) niveles: la anterior con la que se compara es la del MISMO nivel; insignia, barrita y enhorabuena al subir
+function antNivel(evo, l, i) {
+  if (i <= 0) return null; if (!evo.niveles) return l[i - 1];
+  for (let j = i - 1; j >= 0; j--) if ((l[j].n || "") === (l[i].n || "")) return l[j];
+  return null;
+}
+function bloqueNivel(evo, p, l, i) {
+  if (!evo.niveles || !p || !p.nivel) return "";
+  const N = evo.niveles, C = evo.colores_nivel || [], k = N.indexOf(p.nivel); if (k < 0) return "";
+  const u = l[i], ui = u ? N.indexOf(u.n || "") : -1;
+  // acaba de subir: esta es la primera de su nivel y hay alguna de un nivel más bajo antes
+  const primera = u && !l.slice(0, i).some(x => x.n === u.n), venia = u && l.slice(0, i).some(x => N.indexOf(x.n || "") >= 0 && N.indexOf(x.n || "") < ui);
+  let h = "";
+  if (i === l.length - 1 && primera && venia) h += `<div style="background:#E6F4EA;border:1px solid #B8DCC3;color:#22603A;border-radius:14px;padding:12px 14px;font-size:15px">⭐ <b>¡Has subido a ${esc(u.n)}!</b> Desde ahora tus notas cuentan sobre este nivel.</div>`;
+  h += `<div class="card" style="gap:8px"><div style="display:flex;align-items:center;gap:10px"><span style="background:${C[k] || "#1D4F78"};color:${k >= 3 ? "#fff" : "#133254"};border-radius:999px;padding:5px 13px;font-size:13px;font-weight:750;letter-spacing:.04em">NIVEL ${esc(p.nivel.toUpperCase())}</span></div>`
+    + `<div style="display:flex;gap:4px">` + N.map((x, j) => `<div style="flex:1;height:9px;border-radius:5px;background:${j <= k ? (C[j] || "#1D4F78") : "#E3E8EC"}${j === k ? ";box-shadow:0 0 0 2px #fff,0 0 0 3.5px " + (C[j] || "#1D4F78") : ""}"></div>`).join("") + `</div>`
+    + `<div style="display:flex;font-size:10.5px" class="gris">` + N.map((x, j) => `<span style="flex:1;text-align:center;${j === k ? "font-weight:750;color:#1D4F78" : ""}">${esc(x.length > 7 ? x.slice(0, 6) + "." : x)}</span>`).join("") + `</div>`
+    + `<div class="gris" style="font-size:12.5px">Tu nota es sobre tu nivel: un 8 en ${esc(p.nivel)} es ir muy bien en ${esc(p.nivel)}.</div></div>`;
+  return h;
+}
+function tileEvo(evo, per, varios) {
+  const p = evoPersona(evo, per), l = p ? p.lista : [];
+  if (!l.length) return `<button class="tile" data-evo="1"><span class="l">EVOLUCIÓN</span><span class="s">Todavía sin puntuar${varios && p ? " (" + esc(p.nombre) + ")" : ""}</span></button>`;
+  const u = l[l.length - 1], a = antNivel(evo, l, l.length - 1);
+  return `<button class="tile t-evo" data-evo="1"><span class="l">EVOLUCIÓN${varios ? " · " + esc(p.nombre.toUpperCase()) : ""}${evo.niveles && p.nivel ? " · " + esc(p.nivel.toUpperCase()) : ""}</span><span class="fila">${radarSVG(evo.cats, u.c, a ? a.c : null, 74, false)}<span style="display:flex;flex-direction:column"><span class="v" style="font-size:26px">${n1(u.m)}</span><span class="s">${a ? flecha(a.m, u.m) : "sobre 10"}</span></span></span></button>`;
+}
+function pintarEvolucion(D, evo, per, varios) {
+  const p = evoPersona(evo, per); S.evoPer = p ? p.nombre : null;
+  let h = `<button class="volver" data-tab="Inicio">← Inicio</button>`;
+  if (evo.personas.length > 1) h += `<div class="seg" style="grid-template-columns:repeat(${evo.personas.length},1fr);background:#1D4F78">` + evo.personas.map(x => `<button data-evoper="${esc(x.nombre)}" class="${p && x.nombre === p.nombre ? "on" : ""}">${esc(x.nombre)}</button>`).join("") + `</div>`;
+  const l = p ? p.lista : [];
+  if (!l.length) return h + `<div class="card"><div class="tit">EVOLUCIÓN</div><div class="gris">Todavía no hay ninguna puntuación${p && varios ? " de " + esc(p.nombre) : ""}. Cuando Alain te puntúe, aquí verás cómo vas en cada golpe.</div></div>`;
+  if (S.evoSel == null || S.evoSel >= l.length || S.evoSelDe !== p.nombre) { S.evoSel = l.length - 1; S.evoSelDe = p.nombre; }
+  const u = l[S.evoSel], a = antNivel(evo, l, S.evoSel);
+  h += bloqueNivel(evo, p, l, S.evoSel);
+  h += `<div class="card" style="gap:6px"><div style="display:flex;align-items:baseline"><div class="tit" style="flex-grow:1">EVOLUCIÓN</div><div style="font-size:24px;font-weight:750;color:#1D4F78">${n1(u.m)}<span class="gris" style="font-size:13px;font-weight:600"> / 10</span></div></div>`
+    + `<div style="display:flex;gap:14px;font-size:12.5px" class="gris"><span><span style="display:inline-block;width:11px;height:11px;background:#1D4F78;border-radius:2px;vertical-align:-1px"></span> ${S.evoSel === l.length - 1 ? "Última" : "Esta"} · ${esc(u.f)}</span>${a ? `<span><span style="display:inline-block;width:10px;height:10px;border:1.5px dashed #8A96A0;vertical-align:-1px"></span> Anterior · ${esc(a.f)}</span>` : ""}</div>`
+    + radarSVG(evo.cats, u.c, a ? a.c : null, 340, true) + `</div>`;
+  // (2/11/2026) una sola nota por golpe y, al lado, la flecha y cuánto ha cambiado frente a la anterior
+  const fl = (x, y) => { if (x == null || y == null) return ["", ""]; const d = Math.round((y - x) * 10) / 10; return d > 0 ? [`<span class="sube">▲</span>`, `<span class="sube">+${n1(d)}</span>`] : d < 0 ? [`<span class="baja">▼</span>`, `<span class="baja">−${n1(-d)}</span>`] : [`<span class="igual">=</span>`, `<span class="igual">0,0</span>`]; };
+  const filaG = (nom, x, y, cls) => { const f = fl(x, y); return `<tr${cls ? ` class="${cls}"` : ""}><td>${esc(nom)}</td><td>${y == null ? `<span class="gris">aún no</span>` : `<b>${n1(y)}</b>`}</td>${a ? `<td style="text-align:center;width:28px">${f[0]}</td><td>${f[1]}</td>` : ""}</tr>`; };
+  h += `<div class="card" style="gap:4px"><div class="tit">${a ? "CADA GOLPE · FRENTE A LA DEL " + esc(a.f.slice(0, 5)) : "CADA GOLPE"}</div><table class="evo-tabla"><tr><th>Golpe</th><th>Nota</th>${a ? `<th></th><th>Variación</th>` : ""}</tr>`
+    + evo.cats.map((c, i) => filaG(c, a ? a.c[i] : null, u.c[i], "")).join("")
+    + filaG("Media", a ? a.m : null, u.m, "media") + `</table>`
+    + `<div class="gris" style="font-size:12.5px;padding-top:6px">Notas del 1 al 10. Cada golpe es la media de lo que Alain puntúa de él${u.c.some(v => v == null) ? "; «aún no» = todavía no lo habéis trabajado" : ""}.</div></div>`;
+  if (l.length > 1) h += `<div class="card"><div class="tit">TODAS LAS PUNTUACIONES · PULSA UNA PARA VERLA</div><div class="fechas">` + l.map((x, i) => `<button data-evosel="${i}" class="${i === S.evoSel ? "on" : ""}">${esc(x.f.slice(0, 5))} · ${n1(x.m)}</button>`).join("") + `</div></div>`;
+  return h;
+}
+function cuentaActual() { return S.datos.admin ? (S.cuenta >= 0 ? S.datos.cuentas[S.cuenta] : null) : S.datos; }
+// curso elegido: 0 = el actual; 1, 2… = los anteriores (histórico), con el mismo aspecto
+function cursoElegido(D0) {
+  const ant = D0.anteriores || []; if (!S.ci || S.ci > ant.length) { S.ci = 0; return D0; }
+  const A = ant[S.ci - 1];
+  return Object.assign({}, D0, { curso: A.curso, personas: A.personas, pagos: Object.assign({ quien: "" }, A.pagos), esteMes: null, pasado: true });
+}
+function pintarApp() {
+  if (S.datos.admin && S.cuenta < 0) return pintarAdmin();
+  const D0 = cuentaActual(), D = cursoElegido(D0), varios = D.personas.length > 1;
+  // vista previa (solo Alain): Clases y Faltas juntas en «Clases»; lo de recuperar, en Inicio
+  const PV = D0.previa && !D.pasado ? D0.previa : null;
+  if (PV && S.tab === "Faltas") S.tab = "Clases";
+  const tab = S.tab;
+  if (varios && S.per !== "Todos" && !D.personas.some(p => p.nombre === S.per)) S.per = "Todos";
+  const per = varios ? S.per : (D.personas[0] ? D.personas[0].nombre : "");
+  const todos = agg(D, D.personas, varios);
+  const el = per === "Todos" ? todos : agg(D, D.personas.filter(p => p.nombre === per), false);
+  const P = D.pagos, debe = P.pend.length > 0;
+  let h = `<header class="cab"><div class="fila"><div style="flex-grow:1">${S.datos.admin ? `<button class="salir" id="volver" style="margin-bottom:6px">← Todos los alumnos</button>` : ""}<h1>${esc(D.titulo)}</h1><div class="sub">${(D0.anteriores || []).length ? `<select class="selcurso" id="selcurso" aria-label="Curso">` + [D0.curso].concat(D0.anteriores.map(a => a.curso)).map((c, i) => `<option value="${i}"${i === (S.ci || 0) ? " selected" : ""}>Curso ${esc(c)}${i === 0 ? "" : ""}</option>`).join("") + `</select>` : `Curso ${esc(D.curso)} · `}${D.pasado ? "curso anterior" : (D0.anteriores || []).length ? "actualizado " + esc(String(S.datos.actualizado).replace(" a las ", ", ")) : "actualizado el " + esc(S.datos.actualizado)}</div></div>${S.datos.admin ? (S.datos.push && S.datos.push.k && !D.pasado ? botonCampana(true) : "") + `<button class="salir" id="salirPrev">Cerrar sesión</button>` : (avisosActivos() ? botonCampana(false) : "") + `<button class="salir" id="salir">Cerrar sesión</button>`}</div>`;
+  if (varios && (tab === "Clases" || tab === "Faltas")) {
+    const nombres = ["Todos"].concat(D.personas.map(p => p.nombre));
+    h += `<div class="seg" style="grid-template-columns:repeat(${nombres.length},1fr)">` + nombres.map(n => `<button data-per="${esc(n)}" class="${n === per ? "on" : ""}">${esc(n)}</button>`).join("") + `</div>`;
+  }
+  h += `</header><main class="cuerpo">`;
+  if (tab === "Inicio") {
+    if (!D.pasado) h += franjaInstalar();
+    if (PV) {
+      const px = proximaClase(PV), cam = cambiosSemana(PV), an = anuladas(PV);
+      h += PREV;
+      an.forEach(c => { h += `<div style="background:#FBE3E3;border:1.5px solid #D9A3A3;color:#9E2B2B;border-radius:14px;padding:12px 16px;display:flex;gap:12px;align-items:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4M10 13l4 4M14 13l-4 4"/></svg><div><div style="font-size:12px;font-weight:700;letter-spacing:.06em">CLASE ANULADA</div><div style="font-size:18px;font-weight:750;text-decoration:line-through">${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}</div><div style="font-size:13px">${c[4] ? esc(c[4]) + " · " : ""}La ha anulado Alain. No se cobra ni cuenta como falta tuya.</div></div></div>`; });
+      if (px) h += `<div class="proxima"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C6D82A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC.Horario}"/></svg><div><div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#D6E3EE">TU PRÓXIMA CLASE</div><div style="font-size:20px;font-weight:750;line-height:1.2">${esc(diaTxt(px.c[0]))} · ${esc(px.c[1])}</div>${px.c[4] || px.c[6] ? `<div style="font-size:13px;color:#D6E3EE">${esc([px.c[6], px.c[4]].filter(x => x).join(" · "))}</div>` : ""}</div></div>`;
+      h += bloqueHoras();   // (7/11/2026, Alain) fuera «Puedes recuperar»: solo las horas libres
+      if (cam.length) h += `<div class="aviso" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">CAMBIOS EN LOS PRÓXIMOS DÍAS</div>${cam.map(x => `<div style="font-size:14.5px">${x}</div>`).join("")}</div>`;
+    }
+    const tile = (cl, l, v, s, t) => `<button class="tile ${cl}" data-tab="${t}"><span class="l">${l}</span><span class="v">${esc(v)}</span><span class="s">${esc(s)}</span></button>`;
+    const EVO = D0.evo && !D.pasado ? D0.evo : null;
+    if (EVO) {
+      // (2/11/2026) clases dadas y faltas en un solo recuadro; en el otro, la evolución (gráfico de araña en pequeño)
+      const nf = todos.faltas.length || todos.netas;
+      const sub = todos.porRec > 0 ? (todos.porRec === 1 ? "1 falta esta semana" : todos.porRec + " faltas esta semana") : nf === 0 ? "ninguna falta" : nf + (nf === 1 ? " falta" : " faltas") + (todos.rec ? " · " + todos.rec + (todos.rec === 1 ? " recuperada" : " recuperadas") : "");
+      h += `<div class="tiles">` + tile("t-azul", "ASISTENCIA", pct(todos.dadas, todos.netas), "del curso", "Clases") + tile(todos.porRec > 0 ? "t-nar" : "", "CLASES", fmt(todos.dadas), sub, "Clases") + tileEvo(EVO, per, varios);
+    } else
+      h += `<div class="tiles">` + tile("t-azul", "ASISTENCIA", pct(todos.dadas, todos.netas), "del curso", "Clases") + tile("", "CLASES DADAS", fmt(todos.dadas), "este curso", "Clases")
+      + tileFaltas(PV ? (cl, l, v, s2) => tile(cl, l, v, s2, "Clases") : tile, todos);
+    h += ""
+      + (debe ? tile("t-rojo", "PAGOS", P.debe, D.pasado ? "quedó pendiente" : "pendiente", "Pagos") : D.pasado ? tile("t-verde", "PAGADO", P.total && P.total !== "0 €" ? P.total : "—", P.total && P.total !== "0 €" ? "en el curso" : "sin datos de pagos", "Pagos") : tile("t-verde", "PAGOS", "Al día", "nada pendiente", "Pagos")) + `</div>`;
+    if (D.grupos && D.grupos.length && !D.pasado) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">${D.grupos.length > 1 ? "TUS GRUPOS" : "TU GRUPO"}</div>` + D.grupos.map(g => `<div class="lin"><div class="x"><div class="n">${esc(g.n)}</div><div class="d">${esc(g.h)}</div></div></div>`).join("") + `</div>`;   // (7/11/2026)
+    if (D.esteMes) h += `<div class="card" style="flex-direction:row;align-items:center;gap:10px"><div style="flex-grow:1"><div class="tit">ESTE MES</div><div style="font-size:15px">${esc(D.esteMes.mes)} · ${esc(D.esteMes.det)}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${esc(D.esteMes.imp)}</div></div>`;
+    if (varios) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">CADA UNO</div>` + D.personas.map(p => { const a = agg(D, [p], false); return `<button class="persona" data-ver="${esc(p.nombre)}"><span style="font-size:16px;font-weight:650;flex-grow:1">${esc(p.nombre)}</span><span class="gris" style="font-size:13px">${fmt(a.dadas)} ${a.dadas === 1 ? "clase" : "clases"} · ${a.netas} ${a.netas === 1 ? "falta" : "faltas"}</span><span style="font-size:17px;font-weight:750;color:#1D4F78;width:52px;text-align:right">${pct(a.dadas, a.netas)}</span></button>`; }).join("") + `</div>`;
+    if (!S.datos.admin && !D.pasado) h += bloqueAvisos();
+    else if (S.datos.admin && !D.pasado) h += previaAvisos();
+    if (!S.datos.admin && !esApp() && !D.pasado) h += `<a href="#" id="instalar" style="text-align:center;font-size:14px;font-weight:600;padding:6px">Ponerla como app en el móvil</a>`;
+  } else if (tab === "Horario") {
+    h += PV ? pintarHorarioPrev(PV) : `<div class="gris" style="padding:12px">Solo en el curso actual.</div>`;
+  } else if (tab === "Clases") {
+    h += `<div class="card" style="flex-direction:row;align-items:center;gap:12px"><div style="flex-grow:1"><div class="tit">ASISTENCIA${per === "Todos" ? (varios ? " · TODOS" : "") : " · " + esc(per.toUpperCase())}</div><div class="gris" style="font-size:14px">${fmt(el.dadas)} ${el.dadas === 1 ? "clase dada" : "clases dadas"} · ${el.netas} ${el.netas === 1 ? "falta" : "faltas"} sin recuperar</div></div><div style="font-size:40px;font-weight:750;color:#1D4F78;line-height:1;white-space:nowrap">${pct(el.dadas, el.netas)}</div></div>`;
+    if (PV) h += PREV + resumenFaltas(el);
+    h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:6px">MES A MES${PV ? " · PULSA UN MES" : ""}</div>` + (el.meses.length ? el.meses.map(m => { const v = m[1] + m[2] > 0 ? Math.round(100 * m[1] / (m[1] + m[2])) : 0;
+      const cuerpo = `<div style="display:flex;align-items:baseline"><span style="font-size:16px;font-weight:650;flex-grow:1">${esc(m[0])}${PV ? ` <span style="color:#6B7780;font-weight:400">${S.mesAb === m[0] ? "⌄" : "›"}</span>` : ""}</span><span style="font-size:16px;font-weight:750;color:#1D4F78">${pct(m[1], m[2])}</span></div><div class="barra"><div style="width:${v}%"></div></div><div class="d">${fmt(m[1])} ${m[1] === 1 ? "clase dada" : "clases dadas"} · ${m[2]} ${m[2] === 1 ? "falta" : "faltas"}</div>`;
+      return `<div class="lin" style="flex-direction:column;align-items:stretch;gap:6px">${PV ? `<button type="button" class="mesb" data-mes="${esc(m[0])}">${cuerpo}</button>` + (S.mesAb === m[0] ? calendarioMes(PV, m[0], D.curso, per) : "") : cuerpo}</div>`; }).join("") : `<div class="gris">Aún no hay clases este curso.</div>`) + `</div>`;
+  } else if (tab === "Faltas") {
+    h += pintarFaltas(el);
+  } else if (tab === "Evolucion") {
+    h += D0.evo ? pintarEvolucion(D, D0.evo, per, varios) : `<div class="gris" style="padding:12px">Sin puntuaciones.</div>`;
+  } else {
+    if (D.pasado && !debe) h += `<div class="estado" style="background:#DDEFE3;border:1px solid #B9DCC4;color:#22603A"><div style="flex-grow:1"><div style="font-size:17px;font-weight:700">${P.total && P.total !== "0 €" ? "Pagado en el curso " + esc(D.curso) : "Curso " + esc(D.curso)}</div><div style="font-size:13.5px">${P.total && P.total !== "0 €" ? "Nada pendiente" : "No tengo apuntados los pagos de este curso"}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${P.total && P.total !== "0 €" ? esc(P.total) : ""}</div></div>`;
+    else h += `<div class="estado" style="${debe ? "background:#FBE3E3;border:1px solid #EBB4B4;color:#9E2B2B" : "background:#DDEFE3;border:1px solid #B9DCC4;color:#22603A"}"><div style="flex-grow:1"><div style="font-size:17px;font-weight:700">${debe ? "Tienes pendiente" : "Estás al día"}</div><div style="font-size:13.5px">${esc(debe ? P.pend.map(x => x.mes).join(", ") : (P.quien || ""))}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${debe ? esc(P.debe) : ""}</div></div>`;
+    if (debe && P.quien) h += `<div class="gris" style="font-size:13.5px;padding:0 4px">${esc(P.quien)}</div>`;
+    if (debe) h += `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px"><div class="tit" style="color:#9E2B2B;padding:10px 0 4px">SIN PAGAR</div>` + P.pend.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.mes)}</div><div class="d">${esc(x.det)}</div></div><span class="chip c-debe">${esc(x.imp)}</span></div>`).join("") + `</div>`;
+    if (D.esteMes) h += `<div class="card" style="gap:6px"><div class="tit">ESTE MES</div><div style="display:flex;align-items:center"><div style="flex-grow:1"><div class="n" style="font-size:15.5px;font-weight:600">${esc(D.esteMes.mes)}</div><div class="d gris" style="font-size:13px">${esc(D.esteMes.det)} · se paga al acabar el mes</div></div><div style="font-size:19px;font-weight:750;white-space:nowrap">${esc(D.esteMes.imp)}</div></div>`
+      + (D.esteMes.desglose || []).map(x => `<div style="display:flex;gap:8px;font-size:13.5px" class="gris"><div style="flex-grow:1">${esc(x[0])}</div><div style="white-space:nowrap">${esc(x[1])}</div></div>`).join("") + `</div>`;
+    h += `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px"><div class="tit" style="padding:10px 0 4px">MESES PAGADOS</div>` + (P.pagados.length ? P.pagados.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.mes)}</div><div class="d">${esc(x.det)}</div></div><span class="chip c-ok">✓ ${esc(x.imp)}</span></div>`).join("") : `<div class="gris" style="padding:10px 0">${D.pasado ? "Sin datos de pagos de este curso." : "Todavía ninguno este curso."}</div>`) + `</div>`;
+  }
+  const pestanas = PV ? ["Inicio", "Horario", "Clases", "Pagos"] : ["Inicio", "Clases", "Faltas", "Pagos"];
+  h += `</main><nav class="nav" style="grid-template-columns:repeat(${pestanas.length},1fr)">` + pestanas.map(n => `<button data-tab="${n}" class="${n === tab ? "on" : ""}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[n]}"/></svg><span>${n}</span></button>`).join("") + `</nav>`;
+  $app.innerHTML = h;
+  $app.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { S.tab = b.dataset.tab; contarPest(S.tab); pintar(); window.scrollTo(0, 0); });
+  $app.querySelectorAll("[data-per]").forEach(b => b.onclick = () => { S.per = b.dataset.per; pintar(); });
+  $app.querySelectorAll("[data-ver]").forEach(b => b.onclick = () => { S.per = b.dataset.ver; S.tab = "Clases"; pintar(); window.scrollTo(0, 0); });
+  const sal = document.getElementById("salir"); if (sal) sal.onclick = ev => { ev.preventDefault(); salir(); };
+  $app.querySelectorAll("[data-evo]").forEach(b => b.onclick = () => { S.tab = "Evolucion"; S.evoSel = null; contarPest("Evolución"); pintar(); window.scrollTo(0, 0); });
+  $app.querySelectorAll("[data-evoper]").forEach(b => b.onclick = () => { S.evoPer = b.dataset.evoper; S.evoSel = null; S.per = "Todos"; pintar(); });
+  $app.querySelectorAll("[data-evosel]").forEach(b => b.onclick = () => { S.evoSel = +b.dataset.evosel; pintar(); });
+  $app.querySelectorAll("[data-mes]").forEach(b => b.onclick = () => { S.mesAb = S.mesAb === b.dataset.mes ? null : b.dataset.mes; pintar(); });
+  const sc = document.getElementById("selcurso"); if (sc) sc.onchange = () => { S.ci = +sc.value; S.mesAb = null; contarPest("Cursos anteriores"); pintar(); window.scrollTo(0, 0); };
+  const vol = document.getElementById("volver"); if (vol) vol.onclick = () => { S.ci = 0; S.mesAb = null; S.cuenta = -1; S.tab = "Inicio"; S.per = "Todos"; pintar(); window.scrollTo(0, 0); };
+  const ins = document.getElementById("instalar"); if (ins) ins.onclick = ev => { ev.preventDefault(); verInstalar(true); };
+  enlazarAvisos();
+}
+// vista de Alain: la lista de todas las cuentas; al pulsar una, se ve exactamente como la ve el alumno
+function pintarAdmin() {
+  const L = S.datos.cuentas;
+  $app.innerHTML = `<header class="cab"><div class="fila"><div style="flex-grow:1"><h1>Todos los alumnos</h1><div class="sub">Vista de ${esc(S.datos.saludo)} · actualizado el ${esc(S.datos.actualizado)}</div></div>${avisosActivos() ? botonCampana(false) : ""}<button class="salir" id="salir">Cerrar sesión</button></div></header>
+<main class="cuerpo" style="padding-bottom:24px">${bloqueAvisos()}<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">${L.length} CUENTAS · PULSA PARA VER LO QUE VE CADA UNO</div>`
+    + L.map((c, i) => { const a = agg(c, c.personas, c.personas.length > 1); const debe = c.pagos.pend.length > 0;
+      return `<button class="persona" data-cuenta="${i}"><span style="flex-grow:1"><span style="display:block;font-size:16px;font-weight:650">${esc(c.titulo)}</span><span class="gris" style="font-size:12.5px">${esc(c.etiqueta || "")}</span></span><span class="chip ${debe ? "c-debe" : "c-rec"}">${debe ? esc(c.pagos.debe) : "al día"}</span><span style="font-size:16px;font-weight:750;color:#1D4F78;width:52px;text-align:right">${pct(a.dadas, a.netas)}</span></button>`; }).join("")
+    + `</div>${esApp() ? "" : `<a href="#" id="instalar" style="text-align:center;font-size:14px;font-weight:600;padding:6px">Ponerla como app en el móvil</a>`}</main>`;
+  $app.querySelectorAll("[data-cuenta]").forEach(b => b.onclick = () => { S.ci = 0; S.mesAb = null; S.cuenta = +b.dataset.cuenta; S.tab = "Inicio"; S.per = "Todos"; pintar(); window.scrollTo(0, 0); });
+  document.getElementById("salir").onclick = ev => { ev.preventDefault(); salir(); };
+  const ins = document.getElementById("instalar"); if (ins) ins.onclick = ev => { ev.preventDefault(); verInstalar(true); };
+  enlazarAvisos();
+}
+function salir() {
+  const capa = document.createElement("div"); capa.className = "capa";
+  capa.innerHTML = `<div class="hoja"><div style="font-size:20px;font-weight:700">¿Cerrar sesión?</div><div class="gris" style="font-size:15px;line-height:1.45">Solo hace falta si este móvil no es tuyo. Para cerrar la app, ciérrala como cualquier otra: la próxima vez entrarás directamente. Si cierras la sesión, tendrás que escribir otra vez tu contraseña.</div><button class="boton" id="siSalir">Cerrar sesión</button><button class="boton2" id="noSalir">Cancelar</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove();
+  capa.onclick = e => { if (e.target === capa) quitar(); };
+  document.getElementById("noSalir").onclick = quitar;
+  document.getElementById("siSalir").onclick = () => {
+    quitar(); ls.del("gd_sesion");
+    const id = S.id, ficha = S.ficha, conClave = !!(ficha && (ficha.modo === "clave" || ls.get("gd_pendiente_" + id)));
+    S = { pantalla: conClave ? "clave" : "entrar", tab: "Inicio", per: "Todos", ficha: conClave ? ficha : null, id: conClave ? id : null, llave: null, datos: null, cuenta: -1, error: "" };
+    pintar();
+  };
+}
+function pintar() {
+  if (S.pantalla === "entrar") pintarEntrar(); else if (S.pantalla === "clave") pintarClave(); else if (S.pantalla === "nueva") pintarNueva(); else pintarApp();
+  if (S.pantalla === "app" && !ls.get("gd_instalar_visto") && !esApp()) { ls.set("gd_instalar_visto", 1); setTimeout(() => verInstalar(false), 600); }
+}
+
+// ---------- ponerla como app ----------
+let avisoInstalar = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); avisoInstalar = e; });
+const esApp = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+const esIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function verInstalar(pedido) {
+  if (esApp()) return;
+  const ios = esIOS();
+  if (!ios && !avisoInstalar && !pedido) return;
+  const capa = document.createElement("div"); capa.className = "capa";
+  const flecha = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="icono Compartir" style="vertical-align:-4px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 11v9h14v-9"/></svg>`;
+  capa.innerHTML = `<div class="hoja"><div style="font-size:20px;font-weight:700">Ponla como app</div><div class="gris" style="font-size:14px">Así la tienes en la pantalla de inicio, con su icono.</div>`
+    + (ios ? `<div class="paso"><b class="num">1</b><div>Abajo, en Safari, pulsa <b>Compartir</b> ${flecha}</div></div><div class="paso"><b class="num">2</b><div>Baja y pulsa <b>«Añadir a pantalla de inicio»</b></div></div><div class="paso"><b class="num">3</b><div>Pulsa <b>«Añadir»</b> arriba a la derecha. Ya está.</div></div>`
+      : avisoInstalar ? `<button class="boton" id="inst" style="background:#2F7D4F">Instalar</button>` : `<div class="paso"><b class="num">1</b><div>Abre el menú del navegador (los tres puntos) y pulsa <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.</div></div>`)
+    + `<button class="boton2" id="cerrarI">Ahora no</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove();
+  capa.onclick = e => { if (e.target === capa) quitar(); };
+  document.getElementById("cerrarI").onclick = quitar;
+  const bi = document.getElementById("inst"); if (bi) bi.onclick = async () => { avisoInstalar.prompt(); try { await avisoInstalar.userChoice; } catch (e) {} avisoInstalar = null; quitar(); };
+}
+if ("serviceWorker" in navigator) window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+inicio();
+</script>
+</body>
+</html>
