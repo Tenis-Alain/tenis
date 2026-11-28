@@ -1,0 +1,14 @@
+name: Avisos
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+jobs:
+  avisos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node .github/avisos.js
+        env:
+          AVISOS: ${{ secrets.AVISOS }}
+          FORZAR: ${{ github.event_name == 'workflow_dispatch' }}

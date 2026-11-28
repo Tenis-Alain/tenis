@@ -1,0 +1,1866 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1D4F78">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tenis">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icono-180.png?v=3">
+<link rel="icon" href="icono-192.png?v=3">
+<title>Clases de tenis</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#EEF2F4;overscroll-behavior:none}
+html{overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:#13222B;-webkit-text-size-adjust:100%}
+button,input{font:inherit}
+a{color:#1F5D8C}
+#app{min-height:100%;min-height:calc(100vh + env(safe-area-inset-top, 0px) + 1px);display:flex;flex-direction:column;max-width:560px;margin:0 auto;background:#EEF2F4}
+.cab{background:#1D4F78;color:#fff;padding:calc(env(safe-area-inset-top) + 16px) 16px 12px;display:flex;flex-direction:column;gap:10px;position:sticky;top:0;z-index:5}
+.cab .fila{display:flex;align-items:center;gap:10px}
+.cab h1{margin:0;font-size:22px;font-weight:700;line-height:1.15}
+.cab .sub{font-size:12.5px;color:#D6E3EE}
+.cab .estr{display:flex;gap:2px;align-items:center;margin-top:4px}.cab .lin2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px;color:#D6E3EE}
+.capa .hoja .asa{width:42px;height:5px;border-radius:3px;background:#B8C4CD;margin:-8px auto 2px;flex:none}.capa .hoja.arrastra{transition:none}.capa .hoja{transition:transform .2s}
+main.cuerpo{touch-action:pan-y;will-change:transform}
+.cab .salir{white-space:nowrap;background:transparent;color:#fff;border:1px solid #8FB0CB;border-radius:8px;padding:6px 10px;min-height:36px;font-size:13px}
+.seg{display:grid;gap:4px;background:#163E5F;border-radius:10px;padding:3px}
+.seg button{border:0;border-radius:8px;padding:7px 4px;min-height:38px;font-size:14px;background:transparent;color:#fff;font-weight:600;-webkit-appearance:none;appearance:none}
+.seg button.on{background:#fff;color:#1D4F78;font-weight:700}
+.cuerpo{flex:1 1 auto;padding:14px 12px calc(84px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #D5DCE1;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.tit{font-size:12px;font-weight:700;color:#4F5D66;letter-spacing:.06em}
+.gris{color:#4F5D66}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{text-align:left;border:0;border-radius:16px;padding:14px 14px 12px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between;gap:2px;background:#fff;color:#13222B;border:1px solid #D5DCE1}
+.tile .l{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.85}
+.tile .v{font-size:32px;font-weight:750;line-height:1.1}
+.tile .s{font-size:13px;opacity:.85}
+.t-azul{background:#1D4F78;color:#fff;border-color:#1D4F78}
+.t-verde{background:#DDEFE3;color:#22603A;border-color:#B9DCC4}
+.prev{font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#6B3A0C;background:#FFF1D6;border:1px dashed #E0B062;border-radius:8px;padding:4px 8px;align-self:flex-start}
+.proxima{background:#1D4F78;color:#fff;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.huecos button{font:inherit;font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border:0;border-radius:10px;padding:8px 12px;min-height:40px}
+.calm{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1.5px solid #9FB3C3;border-radius:10px;overflow:hidden;margin:4px 0 6px;background:#fff}
+.calm>div{min-height:44px;font-size:12.5px;padding:3px 4px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #C9D4DD;border-bottom:1px solid #C9D4DD}
+.calm>div:nth-child(7n){border-right:0}
+.calm .cab{min-height:0;font-size:11px;color:#4F5D66;text-align:center;font-weight:700;background:#E8EEF3;padding:4px 0;justify-content:center}
+.mesb{width:100%;font:inherit;background:transparent;border:0;text-align:left;color:inherit;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.t-nar{background:#FBE7D2;color:#7A3A05;border-color:#F2C9A4}
+.t-evo{padding:10px 12px 10px;gap:0}
+.t-evo .fila{display:flex;align-items:center;gap:6px}
+.t-evo svg{flex:0 0 auto}
+.evo-tabla{width:100%;border-collapse:collapse;font-size:15px}
+.evo-tabla th{font-size:11.5px;font-weight:700;color:#4F5D66;letter-spacing:.05em;text-align:right;padding:6px 4px;border-bottom:1px solid #E8ECEF}
+.evo-tabla th:first-child,.evo-tabla td:first-child{text-align:left}
+.evo-tabla td{padding:9px 4px;border-bottom:1px solid #EEF1F3;text-align:right}
+.evo-tabla tr.media td{font-weight:750;background:#F3F6F8}
+.evo-tabla tr.cat{cursor:pointer}
+.evo-tabla tr.cat td:first-child{font-weight:650}
+.evo-tabla .tri{display:inline-block;width:20px;color:#1D4F78;font-size:12px}
+.evo-tabla tr.sub td{font-size:13.5px;color:#4F5D66;background:#F8FAFB;padding:7px 4px}
+.evo-tabla tr.sub td:first-child{padding-left:40px}
+.sube{color:#22603A;font-weight:700}.baja{color:#9E2B2B;font-weight:700}.igual{color:#6B7780}
+.fechas{display:flex;flex-wrap:wrap;gap:8px}
+.fechas button{font:inherit;font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border:0;border-radius:10px;padding:8px 12px;min-height:40px}
+.fechas button.on{background:#1D4F78;color:#fff}
+.volver{align-self:flex-start;font:inherit;font-size:14px;font-weight:600;background:transparent;color:#1D4F78;border:0;padding:4px 0}
+.selcurso{font:inherit;font-size:12.5px;color:#fff;background:#163E5F;border:1px solid #8FB0CB;border-radius:7px;padding:3px 6px;margin-right:4px}
+.selcurso option{color:#13222B;background:#fff}
+.mesf{font-size:12px;font-weight:700;color:#4F5D66;letter-spacing:.06em;padding:14px 0 2px;border-top:1px solid #E8ECEF}
+.mesf:first-child{border-top:0;padding-top:8px}
+.chip.largo{white-space:normal;text-align:center;max-width:48%}
+.t-rojo{background:#FBE3E3;color:#9E2B2B;border-color:#EBB4B4}
+.lin{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #E8ECEF}
+.lin:first-of-type{border-top:0}
+.lin .x{flex-grow:1}
+.lin .n{font-size:15.5px;font-weight:600}
+.lin .d{font-size:13px;color:#4F5D66}
+/* (19/11/2026, Alain) Horario: franja de color por recuadro y el día en un cuadradito */
+.hC{border-left:6px solid var(--k)} .hC .tit{color:var(--k)}
+.k1{--k:#1D4F78;--b:#E3ECF4} .k2{--k:#2F8F5B;--b:#DDF1E4} .k3{--k:#6B7F8E;--b:#EEF1F4}
+.fb{flex:none;width:52px;min-height:40px;border-radius:10px;background:var(--b);color:var(--k);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;line-height:1.1}
+.fb.gr{background:#EEF1F4;color:#8A96A0}
+.fb .dn{font-size:20px;font-weight:800} .fb .ms{font-size:10.5px;font-weight:700;text-transform:uppercase;opacity:.8} .fb .ds{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.hr{font-size:16px;font-weight:800;color:var(--k);white-space:nowrap;flex:none} .hr.ta{text-decoration:line-through;color:#8A96A0;font-weight:600}
+/* (19/11/2026) Horario en calendario */
+.calh{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calh .h{font-size:11px;font-weight:700;color:#6B7780;text-align:center;padding:2px 0 4px;letter-spacing:.04em}
+.calh .d{min-height:54px;border-radius:10px;background:#F4F6F8;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0 4px;border:0;font:inherit;color:inherit;min-width:0}
+.calh .d.fuera{background:transparent}
+.calh .d .n{font-size:13.5px;font-weight:600;color:#4F5D66}
+.calh .d.hoy{box-shadow:inset 0 0 0 2px #1D4F78} .calh .d.hoy .n{color:#1D4F78;font-weight:800}
+.calh .d.sel{background:#DCE8F4}
+.calh .d.pas .n{color:#9AA5AE}
+.ph{font-size:11px;font-weight:800;border-radius:6px;padding:2px 4px;line-height:1.2;white-space:nowrap}
+.p-dada{background:#DDF1E4;color:#22603A} .p-falta{background:#FBE3E3;color:#9E2B2B} .p-camb{background:#FBE7D2;color:#7A3A05}
+.p-prox{background:#1D4F78;color:#fff} .p-fut{background:#E3ECF4;color:#1D4F78} .p-anu{background:#EEF1F4;color:#8A96A0;text-decoration:line-through}
+.leg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:#4F5D66;margin-top:4px} .leg span{display:inline-flex;align-items:center;gap:5px} .leg i{width:12px;height:12px;border-radius:4px;display:inline-block;text-decoration:none}
+.mesbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.mesbar b{font-size:17px;color:#13222B} .mesbar button{border:1px solid #D5DCE1;background:#fff;border-radius:10px;width:38px;height:34px;font-size:16px;color:#1D4F78} .mesbar button:disabled{opacity:.35}
+.caldet{border-top:1px solid #E8ECEF;margin-top:6px}
+.hvb{display:flex;justify-content:flex-end;gap:0;margin:0 0 -4px auto;background:#fff;border:1px solid #D5DCE1;border-radius:12px;padding:3px;width:max-content}
+.hvb button{border:0;background:transparent;color:#6B7780;width:42px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.hvb button.on{background:#D6E6F5;color:#1D4F78}
+
+.chip{font-size:12.5px;font-weight:600;padding:4px 9px;border-radius:12px;white-space:nowrap}
+.c-rec{background:#DDEFE3;color:#22603A}.c-pend{background:#FBE7D2;color:#7A3A05}.c-debe{background:#FBE3E3;color:#9E2B2B}.c-ok{background:#FCE4CD;color:#8A4208}
+.barra{height:10px;background:#E3E8EC;border-radius:5px;overflow:hidden}.barra>div{height:100%;background:#1D4F78}
+.persona{width:100%;background:transparent;border:0;border-top:1px solid #E8ECEF;padding:10px 0;display:flex;align-items:center;gap:10px;text-align:left;color:#13222B;min-height:44px}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tres>div{border-radius:12px;padding:10px 12px}
+.tres .k{font-size:12px}.tres .v{font-size:24px;font-weight:750}
+.estado{display:flex;align-items:center;gap:10px;border-radius:14px;padding:14px 16px}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #D5DCE1;display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(10px + env(safe-area-inset-bottom));z-index:6;max-width:560px;margin:0 auto}
+.nav button{background:transparent;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;min-height:48px;color:#6B7780;font-size:11.5px}
+.nav button.on{color:#1D4F78;font-weight:800}
+.nav button svg{box-sizing:content-box;padding:3px 18px;border-radius:16px;transition:background .15s}
+.nav button.on svg{background:#D6E6F5;color:#1D4F78}
+.portada{background:#1D4F78;color:#fff;padding:calc(env(safe-area-inset-top) + 48px) 24px 36px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.portada h1{margin:0;font-size:26px}
+.form{padding:24px 18px;display:flex;flex-direction:column;gap:14px}
+.form label{font-size:15px;font-weight:600}
+.form input[type=tel],.form input[type=password],.form .pw input{font-size:20px;padding:12px 14px;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;background:#fff}
+.pw{position:relative}.form .pw input{padding-right:54px}
+.ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:46px;height:46px;border:0;background:transparent;color:#4F5D66;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.form input:focus{outline:none;border-color:#1D4F78}
+.boton{font-size:17px;font-weight:650;background:#1D4F78;color:#fff;border:0;border-radius:10px;padding:14px;min-height:50px;width:100%}
+.pf{display:flex;flex-direction:column;gap:12px}
+.pf label{font-size:12px;font-weight:700;color:#4F5D66;letter-spacing:.06em}
+.pf input[type=text],.pf input[type=date],.pf textarea{font-size:17px;padding:10px 12px;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;background:#fff;font-family:inherit;color:#13222B}
+.pf textarea{min-height:64px;resize:vertical}
+.pf .segc{display:grid;gap:4px;background:#E8ECEF;border-radius:10px;padding:3px}
+.pf .segc button{-webkit-appearance:none;appearance:none;border:0;border-radius:8px;padding:8px 4px;min-height:40px;font-size:15px;background:transparent;color:#4F5D66}
+.pf .segc button.on{background:#1D4F78;color:#fff;font-weight:700}
+.qf{display:grid;gap:4px;background:#E8ECEF;border-radius:10px;padding:3px}
+.qf button{-webkit-appearance:none;appearance:none;border:0;border-radius:8px;padding:8px 4px;min-height:40px;font-size:15px;background:transparent;color:#4F5D66;font-weight:600}
+.qf button.on{background:#1D4F78;color:#fff;font-weight:700}
+.pf input[type=date],.pf input[type=time]{min-width:0;max-width:100%}
+.pf select,.pf input[type=time]{font-size:17px;padding:10px 12px;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;background:#fff;color:#13222B;font-family:inherit;-webkit-appearance:none;appearance:none;min-height:46px}
+.pf .sets{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center}
+.pf .sets input{-webkit-appearance:none;appearance:none;color:#13222B;font-size:20px;padding:8px;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;text-align:center;background:#fff}
+.pf .sets input::placeholder{color:#9FB3C3;opacity:1}
+.pf .sets .scab{font-size:12px;font-weight:700;color:#4F5D66;text-align:center}
+.mk{display:flex;flex-direction:column;gap:3px}
+.mkf{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,38px);gap:4px;align-items:center;border-radius:10px;padding:0 8px;margin:0 -8px}
+.mk .h{font-size:10.5px;font-weight:700;color:#8A969D;text-align:center;letter-spacing:.02em;white-space:nowrap}
+.mk .j{display:flex;align-items:center;gap:6px;min-width:0;font-size:15.5px;font-weight:600;padding:5px 0}
+.mk .j span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mk .n{font-size:19px;font-weight:800;text-align:center;color:#13222B}.mk .n.p{color:#A9B4BB;font-weight:600}
+.mk .sep{grid-column:1/-1;border-top:1px solid #EEF1F3}
+.mkc{display:flex;flex-direction:column;gap:6px;width:100%;background:#fff;border:0;border-radius:16px;padding:12px 14px;box-shadow:0 1px 2px #0001;text-align:left;color:inherit;font:inherit}
+.mkt{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13.5px;color:#6B7780}
+.mkt b{color:#13222B;font-size:14.5px}
+.pf .mgr{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,46px);gap:8px;align-items:center}
+.pf .mgr .h{font-size:11px;font-weight:700;color:#8A969D;text-align:center}
+.pf .mgr input[data-set]{-webkit-appearance:none;appearance:none;color:#13222B;font-size:20px;font-weight:700;padding:8px 0;border:1.5px solid #9FB3C3;border-radius:10px;width:100%;text-align:center;background:#fff}
+.pf .mgr input[data-set]::placeholder{color:#9FB3C3;opacity:1}
+.pf .mgr .yo{font-size:16px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desp{position:relative;display:flex}
+.desp input{flex:1;min-width:0;padding-right:34px!important}
+.desp>button{position:absolute;right:2px;top:2px;bottom:2px;width:32px;border:0;background:transparent;color:#4F5D66;font-size:16px}
+.desp-l{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:5;background:#fff;border:1.5px solid #9FB3C3;border-radius:10px;box-shadow:0 6px 18px rgba(19,34,43,.18);max-height:220px;overflow-y:auto;display:flex;flex-direction:column}
+.desp-l[hidden]{display:none}
+.desp-l button{border:0;border-top:1px solid #E8ECEF;background:#fff;text-align:left;padding:11px 12px;font-size:16px;color:#13222B}
+.desp-l button:first-child{border-top:0}
+.pbus{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #9FB3C3;border-radius:10px;padding:0 6px 0 12px}
+.pbus span{color:#6B7780;font-size:20px}
+.pbus input{flex:1;border:0;outline:0;font-size:17px;padding:11px 4px;background:transparent;min-width:0;-webkit-appearance:none;appearance:none;color:#13222B}
+.pbus input::-webkit-search-cancel-button{display:none}
+.pbus button{border:0;background:none;color:#6B7780;font-size:16px;padding:8px 10px}
+.pres{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #E8ECEF;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;color:inherit;font:inherit}
+.pres:first-of-type{border-top:0}
+.gp{font-size:13px;font-weight:800;width:30px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gp.g{background:#DDEFE3;color:#22603A}.gp.p{background:#FBE3E3;color:#9E2B2B}
+.boton2{font-size:16px;font-weight:600;background:#fff;color:#1D4F78;border:1.5px solid #1D4F78;border-radius:10px;padding:12px;min-height:48px;width:100%}
+.error{background:#FBE3E3;color:#9E2B2B;border-radius:10px;padding:10px 12px;font-size:14.5px}
+.aviso{background:#FFF6EE;border:1px solid #F2C9A4;color:#6B3A0C;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
+/* (19/11/2026, Alain) recuadros de Inicio: tarjeta blanca con franja de color a la izquierda */
+.aviso.avB{background:#fff;border:1px solid #D5DCE1;border-left:6px solid #E07B2A;color:#1F2A33}
+.aviso.avB .tt{color:#C2560C}
+.aviso.avB.az{border-left-color:#1D4F78}
+.aviso.avB.az .tt{color:#1D4F78}
+.check{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500!important}
+.check input{width:20px;height:20px}
+.capa{position:fixed;inset:0;background:rgba(19,34,43,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.capa .hoja{background:#EEF2F4;border-radius:18px 18px 0 0;width:100%;max-width:560px;padding:20px 16px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.paso{background:#fff;border:1px solid #D5DCE1;border-radius:14px;padding:14px;display:flex;gap:14px;align-items:center;font-size:16px;line-height:1.45}
+.paso b.num{width:34px;height:34px;border-radius:17px;background:#1D4F78;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cargando{padding:60px 20px;text-align:center;color:#4F5D66}
+form[hidden]{display:none}
+.avisoMes{font-size:13px;color:#8A5A00;background:#FFF4D6;border-radius:8px;padding:6px 9px;margin-top:6px;line-height:1.35}   /* (v3.02) aviso «aún quedan clases» del mes en curso */
+</style>
+</head>
+<body>
+<div id="app"><div class="cargando">Cargando…</div></div>
+<!-- buzón: aquí deja la página la llave envuelta con la contraseña nueva (nunca la contraseña). Lo recoge el programa de Alain. -->
+<form name="buzon" method="POST" data-netlify="true" netlify-honeypot="campo-trampa" hidden>
+<input name="campo-trampa"><input name="id"><input name="sal"><input name="iter"><input name="sobre"><input name="prueba">
+</form>
+<script>
+"use strict";
+const ITER_NUEVA = 150000;
+const DATOS = "";   // de dónde se leen los datos ("" = de aquí mismo: GitHub Pages)
+const BUZON = "https://tenis-alain.netlify.app/";   // a dónde se manda el sobre de la contraseña nueva (el buzón de Netlify; "" = aquí mismo)
+// (20/11/2026) Cloudflare: de aquí se leen los datos y aquí va el buzón, al momento. Si falla, GitHub (DATOS) y Netlify (BUZON), como antes.
+const CF = "https://gd-quedar.gdscjady.workers.dev/api/alain", NUEVA = "https://alain.masclases.com/";
+const hayCF = () => !!CF && CF.indexOf("__") !== 0;
+// (v2.60) si Cloudflare no contesta en 4 s (caído o bloqueado, p. ej. durante los partidos de LaLiga), se deja de usar
+// 10 minutos y todo va por GitHub y Netlify, sin esperas; luego se vuelve a probar solo
+const CF_MS = 4000, CF_PAUSA = 10 * 60 * 1000;
+function cfVivo() { if (!hayCF()) return false; const t = Number(localStorage.getItem("gd_cf_caido") || 0); return !(t && Date.now() - t < CF_PAUSA); }
+function cfCaido() { try { localStorage.setItem("gd_cf_caido", String(Date.now())); } catch (e) { } }
+async function cfFetch(url, op) {
+  op = op || {}; let ac = null; try { ac = new AbortController(); op.signal = ac.signal; } catch (e) { }
+  const t = setTimeout(() => { try { if (ac) ac.abort(); } catch (e) { } }, CF_MS);
+  try { const r = await fetch(url, op); if (r.status >= 500) cfCaido(); return r; }
+  catch (e) { cfCaido(); throw e; } finally { clearTimeout(t); }
+}
+const MESES_CORTOS = ["Sep", "Oct", "Nov", "Dic", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago"];
+const $app = document.getElementById("app");
+const enc = new TextEncoder(), dec = new TextDecoder();
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
+
+// ---------- cifrado: PBKDF2-SHA256 + AES-256-CBC + HMAC-SHA256 (igual que el programa) ----------
+const b64 = { de(s) { const b = atob(s); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; },
+  a(u) { let s = ""; u = new Uint8Array(u); for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); } };
+const cat = (a, b) => { const u = new Uint8Array(a.length + b.length); u.set(a, 0); u.set(b, a.length); return u; };
+async function derivar(secreto, salB64, iter) {
+  const base = await crypto.subtle.importKey("raw", enc.encode(secreto), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: b64.de(salB64), iterations: iter }, base, 512));
+}
+async function hmac(clave32, datos) {
+  const k = await crypto.subtle.importKey("raw", clave32, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC", k, datos));
+}
+function iguales(a, b) { if (a.length !== b.length) return false; let d = 0; for (let i = 0; i < a.length; i++) d |= a[i] ^ b[i]; return d === 0; }
+async function abrir(caja, llave64) {
+  const iv = b64.de(caja.iv), ct = b64.de(caja.ct);
+  const m = await hmac(llave64.slice(32, 64), cat(iv, ct));
+  if (!iguales(m, b64.de(caja.mac))) throw new Error("llave");
+  const k = await crypto.subtle.importKey("raw", llave64.slice(0, 32), "AES-CBC", false, ["decrypt"]);
+  return new Uint8Array(await crypto.subtle.decrypt({ name: "AES-CBC", iv }, k, ct));
+}
+async function cerrar(datos, llave64) {
+  const iv = crypto.getRandomValues(new Uint8Array(16));
+  const k = await crypto.subtle.importKey("raw", llave64.slice(0, 32), "AES-CBC", false, ["encrypt"]);
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-CBC", iv }, k, datos));
+  return { iv: b64.a(iv), ct: b64.a(ct), mac: b64.a(await hmac(llave64.slice(32, 64), cat(iv, ct))) };
+}
+// el teléfono: solo sus 8 últimas cifras (vale con o sin prefijo, con espacios o sin ellos)
+const tel8 = s => { const d = String(s || "").replace(/\D/g, ""); return d.length >= 8 ? d.slice(-8) : ""; };
+async function idDe(t8) { const h = new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode("gd-id|" + t8))); return Array.from(h).map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 24); }
+// (3/11/2026) la versión de esta página. Los datos dicen cuál es la última: si esta es más vieja (GitHub tarda unos minutos
+// en dejar de dar la copia guardada), se vuelve a abrir pidiendo la nueva. Una sola vez por versión, para no dar vueltas.
+const PAGVER = "D1GR5gsqa1WG";
+function paginaVieja(f) {
+  try {
+    if (!f || !f.pag || PAGVER.indexOf("__") === 0 || f.pag === PAGVER) return false;
+    if (sessionStorage.getItem("gd_pv") === f.pag) return false;
+    sessionStorage.setItem("gd_pv", f.pag); location.replace(location.pathname + "?v=" + f.pag); return true;
+  } catch (e) { return false; }
+}
+async function leerFicha(id, mirarVersion) {
+  let j = null;
+  if (cfVivo()) {   // primero Cloudflare (al día al momento); si no contesta o aún no tiene la ficha, GitHub
+    try { const rc = await cfFetch(CF + "/d/" + id + "?v=" + Date.now(), { cache: "no-store" }); if (rc.ok) { j = await rc.json(); if (id === S.id || !S.id) S.huella = rc.headers.get("X-Huella") || ""; sumarUso("b", 1); } } catch (e) { }
+  }
+  if (!j) {
+    const r = await fetch((DATOS ? DATOS + "/" : "") + "datos/" + id + ".json?v=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error("red (HTTP " + r.status + ")");
+    j = await r.json();
+  }
+  if (mirarVersion && paginaVieja(j)) await new Promise(() => {});   // se está recargando
+  return j;
+}
+
+// ---------- estado ----------
+let S = { pantalla: "entrar", tab: "Inicio", per: "Todos", ficha: null, id: null, llave: null, datos: null, cuenta: -1, error: "" };
+function guardarSesion(recordar) { if (recordar) ls.set("gd_sesion", { id: S.id, k: b64.a(S.llave) }); }
+async function abrirDatos() {
+  const bytes = await abrir(S.ficha.datos, S.llave);
+  S.datos = JSON.parse(dec.decode(bytes)); S.cargado = Date.now();
+  recuperarPartidos();
+}
+// al volver a la app (estaba en segundo plano): si ha pasado más de un minuto, trae los datos nuevos sin que se note.
+// Se queda en la misma pestaña y persona; si algo falla, sigue con lo que había.
+let refrescando = false;
+async function refrescar() {
+  if (refrescando || S.pantalla !== "app" || !S.id || !S.llave || Date.now() - (S.cargado || 0) < (cfVivo() ? 5000 : 60000)) return;
+  refrescando = true;
+  try {
+    const f = await leerFicha(S.id, true); if (!f) return;
+    const nuevos = JSON.parse(dec.decode(await abrir(f.datos, S.llave)));
+    S.ficha = f; S.cargado = Date.now(); recuperarPartidos();
+    if (JSON.stringify(nuevos) !== JSON.stringify(S.datos)) { S.datos = nuevos; if (nuevos.admin && S.cuenta >= (nuevos.cuentas || []).length) S.cuenta = -1; const y = window.scrollY; pintar(); window.scrollTo(0, y); }
+  } catch (e) { } finally { refrescando = false; }
+}
+
+// (20/11/2026) dirección nueva (<entrenador>.masclases.com): la vieja enseña «Pásate a la nueva», que abre la nueva
+// ya con la sesión (va detrás de «#», que no sale del móvil) y se borra de la dirección al momento
+function enNueva() { try { return !NUEVA || NUEVA.indexOf("__") === 0 || new URL(NUEVA).host === location.host; } catch (e) { return true; } }
+function urlMudanza() { return NUEVA + "#s=" + encodeURIComponent(btoa(JSON.stringify({ id: S.id, k: b64.a(S.llave) }))); }
+function franjaMudanza() {
+  if (enNueva() || !S.id || !S.llave) return "";
+  let host = ""; try { host = new URL(NUEVA).host; } catch (e) { return ""; }
+  return `<div style="background:#E8F4EC;border:1.5px solid #2F7D4F;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#2F7D4F">TU APP TIENE UNA DIRECCIÓN NUEVA</div>
+<div style="font-size:14.5px;line-height:1.4">${esIOS()
+  ? "Pulsa el botón y se abrirá en Safari. Ponla en la pantalla de inicio (Compartir → «Añadir a pantalla de inicio»), ábrela desde el icono nuevo y borra este. Si te pide entrar, pon tu teléfono y tu contraseña."
+  : "Pulsa el botón y se abrirá en el navegador con tu cuenta. Abre el menú (los tres puntos) y pulsa «Instalar aplicación» o «Añadir a pantalla de inicio». Ábrela desde el icono nuevo y borra este."}</div>
+<a class="boton" id="mudanza" href="${esc(urlMudanza())}" target="_blank" rel="noopener" style="background:#2F7D4F;text-align:center;text-decoration:none">Abrir la app nueva</a>
+<div class="gris" style="font-size:12.5px">Si no se abre, escribe en ${esIOS() ? "Safari" : "el navegador"} <b>${esc(host)}</b> y entra con tu teléfono y tu contraseña.</div></div>`;
+}
+function sesionDeMudanza() {
+  try {
+    const m = /^#s=([^&]+)/.exec(location.hash || ""); if (!m) return;
+    history.replaceState(null, "", location.pathname + location.search);
+    const o = JSON.parse(atob(decodeURIComponent(m[1])));
+    if (o && /^[a-f0-9]{24}$/.test(o.id) && o.k) ls.set("gd_sesion", { id: o.id, k: o.k });
+  } catch (e) { }
+}
+async function inicio() {
+  if (!window.crypto || !crypto.subtle) { $app.innerHTML = '<div class="cargando">Abre esta página en Safari o Chrome (con https).</div>'; return; }
+  sesionDeMudanza();
+  const ses = ls.get("gd_sesion");
+  if (ses && ses.id && ses.k) {
+    try {
+      const f = await leerFicha(ses.id, true);
+      if (f) { S.ficha = f; S.id = ses.id; S.llave = b64.de(ses.k); await abrirDatos(); S.pantalla = "app"; await reintentarBuzon(); pintar(); return; }
+    } catch (e) { if (String(e.message) === "red") { S.error = "No hay conexión. Prueba otra vez en un momento."; } }
+    ls.del("gd_sesion");
+  }
+  S.pantalla = "entrar"; pintar();
+}
+
+// ---------- pantallas de entrada ----------
+function pintarEntrar() {
+  $app.innerHTML = `<div class="portada">
+<img src="icono-180.png?v=3" width="72" height="72" alt="" style="border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.25)">
+<h1>${esc(document.title)}</h1><div style="color:#D6E3EE">Tus clases, tus faltas y tus pagos</div></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<label for="tel">Escribe tu teléfono</label>
+<div class="gris" style="font-size:14px;line-height:1.45">El que diste al apuntarte. Si son tus hijos los que dan clase, el tuyo.</div>
+<input id="tel" type="tel" inputmode="numeric" autocomplete="tel" required>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Entrar</button></div>
+<div class="gris" style="font-size:13px;text-align:center;line-height:1.5">Solo puedes ver lo tuyo. Nadie más (ni siquiera la web donde está esta página) puede leer tus datos.</div></form>`;
+  const ut = ls.get("gd_ultimo_tel"); if (ut && typeof ut === "string") document.getElementById("tel").value = ut;
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault(); const telEscrito = document.getElementById("tel").value, t8 = tel8(telEscrito);
+    if (!t8) { S.error = "Ese teléfono no parece completo."; pintar(); return; }
+    espera("Buscando…");
+    let paso = "buscar";
+    try {
+      S.id = await idDe(t8); paso = "descargar"; const f = await leerFicha(S.id);
+      if (!f) { S.error = "Ese teléfono no está en la lista. Escríbelo como lo diste al apuntarte, o pregunta en clase."; S.pantalla = "entrar"; pintar(); return; }
+      S.ficha = f; S.error = ""; ls.set("gd_ultimo_tel", telEscrito.trim());
+      const pend = ls.get("gd_pendiente_" + S.id);
+      if (f.modo === "clave" || pend) { S.pantalla = "clave"; pintar(); return; }
+      paso = "llave"; const kek = await derivar(t8, f.sal, f.iter);
+      paso = "sobre"; S.llave = await abrir(f.sobre, kek);
+      paso = "datos"; await abrirDatos();
+      S.pantalla = "nueva"; pintar();
+    } catch (e) {
+      // el detalle (paso y error) es para que Alain sepa qué ha pasado
+      const det = " [" + paso + ": " + (e && (e.name + " " + e.message) || e) + "]";
+      S.error = String(e && e.message) === "red" || paso === "descargar" ? "No he podido conectar para traer tus datos. Mira que tienes internet y prueba otra vez." + det : "No he podido abrir tus datos. Coméntalo en clase." + det;
+      S.pantalla = "entrar"; pintar();
+    }
+  };
+}
+const OJO='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const OJO_NO='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.8 10.8 0 0 1 12 19c-7 0-11-7-11-7a19.8 19.8 0 0 1 5.1-5.9M9.9 5.2A10 10 0 0 1 12 5c7 0 11 7 11 7a19.6 19.6 0 0 1-2.4 3.4M14.1 14.1a3 3 0 1 1-4.2-4.2"/><path d="M1 1l22 22"/></svg>';
+function ojos() {
+  document.querySelectorAll('.form input[type=password]').forEach(i => {
+    const w = document.createElement("div"); w.className = "pw"; i.parentNode.insertBefore(w, i); w.appendChild(i);
+    const b = document.createElement("button"); b.type = "button"; b.className = "ojo"; b.innerHTML = OJO; b.setAttribute("aria-label", "Ver contraseña");
+    b.onclick = () => { const ver = i.type === "password"; i.type = ver ? "text" : "password"; b.innerHTML = ver ? OJO_NO : OJO; b.setAttribute("aria-label", ver ? "Ocultar contraseña" : "Ver contraseña"); };
+    w.appendChild(b);
+  });
+}
+function espera(t) { $app.innerHTML = `<div class="cargando">${esc(t)}</div>`; }
+function pintarClave() {
+  $app.innerHTML = `<div class="portada" style="padding-bottom:28px"><h1>Tu contraseña</h1></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<label for="c1">Escribe tu contraseña</label>
+<input id="c1" type="password" autocomplete="current-password" required>
+<label class="check"><input type="checkbox" id="rec" checked> No volver a pedírmela en este móvil</label>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Entrar</button>
+<button class="boton2" type="button" id="otro">Otro teléfono</button></div>
+<div class="gris" style="font-size:13.5px;text-align:center;line-height:1.5">¿La has olvidado? Pide en clase que te «reactiven el acceso» y podrás elegir otra con tu teléfono.</div></form>`;
+  ojos();
+  document.getElementById("otro").onclick = () => { ls.del("gd_ultimo_tel"); S.error = ""; S.pantalla = "entrar"; pintar(); };
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault(); const pw = document.getElementById("c1").value, rec = document.getElementById("rec").checked;
+    espera("Comprobando…");
+    try {
+      const pend = ls.get("gd_pendiente_" + S.id);
+      const sobre = S.ficha.modo === "clave" ? S.ficha : pend;
+      let llave = null;
+      try { llave = await abrir(sobre.sobre, await derivar(pw, sobre.sal, sobre.iter)); } catch (e) {}
+      if (!llave && pend && S.ficha.modo === "clave") { try { llave = await abrir(pend.sobre, await derivar(pw, pend.sal, pend.iter)); } catch (e) {} }
+      if (!llave) { S.error = "Esa contraseña no es."; S.pantalla = "clave"; pintar(); return; }
+      S.llave = llave;
+      try { await abrirDatos(); }
+      catch (e) { ls.del("gd_pendiente_" + S.id); S.error = "Te han reactivado el acceso: entra otra vez con tu teléfono."; S.pantalla = "entrar"; pintar(); return; }
+      if (S.ficha.modo === "clave") ls.del("gd_pendiente_" + S.id);
+      guardarSesion(rec); S.error = ""; S.pantalla = "app"; await reintentarBuzon(); pintar();
+    } catch (e) { S.error = "No he podido comprobarla. Prueba otra vez."; S.pantalla = "clave"; pintar(); }
+  };
+}
+function pintarNueva() {
+  const saludo = S.datos && S.datos.saludo ? S.datos.saludo : "";
+  $app.innerHTML = `<div class="portada" style="align-items:flex-start;text-align:left;padding-bottom:28px"><h1>¡Hola${saludo ? ", " + esc(saludo) : ""}!</h1><div style="color:#D6E3EE">Es la primera vez que entras.</div></div>
+<form class="form" id="f"><div class="card" style="gap:12px">
+<div style="font-size:17px;font-weight:650">Elige tu contraseña</div>
+<div class="gris" style="font-size:14px;line-height:1.45">Desde ahora entrarás con tu teléfono y esta contraseña. Así nadie más puede ver lo tuyo aunque sepa tu número.</div>
+<label for="c1">Contraseña (mínimo 6 letras o números)</label>
+<input id="c1" type="password" autocomplete="new-password" minlength="6" required>
+<label for="c2">Repítela</label>
+<input id="c2" type="password" autocomplete="new-password" minlength="6" required>
+<label class="check"><input type="checkbox" id="rec" checked> No volver a pedírmela en este móvil</label>
+${S.error ? `<div class="error">${esc(S.error)}</div>` : ""}
+<button class="boton" type="submit">Guardar y entrar</button></div>
+<div class="aviso">Apúntala bien. Si la olvidas, te la pueden «reactivar» y volverás a elegir una nueva con tu teléfono.</div></form>`;
+  ojos();
+  document.getElementById("f").onsubmit = async ev => {
+    ev.preventDefault();
+    const a = document.getElementById("c1").value, b = document.getElementById("c2").value, rec = document.getElementById("rec").checked;
+    if (a.length < 6) { S.error = "Tiene que tener al menos 6 letras o números."; pintar(); return; }
+    if (a !== b) { S.error = "Las dos no coinciden. Escríbelas otra vez."; pintar(); return; }
+    espera("Guardando…");
+    const sal = b64.a(crypto.getRandomValues(new Uint8Array(16)));
+    const sobre = await cerrar(S.llave, await derivar(a, sal, ITER_NUEVA));
+    const pend = { sal, iter: ITER_NUEVA, sobre };
+    ls.set("gd_pendiente_" + S.id, pend);
+    await enviarBuzon(pend);
+    guardarSesion(rec); S.error = ""; S.pantalla = "app"; await avisarApp(); avisarUso(); pintar();
+  };
+}
+// (20/11/2026) todo lo que va al PC pasa por aquí: primero el buzón de Cloudflare (lo recoge en segundos);
+// si no contesta, el de Netlify (como antes: la respuesta no se puede leer)
+async function buzonPost(cuerpo) {
+  const txt = cuerpo.toString();
+  if (cfVivo()) { try { const r = await cfFetch(CF + "/b", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: txt }); if (r.ok) return r; } catch (e) { } }
+  return fetch(BUZON || "./", { method: "POST", mode: BUZON ? "no-cors" : "cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: txt });
+}
+// el sobre con la contraseña nueva va al buzón (y se reintenta si no había conexión)
+async function enviarBuzon(pend) {
+  const sobreTxt = JSON.stringify(pend.sobre);
+  const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("buzon|" + S.id + "|" + pend.sal + "|" + pend.iter + "|" + sobreTxt)));
+  const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: pend.sal, iter: String(pend.iter), sobre: sobreTxt, prueba });
+  try {
+    // el buzón está en otra dirección (Netlify): se manda como un formulario normal; la respuesta no se puede leer
+    const r = await buzonPost(cuerpo);
+    if (r.ok || r.type === "opaque") { pend.enviado = hoyTxt(); ls.set("gd_pendiente_" + S.id, pend); }
+  } catch (e) {}
+}
+// mientras Alain no la haya recogido (la ficha sigue «con el teléfono»), se vuelve a mandar una vez al día
+const hoyTxt = () => new Date().toISOString().slice(0, 10);
+async function reintentarBuzon() { const p = ls.get("gd_pendiente_" + S.id); if (p && p.enviado !== hoyTxt() && S.ficha.modo !== "clave") await enviarBuzon(p); await avisarApp(); avisarUso(); if (ls.get(PKP())) enviarPartidos(); }
+// uso (beta, 31/10/2026): cada vez que se abre la app (como mucho una vez cada media hora) se avisa a Alain por el buzón,
+// con las pestañas que se miraron desde el aviso anterior. Solo cuándo y qué pestaña: nada de lo que se escribe.
+function contarPest(n) { if (!S.id || !S.datos || S.datos.admin) return; const k = "gd_pest_" + S.id, o = ls.get(k) || {}; o[n] = (o[n] || 0) + 1; ls.set(k, o); }
+async function avisarUso() {
+  try {
+    if (!S.llave || !S.id || !S.datos) return;   // (v2.59) también el administrador, por el tiempo y las consultas
+    const ahora = Date.now(), ult = ls.get("gd_uso_" + S.id) || 0; if (ahora - ult < 30 * 60 * 1000) return;
+    const cnt = ls.get("gd_cnt_" + S.id) || {};   // s = segundos con la app delante, c = consultas «¿ha cambiado?», b = fichas bajadas
+    const d = new Date(), dd = x => String(x).padStart(2, "0");
+    const comoApp = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+    const sobre = JSON.stringify({ f: d.getFullYear() + "-" + dd(d.getMonth() + 1) + "-" + dd(d.getDate()) + " " + dd(d.getHours()) + ":" + dd(d.getMinutes()), app: comoApp ? 1 : 0, h: location.host, p: ls.get("gd_pest_" + S.id) || {}, n: cnt });
+    const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("uso|" + S.id + "|" + sobre)));
+    const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "uso", iter: "0", sobre, prueba });
+    ls.set("gd_uso_" + S.id, ahora);
+    const r = await buzonPost(cuerpo);
+    if (r.ok || r.type === "opaque") { ls.del("gd_pest_" + S.id); const o = ls.get("gd_cnt_" + S.id) || {}; for (const k in cnt) o[k] = Math.max(0, (o[k] || 0) - cnt[k]); ls.set("gd_cnt_" + S.id, o); }
+    else ls.set("gd_uso_" + S.id, ult);
+  } catch (e) { }
+}
+// (20/11/2026) con Cloudflare los cambios de Alain llegan al momento. Con la app abierta y delante, cada 10 s pregunta
+// «¿ha cambiado algo?» (unos bytes) y solo si ha cambiado se baja la ficha (v2.59). No mientras escribe algo (para no
+// borrárselo) ni con una ventana encima. Cuenta el tiempo en pantalla y las consultas, para «Uso de la app».
+let ultTic = 0;
+function sumarUso(k, n) { if (!S.id) return; const c = "gd_cnt_" + S.id, o = ls.get(c) || {}; o[k] = (o[k] || 0) + n; ls.set(c, o); }
+setInterval(async () => {
+  const ahora = Date.now(), vis = document.visibilityState === "visible";
+  if (vis && S.pantalla === "app" && S.id) { if (ultTic) sumarUso("s", Math.min(15, Math.round((ahora - ultTic) / 1000))); ultTic = ahora; } else ultTic = 0;
+  if (!vis || S.pantalla !== "app" || !S.id || refrescando) return;
+  if (!cfVivo()) { if (hayCF() && Date.now() - (S.cargado || 0) >= 60000) refrescar(); return; }   // (v2.60) sin Cloudflare: de GitHub cada minuto
+  const a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+  if (document.querySelector(".capa") || S.qEd || S.parEd) return;
+  try {
+    const r = await cfFetch(CF + "/v/" + S.id + "?v=" + ahora, { cache: "no-store" }); sumarUso("c", 1);
+    if (!r.ok) return; const h = (await r.json()).h || "";
+    if (S.huella === undefined || S.huella === "") { S.huella = h; return; }
+    if (h && h !== S.huella) { S.cargado = 0; refrescar(); }
+  } catch (e) { }
+}, 10000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.pantalla === "app") { avisarUso(); refrescar(); if (S.id && ls.get(PKP())) enviarPartidos(); } });
+window.addEventListener("pageshow", ev => { if (ev.persisted) refrescar(); });
+// la primera vez que se abre como app (desde el icono de la pantalla de inicio) se avisa a Alain por el buzón
+async function avisarApp() {
+  try {
+    const comoApp = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+    if (!comoApp || !S.llave || !S.id || (S.datos && S.datos.app) || ls.get("gd_app_" + S.id) === hoyTxt()) return;
+    const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("instalada|" + S.id)));
+    const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "app", iter: "0", sobre: "instalada", prueba });
+    const r = await buzonPost(cuerpo);
+    if (r.ok || r.type === "opaque") ls.set("gd_app_" + S.id, hoyTxt());
+  } catch (e) {}
+}
+
+
+// ---------- avisos al móvil (31/10/2026) ----------
+// El PC manda los avisos; aquí solo se activan: el móvil da su «dirección de avisos» y se la pasamos a Alain por el buzón,
+// firmada con la llave de la cuenta (como la contraseña). S.datos.push = { k: clave pública del PC, on: puede activarlos }
+const b64u = { de(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return b64.de(s); } };
+const pushPosible = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+async function mandarPush(o) {
+  const sobre = JSON.stringify(o);
+  const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("push|" + S.id + "|" + sobre)));
+  const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "push", iter: "0", sobre, prueba });
+  const r = await buzonPost(cuerpo);
+  if (!(r.ok || r.type === "opaque")) throw new Error("no se ha podido enviar (" + r.status + ")");
+}
+async function activarAvisos() {
+  S.avMsg = "";
+  try {
+    const perm = await Notification.requestPermission();   // lo primero: el iPhone solo lo pregunta justo al pulsar
+    if (perm !== "granted") { S.avMsg = perm === "denied" ? "Has dicho que no. Para activarlos, permite las notificaciones de esta app en los ajustes del móvil." : ""; pintar(); return; }
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    const clave = b64u.de(S.datos.push.k);
+    if (sub && sub.options && sub.options.applicationServerKey) { const a = new Uint8Array(sub.options.applicationServerKey); if (a.length !== clave.length || a.some((x, i) => x !== clave[i])) { await sub.unsubscribe(); sub = null; } }
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: clave });
+    const j = sub.toJSON();
+    await mandarPush({ e: j.endpoint, p: j.keys.p256dh, a: j.keys.auth, q: "alta" });
+    ls.set("gd_push_" + S.id, j.endpoint); S.avMsg = ""; S.avListo = true;
+  } catch (e) { S.avMsg = "No se han podido activar: " + (e && e.message ? e.message : e); }
+  pintar();
+}
+async function quitarAvisos() {
+  S.avMsg = "";
+  try {
+    const reg = await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription();
+    const e = sub ? sub.endpoint : ls.get("gd_push_" + S.id);
+    if (sub) await sub.unsubscribe();
+    if (e) await mandarPush({ e, q: "baja" });
+    ls.del("gd_push_" + S.id); ls.del("gd_avisos_" + S.id); S.avMsg = "";
+  } catch (x) { S.avMsg = "No se han podido quitar: " + (x && x.message ? x.message : x); }
+  pintar();
+}
+function bloqueAvisos() {
+  const P = S.datos && S.datos.push; if (!P || !P.on || !P.k) return "";
+  const msg = S.avMsg ? `<div style="font-size:13px;color:#1D4F78">${esc(S.avMsg)}</div>` : "";
+  const campana = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+  if (!pushPosible()) return esIOS() && !esApp() ? `<div class="card" style="flex-direction:row;gap:12px;align-items:center">${campana}<div style="font-size:14px">Para recibir los avisos en el móvil, primero ponla como app en la pantalla de inicio y ábrela desde el icono.</div></div>` : "";
+  const activo = ls.get("gd_push_" + S.id) && Notification.permission === "granted";
+  if (activo) return msg;
+  if (Notification.permission === "denied") return `<div class="card" style="flex-direction:row;gap:12px;align-items:center">${campana}<div style="font-size:14px">Los avisos están bloqueados. Para recibirlos, permite las notificaciones de esta app en los ajustes del móvil.</div></div>`;
+  return `<div class="card" style="gap:8px"><div style="display:flex;gap:12px;align-items:center">${campana}<div><div class="tit">AVISOS EN EL MÓVIL</div><div style="font-size:14px">Recibe en el móvil los avisos de tus clases. Luego eliges cuáles quieres.</div></div></div><button type="button" id="avActivar" class="btn" style="background:#1D4F78;color:#fff;border:0;border-radius:12px;padding:12px;font-size:15.5px;font-weight:650">Activar avisos</button>${msg}</div>`;
+}
+// vista previa para Alain (1/11/2026): al entrar en la cuenta de un alumno ve el recuadro tal como lo verá el alumno
+function previaAvisos() {
+  const P = S.datos && S.datos.push; if (!P || !P.k) return "";
+  const campana = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+  return `<div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#6B7780;text-align:center;padding-top:4px">VISTA PREVIA · SOLO LA VES TÚ</div><div class="card" style="gap:8px;border-style:dashed"><div style="display:flex;gap:12px;align-items:center">${campana}<div><div class="tit">AVISOS EN EL MÓVIL</div><div style="font-size:14px">Recibe en el móvil los avisos de tus clases. Luego eliges cuáles quieres.</div></div></div><button type="button" id="avPrevio" style="background:#1D4F78;color:#fff;border:0;border-radius:12px;padding:12px;font-size:15.5px;font-weight:650">Activar avisos</button>${S.avPrev ? `<div style="font-size:13px;color:#1D4F78">Es una vista previa: el alumno lo verá así${P.solo ? " cuando quites «Solo a mí» en el programa y publiques" : ""}. Al pulsarlo, su móvil le preguntará si permite las notificaciones; luego el recuadro desaparece y le sale la campanita arriba (pulsa la campanita de arriba para verla).</div>` : ""}</div>`;
+}
+
+// ---------- (25/11/2026, Alain) en las ventanas que suben desde abajo, una rayita arriba: se cierran deslizándolas hacia abajo ----------
+new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => { if (n.nodeType === 1 && n.classList.contains("capa")) prepararHoja(n); }))).observe(document.body, { childList: true });
+function prepararHoja(capa) {
+  const ho = capa.querySelector(".hoja"); if (!ho || ho.querySelector(".asa")) return;
+  const asa = document.createElement("div"); asa.className = "asa"; ho.insertBefore(asa, ho.firstChild);
+  let y0 = null, dy = 0;
+  ho.addEventListener("touchstart", e => { if (e.touches.length !== 1 || (ho.scrollTop > 0 && !e.target.closest(".asa"))) { y0 = null; return; } y0 = e.touches[0].clientY; dy = 0; ho.classList.add("arrastra"); }, { passive: true });
+  ho.addEventListener("touchmove", e => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); if (dy > 0 && ho.scrollTop <= 0) { ho.style.transform = "translateY(" + dy + "px)"; if (e.cancelable) e.preventDefault(); } }, { passive: false });
+  ho.addEventListener("touchend", () => { if (y0 == null) return; y0 = null; ho.classList.remove("arrastra");
+    if (dy > 90) { ho.style.transform = "translateY(100%)"; setTimeout(() => capa.dispatchEvent(new MouseEvent("click", { bubbles: true })), 180); } else ho.style.transform = ""; });
+}
+// ---------- la campanita (1/11/2026): una vez activados, arriba a la derecha; ahí cada uno elige qué avisos quiere ----------
+const CAMPANA = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`;
+const avisosActivos = () => { const P = S.datos && S.datos.push; return !!(P && P.on && P.k && pushPosible() && ls.get("gd_push_" + S.id) && Notification.permission === "granted"); };
+// (18/11/2026) NOVEDADES de la app: se van apuntando aquí, la más nueva arriba. «si»: solo para quien tiene eso activado.
+// Cada una: [fecha aaaa-mm-dd, título, texto, si?]
+const NOVEDADES = [
+  ["2026-11-25", "¿Qué significarán esas estrellitas?", ""],
+  ["2026-11-20", "Los cambios, al momento", "Cuando tu profesor cambia algo (una clase, una hora libre, un pago…), lo ves en tu app en unos segundos. Si la tienes abierta, se pone al día sola."],
+  ["2026-11-19", "Tu horario, en calendario", "En Horario ves el mes entero con la hora de cada clase en color: la próxima, las que vienen, las dadas, las faltas y los cambios. Pulsa un día para ver el detalle y cambia de mes con ‹ ›.", "hcal"],
+  ["2026-11-19", "Avisos de todas las partidas", "En Quedar para jugar, si tienes los avisos activados, te llega un aviso de cada partida nueva que se abra, sea del nivel que sea. El aviso te dice qué nivel busca.", "q"],
+  ["2026-11-18", "Cambia de pestaña deslizando", "Desliza el dedo a la izquierda o a la derecha para pasar a la pestaña siguiente o a la anterior."],
+  ["2026-11-18", "Faltas que cuentan, en rojo", "En Clases, al desplegar un mes, las faltas que cuentan para tu asistencia (sin motivo o por lesión) salen en rojo y las que no cuentan (lluvia, anulada, festivo…) en gris."],
+  ["2026-11-18", "Explica por qué faltaste", "En Clases, al desplegar un mes, pulsa una falta sin motivo o por lesión y escribe por qué faltaste. Le llega a tu profesor y sale junto a esa falta.", "fexp"],
+  ["2026-11-18", "Quedar para jugar", "En Partidos → «Quedar para jugar»: abre una partida (día, hora, sitio y nivel) o únete a la de otro. Cada partida tiene su chat privado.", "q"],
+  ["2026-11-18", "Tus resultados, como un marcador", "En Partidos, cada partido se ve con tu fila y la del rival y los sets en columnas. Más fácil de leer y de apuntar.", "par"],
+  ["2026-11-17", "Partidos", "Apunta los resultados de tus partidos y mira cuántos ganas, tus rachas y contra quién juegas más. Solo los ves tú.", "par"],
+  ["2026-11-17", "Cada golpe, en detalle", "En Evolución → «Cada golpe», pulsa ▶ en un golpe para ver la nota de cada parte (derecha liftada, cortada…)."],
+  ["2026-11-02", "Evolución", "Tus puntuaciones por golpes en un gráfico de araña, cómo vas mejorando y tu nivel."],
+  ["2026-10-31", "Avisos en el móvil", "Activa los avisos (la campanita de arriba) y te llegan al móvil los cambios de tus clases. Tú eliges cuáles quieres."]
+];
+function novedadesVisibles() {
+  const D0 = cuentaActual() || {}, adm = S.datos && S.datos.admin;
+  const tiene = k => adm || (k === "par" ? !!D0.par : k === "q" ? !!(S.datos && S.datos.q) : k === "fexp" ? !!D0.fexp : k === "hcal" ? !!D0.hcal : true);
+  // (19/11/2026) lo que estaba en prueba sale con el día en que se enseñó a los alumnos (D0.act), arriba y como nuevo
+  // (25/11/2026, Alain: «lo de los partidos y lo de quedar no ha salido en novedades») tú también las ves con ese día, como tus alumnos
+  const act = D0.act || (adm && ((S.datos.cuentas || []).find(c => c && c.act) || {}).act) || {};
+  return NOVEDADES.filter(n => !n[3] || tiene(n[3])).map(n => n[3] && act[n[3]] > n[0] ? [act[n[3]]].concat(n.slice(1)) : n).sort((a, b) => a[0] < b[0] ? 1 : a[0] > b[0] ? -1 : 0);
+}
+const NOVK = () => "gd_nov_" + (S.id || "");
+function botonNovedades() {
+  const l = novedadesVisibles(); if (!l.length) return "";
+  const visto = ls.get(NOVK()) || "", hay = l.some(n => n[0] > visto) || (!visto && !S.datos.admin);
+  return `<button class="salir" id="novBtn" aria-label="Novedades" style="padding:6px 9px;margin-right:6px;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>${hay ? `<span style="position:absolute;top:3px;right:3px;width:9px;height:9px;border-radius:5px;background:#E5484D;border:1.5px solid #1D4F78"></span>` : ""}</button>`;
+}
+function hojaNovedades() {
+  const l = novedadesVisibles(), visto = ls.get(NOVK()) || "";
+  const MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  const fechaN = f => { const [y, m, d] = f.split("-").map(Number); return d + " de " + MES[m - 1] + (y !== new Date().getFullYear() ? " de " + y : ""); };
+  let h = "", ult = "";
+  for (const n of l) {
+    if (n[0] !== ult) { ult = n[0]; h += `<div style="font-size:12.5px;font-weight:800;letter-spacing:.06em;color:#4F5D66;padding:12px 2px 2px">${esc(fechaN(n[0]).toUpperCase())}</div>`; }
+    const nueva = visto && n[0] > visto;
+    h += `<div style="background:#fff;border:1px solid #DDE4EA;border-radius:12px;padding:11px 13px;display:flex;flex-direction:column;gap:4px"><div style="font-size:15.5px;font-weight:700;color:#13222B">${esc(n[1])}${nueva ? ` <span style="font-size:11px;font-weight:800;background:#E5484D;color:#fff;border-radius:8px;padding:2px 7px;vertical-align:2px">NUEVO</span>` : ""}</div>${n[2] ? `<div style="font-size:14.5px;line-height:1.45;color:#34444F">${esc(n[2])}</div>` : ""}</div>`;
+  }
+  const c = document.createElement("div"); c.className = "capa";
+  c.innerHTML = `<div class="hoja" role="dialog" aria-modal="true" aria-labelledby="novT" style="max-height:85vh;overflow-y:auto;background:#EEF2F4"><div id="novT" style="font-size:20px;font-weight:800">Novedades</div><div style="display:flex;flex-direction:column;gap:8px">${h}</div><button class="boton" id="novOk" style="margin-top:8px">Cerrar</button></div>`;
+  document.body.appendChild(c);
+  const quitar = () => { c.remove(); pintar(); }; c.onclick = ev => { if (ev.target === c) quitar(); };
+  document.getElementById("novOk").onclick = quitar;
+  if (l.length) ls.set(NOVK(), l[0][0]);   // ya vistas
+}
+function botonCampana(previa) { return `<button class="salir" id="${previa ? "avCampPrev" : "avCamp"}" aria-label="Avisos" style="padding:6px 9px;margin-right:6px">${CAMPANA}</button>`; }
+function misAvisos() {
+  const P = S.datos.push, l = ls.get("gd_avisos_" + S.id) || P.mis;
+  return l ? l.slice() : (P.tipos || []).filter(t => t[2]).map(t => t[0]);
+}
+function hojaListo() {
+  const capa = document.createElement("div"); capa.className = "capa";
+  capa.innerHTML = `<div class="hoja"><div style="display:flex;gap:10px;align-items:center;font-size:20px;font-weight:700;color:#1D4F78">${CAMPANA.replace('width="20" height="20"', 'width="26" height="26"')} ¡Listo!</div><div style="font-size:15.5px;line-height:1.45">Arriba a la derecha tienes la campanita. Ahí eliges qué avisos quieres recibir o no.</div><button class="boton" id="avOk">Entendido</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove(); capa.onclick = e => { if (e.target === capa) quitar(); }; document.getElementById("avOk").onclick = quitar;
+}
+function hojaCampana(previa) {
+  const P = S.datos.push || {}, tipos = P.tipos || []; let mis = previa ? tipos.filter(t => t[2]).map(t => t[0]) : misAvisos();
+  const capa = document.createElement("div"); capa.className = "capa";
+  const fila = (k, n, on, fijo) => `<label style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #D5DCE1;border-radius:12px;padding:12px 14px;font-size:15.5px"><input type="checkbox" data-av="${esc(k)}" ${on ? "checked" : ""} ${fijo ? "disabled" : ""} style="width:22px;height:22px;accent-color:#1D4F78"><span style="flex-grow:1">${esc(n)}</span>${fijo ? `<span class="gris" style="font-size:13px">siempre</span>` : ""}</label>`;
+  capa.innerHTML = `<div class="hoja" style="max-height:88vh;overflow-y:auto"><div style="display:flex;gap:10px;align-items:center;font-size:20px;font-weight:700">${CAMPANA} Avisos</div>${previa ? `<div style="font-size:13px;color:#6B7780">Vista previa: así lo verá el alumno. Aquí no se guarda nada.</div>` : ""}<div class="gris" style="font-size:14px">Elige qué avisos quieres recibir en el móvil.</div>`
+    + tipos.map(t => fila(t[0], t[1], mis.indexOf(t[0]) >= 0, false)).join("")
+    + `<div id="avHojaMsg" style="font-size:13px;color:#1D4F78"></div><button class="boton" id="avGuardar">Guardar</button><button class="boton2" id="avDejar" style="color:#9E2B2B">Dejar de recibir avisos</button><button class="boton2" id="avCerrar">Cerrar</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove(); capa.onclick = e => { if (e.target === capa) quitar(); };
+  const msg = t => { const m = document.getElementById("avHojaMsg"); if (m) m.textContent = t; };
+  document.getElementById("avCerrar").onclick = quitar;
+  document.getElementById("avGuardar").onclick = async () => {
+    const sel = [...capa.querySelectorAll("[data-av]")].filter(x => x.checked && x.dataset.av !== "_m").map(x => x.dataset.av);
+    if (previa) { msg("Es una vista previa: el alumno lo guardaría así."); return; }
+    msg("Guardando…");
+    try { const reg = await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription(); const e = sub ? sub.endpoint : ls.get("gd_push_" + S.id);
+      await mandarPush({ e, q: "prefs", t: sel }); ls.set("gd_avisos_" + S.id, sel); quitar(); }
+    catch (x) { msg("No se ha podido guardar: " + (x && x.message ? x.message : x)); }
+  };
+  document.getElementById("avDejar").onclick = async () => { if (previa) { msg("Es una vista previa: el alumno dejaría de recibirlos."); return; } quitar(); await quitarAvisos(); };
+}
+
+// franja «instálala» (1/11/2026): solo a quien la abre desde el navegador, solo en Inicio. Si la cierra, vuelve a la semana;
+// después de cerrarla 3 veces ya no sale (queda el enlace de abajo). Alain la ve siempre como vista previa.
+function franjaInstalar() {
+  if (esApp() || S.franjaFuera) return "";
+  if (!S.datos.admin) { const f = ls.get("gd_franja") || { n: 0, hasta: 0 }; if (f.n >= 3 || Date.now() < f.hasta) return ""; }
+  return `<div id="franja" style="display:flex;align-items:center;gap:10px;background:#E3ECF4;border:1px solid #C3D5E6;color:#1D4F78;border-radius:12px;padding:10px 12px"><span style="font-size:20px" aria-hidden="true">📲</span><div style="flex-grow:1;font-size:14px;font-weight:600;line-height:1.3">Instálala en tu móvil para recibir los avisos de tus clases.${S.datos.admin ? `<div style="font-size:12px;font-weight:400;color:#6B7780">Vista previa: la ven solo los que la usan desde el navegador.</div>` : ""}</div><button type="button" id="franjaComo" style="background:#1D4F78;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600">Cómo</button><button type="button" id="franjaX" aria-label="Cerrar" style="background:transparent;border:0;color:#1D4F78;font-size:20px;padding:4px 6px">✕</button></div>`;
+}
+function enlazarFranja() {
+  const c = document.getElementById("franjaComo"); if (c) c.onclick = () => verInstalar(true);
+  const x = document.getElementById("franjaX"); if (x) x.onclick = () => {
+    if (!S.datos.admin) { const f = ls.get("gd_franja") || { n: 0, hasta: 0 }; f.n++; f.hasta = Date.now() + 7 * 24 * 3600 * 1000; ls.set("gd_franja", f); }
+    S.franjaFuera = true; const el = document.getElementById("franja"); if (el) el.remove();
+  };
+}
+function enlazarAvisos() {
+  enlazarFranja();
+  const pv = document.getElementById("avPrevio"); if (pv) pv.onclick = () => { S.avPrev = true; pintar(); };
+  const a = document.getElementById("avActivar"); if (a) a.onclick = () => { a.disabled = true; a.textContent = "Activando…"; activarAvisos(); };
+  const q = document.getElementById("avQuitar"); if (q) q.onclick = ev => { ev.preventDefault(); quitarAvisos(); };
+  const c1 = document.getElementById("avCamp"); if (c1) c1.onclick = () => hojaCampana(false);
+  const nb = document.getElementById("novBtn"); if (nb) nb.onclick = () => hojaNovedades();
+  const c2 = document.getElementById("avCampPrev"); if (c2) c2.onclick = () => hojaCampana(true);
+  const sp = document.getElementById("salirPrev"); if (sp) sp.onclick = () => {
+    const capa = document.createElement("div"); capa.className = "capa";
+    capa.innerHTML = `<div class="hoja"><div style="font-size:13px;color:#6B7780">Vista previa: así lo verá el alumno. Aquí no se cierra nada.</div><div style="font-size:20px;font-weight:700">¿Cerrar sesión?</div><div class="gris" style="font-size:15px;line-height:1.45">Solo hace falta si este móvil no es tuyo. Para cerrar la app, ciérrala como cualquier otra: la próxima vez entrarás directamente. Si cierras la sesión, tendrás que escribir otra vez tu contraseña.</div><button class="boton" id="pvOk">Cerrar sesión</button><button class="boton2" id="pvNo">Cancelar</button></div>`;
+    document.body.appendChild(capa); const q = () => capa.remove(); capa.onclick = e => { if (e.target === capa) q(); };
+    document.getElementById("pvOk").onclick = q; document.getElementById("pvNo").onclick = q;
+  };
+  if (S.avListo) { S.avListo = false; hojaListo(); }
+}
+
+// ---------- la app ----------
+const fmt = v => String(Math.round(v * 10) / 10).replace(".", ",");
+const pct = (d, f) => d + f > 0 ? Math.round(100 * d / (d + f)) + " %" : "—";
+function agg(D, l, varios) {
+  const meses = [];
+  l.forEach(p => p.meses.forEach(m => { let x = meses.find(y => y[0] === m[0]); if (!x) { x = [m[0], 0, 0]; meses.push(x); } x[1] += m[1]; x[2] += m[2]; }));
+  const faltas = [];
+  l.forEach(p => p.faltas.forEach(f => faltas.push({ dia: f[0], motivo: (varios ? p.nombre + " · " : "") + f[1], est: f[2], orden: f[3] || 0, m: f[1], recEl: f[4] || "", mes: f[5] || "", desc: f[6] || "", fe: f[7] || "", ai: f[8] })));
+  faltas.sort((a, b) => b.orden - a.orden);
+  const mot = {}; faltas.forEach(f => { mot[f.m] = (mot[f.m] || 0) + 1; });
+  const dadas = meses.reduce((s, x) => s + x[1], 0), netas = meses.reduce((s, x) => s + x[2], 0);
+  return { dadas, netas, meses, faltas, rec: faltas.filter(f => f.est === 1).length, porRec: faltas.filter(f => f.est === 2).length, motivos: Object.keys(mot).map(k => k + " " + mot[k]).join(" · ") };
+}
+const IC = { Partidos: "M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3", Horario: "M3 5h18v16H3zM3 10h18M8 3v4M16 3v4", Inicio: "M3 11l9-7 9 7v9h-6v-6h-6v6H3z", Clases: "M4 20V11M10 20V5M16 20v-6M2 20h20", Faltas: "M12 9v4M12 17h.01M10.3 4l-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0z", Pagos: "M2 7h20v12H2zM2 11h20M6 15h4" };
+// ---------- vista previa (solo Alain, al ver la cuenta de un alumno): horario, cambios y huecos ----------
+const DIASL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], MESC = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+function fechaDe(f, h) { const a = f.split("-").map(Number), b = (h || "0:00").split(":").map(Number); return new Date(a[0], a[1] - 1, a[2], b[0] || 0, b[1] || 0); }
+function diaTxt(f) { const d = fechaDe(f); return DIASL[d.getDay()] + " " + d.getDate() + " " + MESC[d.getMonth()]; }
+const PREV = "";   // (antes, etiqueta «VISTA PREVIA · SOLO LA VES TÚ»; desde el 31/10/2026 lo ven todos)
+function proximaClase(P) {
+  const ahora = new Date(); let mejor = null;
+  P.semanas.forEach(w => w.clases.forEach(c => { if ((c[2] === "futura" || c[2] === "validar") && c[1]) { const t = fechaDe(c[0], c[1]); if (t > ahora && (!mejor || t < mejor.t)) mejor = { t, c }; } }));
+  return mejor;
+}
+const ANULADA = m => m === "Anulada" || m === "La anuló Alain";   // (el texto viejo, por si quedan datos de antes)
+const esAnulada = c => (c[2] === "falta" || c[2] === "lesion") && ANULADA(c[5]);
+// clases futuras anuladas por Alain (las próximas dos semanas)
+function anuladas(P) {
+  const ahora = new Date(); return P.semanas.reduce((a, w) => a.concat(w.clases), []).filter(c => esAnulada(c) && fechaDe(c[0], c[1] || "23:59") > ahora);
+}
+function cambiosSemana(P) {
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const lim = new Date(hoy); lim.setDate(lim.getDate() + 8); const r = [];
+  P.semanas.reduce((a, w) => a.concat(w.clases), []).forEach(c => {
+    if (fechaDe(c[0]) < hoy || fechaDe(c[0]) >= lim) return;
+    const q = c[4] ? c[4] + ": " : "";
+    if (c[2] === "movida") {   // (7/11/2026, Alain) una sola línea: de dónde a dónde
+      const m = /(\d{1,2})\/(\d{1,2})\s+(\d{1,2}:\d{2})/.exec(c[3] || ""), g = c[6] ? " (" + esc(c[6]) + ")" : "";
+      if (m) { const fd = new Date(fechaDe(c[0]).getFullYear(), +m[2] - 1, +m[1]), mismo = fd.toDateString() === fechaDe(c[0]).toDateString();
+        r.push(mismo ? `<b>${esc(diaTxt(c[0]))}</b>${g}: ${esc(q)}pasa de ${esc(c[1])} a ${esc(m[3])}` : `<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>${g}: ${esc(q)}pasa al ${esc(diaTxt(fd.getFullYear() + "-" + String(fd.getMonth() + 1).padStart(2, "0") + "-" + String(fd.getDate()).padStart(2, "0")))} · ${esc(m[3])}`); }
+      else r.push(`<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>: ${esc(q)}pasa ${esc(c[3].replace(/^→\s*/, "al "))}`);
+    }
+    else if (c[2] === "festivo") r.push(`<b>${esc(diaTxt(c[0]))}</b>: no hay clase (festivo)`);
+    else if (c[3].indexOf("cambio, era") === 0) { /* ya sale en la línea de la que se mueve */ }
+    else if (c[2] === "falta" && !esAnulada(c) && fechaDe(c[0], c[1]) > new Date()) r.push(`<b>${esc(diaTxt(c[0]))} · ${esc(c[1])}</b>: ${esc(q)}${ANULADA(c[5]) ? "no hay clase, está anulada" : "no vienes (" + esc(c[5]) + ")"}`);
+  });
+  return r;
+}
+const MESL = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const cuentaFalta = m => m === "Sin motivo" || m === "Lesión";   // solo cuentan contra el alumno las faltas sin motivo y por lesión
+// (18/11/2026) la descripción de una falta sin motivo o de lesión: la ve el alumno y la puede escribir o cambiar (le llega a su profesor)
+const FX = () => "gd_fexp_" + S.id + "_" + (S.datos.admin ? S.cuenta : "");
+const conDesc = (m, d) => d ? m + " - " + d : m;
+function fexpPuede(m, fe) { const D0 = cuentaActual(); return !!(D0 && D0.fexp && fe && (m === "Sin motivo" || m === "Lesión" || /· (Sin motivo|Lesión)$/.test(m || ""))); }
+function descF(fe, ai, desc) { const p = ls.get(FX()) || {}, k = fe + "|" + ai; return k in p ? p[k] : desc; }
+function hojaFexp(fe, ai) {
+  const D0 = cuentaActual(); if (!D0) return;
+  const d = fechaDe(fe), act = descF(fe, ai, buscarDesc(fe, ai));
+  const c = document.createElement("div"); c.className = "capa";
+  c.innerHTML = `<div class="hoja" role="dialog" aria-modal="true"><div style="font-size:19px;font-weight:750">¿Por qué faltaste?</div><div class="gris" style="font-size:14.5px">${esc(diaTxt(fe))}</div>
+<textarea id="fxT" maxlength="200" rows="3" style="font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid #9FB3C3;border-radius:10px;resize:vertical" placeholder="Por ejemplo: estaba de viaje">${esc(act || "")}</textarea>
+<div class="gris" style="font-size:13px;line-height:1.4">Le llega a tu profesor y sale junto a esta falta. Puede tardar un rato en verse.</div>
+<button class="boton" id="fxOk">Enviar</button><button class="boton2" id="fxNo">Cancelar</button></div>`;
+  document.body.appendChild(c);
+  const quitar = () => c.remove(); c.onclick = ev => { if (ev.target === c) quitar(); };
+  document.getElementById("fxNo").onclick = quitar;
+  setTimeout(() => { const t = document.getElementById("fxT"); if (t) t.focus(); }, 50);
+  document.getElementById("fxOk").onclick = async () => {
+    const t = document.getElementById("fxT").value.replace(/\s+/g, " ").trim(), b = document.getElementById("fxOk");
+    b.disabled = true; b.textContent = "Enviando…";
+    const o = { f: fe, a: +ai, t }; if (S.datos.admin) { o.cu = S.cuenta; o.ti = D0.titulo; }
+    const sobre = JSON.stringify(o);
+    try {
+      const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("falta|" + S.id + "|" + sobre)));
+      const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "falta", iter: "0", sobre, prueba });
+      const r = await buzonPost(cuerpo);
+      if (!(r.ok || r.type === "opaque")) throw new Error();
+      const p = ls.get(FX()) || {}; p[fe + "|" + ai] = t; ls.set(FX(), p);
+      quitar(); const y = window.scrollY; pintar(); window.scrollTo(0, y);
+    } catch (e) { b.disabled = false; b.textContent = "Enviar"; alert("No se ha podido enviar. Prueba en un momento."); }
+  };
+}
+// la descripción que viene en los datos (para el cuadro)
+function buscarDesc(fe, ai) { const D0 = cuentaActual(); for (const p of (cursoElegido(D0).personas || [])) for (const f of p.faltas || []) if (f[7] === fe && String(f[8]) === String(ai)) return f[6] || ""; for (const d of ((cursoElegido(D0).previa || D0.previa || {}).dias || [])) if (d[0] === fe && String(d[6]) === String(ai)) return d[5] || ""; return ""; }
+// lo pendiente que ya ha llegado (los datos traen lo mismo) deja de estar pendiente
+function limpiarFexp() {
+  const p = ls.get(FX()); if (!p) return; let cambia = false;
+  for (const k of Object.keys(p)) { const [fe, ai] = k.split("|"); const dd = buscarDesc(fe, ai); if (dd === p[k]) { delete p[k]; cambia = true; } }
+  if (cambia) ls.set(FX(), p);
+}
+// calendario de un mes (vista previa): días dados, faltas y recuperaciones, con bordes; debajo, cada falta/recuperación en palabras
+function calendarioMes(PV, mesNombre, curso, per) {
+  const mi = MESL.indexOf(mesNombre); if (mi < 0) return "";
+  const y0 = parseInt(String(curso).slice(0, 4), 10), anio = mi >= 8 ? y0 : y0 + 1;
+  const dias = (PV.dias || []).filter(d => { const f = fechaDe(d[0]); return f.getFullYear() === anio && f.getMonth() === mi && (per === "Todos" || !d[2] || d[2] === per); });
+  const porDia = {}; dias.forEach(d => { const n = fechaDe(d[0]).getDate(); (porDia[n] = porDia[n] || []).push(d); });
+  const ini = (new Date(anio, mi, 1).getDay() + 6) % 7, nd = new Date(anio, mi + 1, 0).getDate();
+  let h = `<div class="calm">` + ["L", "M", "X", "J", "V", "S", "D"].map(x => `<div class="cab">${x}</div>`).join(""); let n = 0;
+  for (let i = 0; i < ini; i++, n++) h += `<div style="background:#F6F8FA"></div>`;
+  for (let d = 1; d <= nd; d++, n++) {
+    const l = porDia[d];
+    if (!l) { h += `<div style="color:#8A96A0">${d}</div>`; continue; }
+    // (18/11/2026) falta que cuenta para la asistencia (sin motivo o lesión): rojo; la que no cuenta (lluvia, anulada, festivo, conjunta): gris
+    const fs = l.filter(x => x[1] === "f"), f = fs.find(x => cuentaFalta(x[3])) || fs[0], r = l.find(x => x[1] === "r"), fc = f && cuentaFalta(f[3]);
+    const bg = f ? (fc ? "#FBE3E3" : "#E9ECEF") : r ? "#DDEFE3" : "#DCE8F3", fg = f ? (fc ? "#9E2B2B" : "#5F6B73") : r ? "#22603A" : "#1D4F78";
+    const ic = l.map(x => x[1] === "f" ? (x[4] ? "✗↺" : "✗") : x[1] === "r" ? "↺" : "✓").join(" ");
+    h += `<div style="background:${bg};color:${fg}"><span style="font-weight:600">${d}</span><span style="font-size:12px;font-weight:700;text-align:right">${ic}</span></div>`;
+  }
+  while (n % 7) { h += `<div style="background:#F6F8FA"></div>`; n++; }
+  h += `</div>`;
+  const varios = per === "Todos" && dias.some(d => d[2]) && new Set(dias.map(d => d[2])).size > 1;
+  h += dias.filter(d => d[1] !== "d").map(d => `<div style="font-size:13px;color:#4F5D66;padding:2px 2px${d[1] === "f" && fexpPuede(d[3], d[0]) && d[6] != null ? ';cursor:pointer" data-fexp="' + esc(d[0]) + "|" + d[6] : ""}">Día ${fechaDe(d[0]).getDate()}: ${varios && d[2] ? esc(d[2]) + " · " : ""}${d[1] === "r" ? "clase de recuperación" + (d[4] ? " (" + esc(d[4]) + ")" : "") : "falta · " + esc(conDesc(d[3], descF(d[0], d[6], d[5]))) + (d[4] ? " · " + esc(d[4]) : "") + (d[1] === "f" && fexpPuede(d[3], d[0]) && d[6] != null ? ` <span style="color:#1D4F78;font-weight:600">${descF(d[0], d[6], d[5]) ? "✎" : "✎ Explicar"}</span>` : "")}</div>`).join("");
+  const cuadro = (bg, fg, t) => `<span style="display:inline-flex;align-items:center;gap:4px"><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${bg};border:1px solid ${fg}55"></span>${t}</span>`;
+  return h + `<div style="display:flex;gap:6px 12px;flex-wrap:wrap;font-size:11.5px;color:#4F5D66;padding:4px 2px 8px"><span>✓ dada</span><span>✗↺ falta recuperada</span><span>↺ recuperación</span>${cuadro("#FBE3E3", "#9E2B2B", "✗ falta que cuenta (sin motivo o lesión)")}${cuadro("#E9ECEF", "#5F6B73", "✗ no cuenta (lluvia, anulada, festivo…)")}</div>`;
+}
+// (v1.95) previsión del tiempo: la pide el propio móvil a Open-Meteo (sin clave) con el sitio que manda el programa;
+// se guarda una hora. Solo sale en las clases con un 30 % o más de lluvia.
+const LL_UMBRAL = 30, LL_FUERTE = 60, p2 = n => String(n).padStart(2, "0");
+function tiempoGuardado(T) { const c = ls.get("gd_tiempo"); return T && c && c.v === 2 && c.lat === T.lat && c.lon === T.lon ? c : null; }
+async function cargarTiempo(T) {
+  if (!T || T.lat == null) return null;
+  const c = tiempoGuardado(T); if (c && Date.now() - c.t < 3600e3) return c;
+  try {
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${T.lat}&longitude=${T.lon}&hourly=precipitation_probability,temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max&timezone=Europe%2FMadrid&forecast_days=16`);
+    if (!r.ok) return c; const j = await r.json(), o = { v: 2, t: Date.now(), lat: T.lat, lon: T.lon, h: {}, d: {}, hr: {} };
+    (j.hourly.time || []).forEach((x, i) => { const H = j.hourly, v = H.precipitation_probability[i]; if (v != null) o.h[x] = v; if (H.temperature_2m && H.temperature_2m[i] != null) o.hr[x] = [H.weather_code ? H.weather_code[i] : null, H.temperature_2m[i], H.is_day ? H.is_day[i] : 1]; });
+    (j.daily.time || []).forEach((x, i) => o.d[x] = [j.daily.weather_code[i], j.daily.temperature_2m_max[i]]);
+    ls.set("gd_tiempo", o); return o;
+  } catch (e) { return c; }
+}
+// % de lluvia de una clase: el máximo de las horas que toca (Open-Meteo da cada hora como «la hora anterior»)
+function lluviaClase(f, h) {
+  const W = S.tiempo; if (!W || !h) return null;
+  const ini = fechaDe(f, h), fin = new Date(ini.getTime() + 3600e3); let m = null;
+  for (let t = new Date(ini.getFullYear(), ini.getMonth(), ini.getDate(), ini.getHours() + 1); t.getTime() - 3600e3 < fin.getTime(); t = new Date(t.getTime() + 3600e3)) {
+    const v = W.h[`${t.getFullYear()}-${p2(t.getMonth() + 1)}-${p2(t.getDate())}T${p2(t.getHours())}:00`]; if (v != null) m = Math.max(m == null ? 0 : m, v);
+  }
+  return m;
+}
+const GOTA = c => `<svg width="11" height="15" viewBox="0 0 12 16" aria-hidden="true" style="flex:none"><path d="M6 0C6 0 0 7 0 10.5a6 6 0 0 0 12 0C12 7 6 0 6 0z" fill="${c}"/></svg>`;
+function iconoCielo(code, dia) {
+  const nube = (g, y) => `<ellipse cx="7" cy="${9 + y}" rx="6" ry="5" fill="${g}"/><ellipse cx="12" cy="${6 + y}" rx="6" ry="6" fill="${g}"/><ellipse cx="16" cy="${9.5 + y}" rx="5.5" ry="4.5" fill="${g}"/><rect x="5" y="${9 + y}" width="13" height="5" fill="${g}"/>`;
+  const sol = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#FABE14"/>`;
+  const luna = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#E6E9C8"/><circle cx="${x + r * 0.55}" cy="${y - r * 0.35}" r="${r * 0.85}" fill="#1D4F78"/>`;
+  const astro = dia === 0 ? luna : sol;
+  let b = code <= 1 ? astro(11, 9, 6) : code === 2 ? astro(8, 6, 5) + nube("#AAB4C0", 2) : code === 3 || code === 45 || code === 48 ? nube("#AAB4C0", 0) : nube("#9AA6B4", -1) + `<path d="M8 15l-1.5 3M12 15l-1.5 3M16 15l-1.5 3" stroke="#60A5FA" stroke-width="1.8" stroke-linecap="round"/>`;
+  return `<svg width="22" height="19" viewBox="0 0 22 19" aria-hidden="true" style="flex:none">${b}</svg>`;
+}
+function textoCielo(c, dia) { return c <= 1 ? (dia === 0 ? "Despejado" : "Soleado") : c === 2 ? "Poco nuboso" : c === 3 ? "Nublado" : c === 45 || c === 48 ? "Niebla" : (c >= 71 && c <= 77) || c === 85 || c === 86 ? "Nieve" : c >= 95 ? "Tormenta" : c >= 61 ? "Lluvia" : c >= 51 ? "Llovizna" : "Nublado"; }
+// cielo y temperatura a la hora de la clase (a la mitad de la clase, redondeado a la hora)
+function cieloClase(f, h) {
+  const W = S.tiempo; if (!W || !W.hr || !h) return null;
+  const m = new Date(fechaDe(f, h).getTime() + 1800e3); if (m.getMinutes() >= 30) m.setHours(m.getHours() + 1); m.setMinutes(0);
+  return W.hr[`${m.getFullYear()}-${p2(m.getMonth() + 1)}-${p2(m.getDate())}T${p2(m.getHours())}:00`] || null;
+}
+const vaClase = c => (c[2] === "futura" || c[2] === "validar") && c[1] && fechaDe(c[0], c[1]) > new Date();
+function pastillaLluvia(c) {
+  if (!vaClase(c)) return ""; const p = lluviaClase(c[0], c[1]); if (p == null || p < LL_UMBRAL) return "";
+  const col = p >= LL_FUERTE ? "#2563EB" : "#4F8FE6";
+  return `<span style="display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:700;color:${col};background:${p >= LL_FUERTE ? "#DBEAFE" : "#ECF4FF"};border-radius:999px;padding:4px 10px;white-space:nowrap;flex:none">${GOTA(col)} ${p} %</span>`;
+}
+// (v1.96, Alain) tarjeta «Tu próxima clase»: SIEMPRE el cielo y la temperatura a su hora; si hay riesgo, además el % de lluvia y la frase
+function lluviaProxima(c) {
+  if (!vaClase(c)) return ""; const q = cieloClase(c[0], c[1]), p = lluviaClase(c[0], c[1]);
+  if (!q && (p == null || p < LL_UMBRAL)) return "";
+  const col = p >= LL_FUERTE ? "#2563EB" : "#4F8FE6", lluvia = p != null && p >= LL_UMBRAL;
+  return `<div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">`
+    + (lluvia ? `<span style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:${col};border-radius:999px;padding:5px 12px;font-size:14.5px;font-weight:700">${GOTA(col)} ${p} % de lluvia</span>` : "")
+    + (q && q[1] != null ? `<span style="display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:600">${q[0] != null ? iconoCielo(q[0], q[2]) + " " + esc(textoCielo(q[0], q[2])) + " · " : ""}${Math.round(q[1])}°</span>` : "")
+    + `</div>` + (lluvia ? `<div style="margin-top:6px;font-size:13px;color:#C9D9E8">Te avisaré si suspendemos la clase.</div>` : "");
+}
+const tagG = n => n ? ` <span style="display:inline-block;font-size:11.5px;font-weight:700;background:#E3ECF4;color:#1D4F78;border-radius:8px;padding:2px 8px;vertical-align:2px">${esc(n)}</span>` : "";   // (7/11/2026) clase de grupo
+// (19/11/2026, Alain) Horario «C»: cada clase con el día en un cuadradito a la izquierda y la hora grande a la derecha
+const bloqueDia = (ab, n, gris, mes) => `<div class="fb${gris ? " gr" : ""}">${n != null ? `<span class="ds">${esc(ab)}</span><span class="dn">${n}</span>${mes ? `<span class="ms">${esc(mes)}</span>` : ""}` : `<span class="dn" style="font-size:15px;text-transform:uppercase">${esc(ab)}</span>`}</div>`;
+// (19/11/2026, Alain) sin repetir: la fecha solo en el cuadradito; al lado, el nombre; sin etiqueta en cambiada/anulada (lo dice el texto en color)
+function lineaClase(c) {
+  const d = fechaDe(c[0]), ab = DIASL[d.getDay()].slice(0, 3), mes = MESC[d.getMonth()];
+  const nom = `${c[4] ? esc(c[4]) : "Clase"}${tagG(c[6])}`;
+  if (esAnulada(c)) return `<div class="lin">${bloqueDia(ab, d.getDate(), true, mes)}<div class="x"><div class="n" style="color:#6B7780;font-weight:500">${nom}</div><div class="d" style="color:#9E2B2B;font-weight:600">Anulada</div></div>${c[1] ? `<span class="hr ta">${esc(c[1])}</span>` : ""}</div>`;
+  const mov = c[2] === "movida", cam = !mov && c[3].indexOf("cambio") === 0;
+  const chip = c[2] === "dada" ? `<span class="chip c-rec">Dada</span>` : c[2] === "falta" || c[2] === "lesion" ? `<span class="chip c-debe">Falta</span>` : c[2] === "festivo" ? `<span class="chip c-pend">Festivo</span>` : !mov && !cam && c[3].indexOf("recuper") >= 0 ? `<span class="chip c-pend">Recuperación</span>` : "";
+  let sub = mov ? c[3].replace(/^→\s*/, "") : cam ? c[3] : "";
+  if (mov) sub = "Pasa al " + sub;
+  const ll = pastillaLluvia(c);   // (v1.95) gotita con el % de lluvia
+  return `<div class="lin">${bloqueDia(ab, d.getDate(), mov, mes)}<div class="x"><div class="n"${mov ? ' style="color:#6B7780;font-weight:500"' : ""}>${nom}</div>${sub ? `<div class="d" style="color:#B4530F;font-weight:600">${esc(sub.charAt(0).toUpperCase() + sub.slice(1))}</div>` : ""}${chip ? `<div style="margin-top:4px">${chip}</div>` : ""}</div>${ll}${c[1] ? `<span class="hr${mov ? " ta" : ""}">${esc(c[1])}</span>` : ""}</div>`;
+}
+// (19/11/2026, Alain) Horario en calendario (en prueba): el mes con la hora de cada clase en color; al pulsar un día, su detalle
+const MESL2 = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+function tipoCal(c, prox) {
+  if (esAnulada(c) || c[2] === "movida" || c[2] === "festivo") return "anu";
+  if (c[2] === "dada" || c[2] === "validar") return (c[3] || "").indexOf("recuper") >= 0 ? "camb" : "dada";
+  if (c[2] === "falta" || c[2] === "lesion") return cuentaFalta(c[5]) ? "falta" : "anu";
+  if ((c[3] || "").indexOf("cambio") === 0 || (c[3] || "").indexOf("recuper") >= 0) return "camb";
+  return c === prox ? "prox" : "fut";
+}
+function pintarHorarioCal(P) {
+  const cal = P.cal || [], hoyS = (() => { const d = new Date(); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()); })(), ahora = new Date();
+  const prox = cal.find(c => (c[2] === "futura" || c[2] === "") && !esAnulada(c) && fechaDe(c[0], c[1] || "23:59") > ahora) || null;
+  const meses = Array.from(new Set(cal.map(c => c[0].slice(0, 7)))).sort();
+  if (!S.calMes || meses.indexOf(S.calMes) < 0) S.calMes = meses.indexOf(hoyS.slice(0, 7)) >= 0 ? hoyS.slice(0, 7) : meses[meses.length - 1] || hoyS.slice(0, 7);
+  if (!S.calSel) S.calSel = prox ? prox[0] : hoyS;
+  const [y, m] = S.calMes.split("-").map(Number), porDia = {};
+  cal.forEach(c => { if (c[0].slice(0, 7) === S.calMes) (porDia[c[0]] = porDia[c[0]] || []).push(c); });
+  const im = meses.indexOf(S.calMes), ant = im > 0 ? meses[im - 1] : "", sig = im >= 0 && im < meses.length - 1 ? meses[im + 1] : "";
+  let g = ["L", "M", "X", "J", "V", "S", "D"].map(x => `<div class="h">${x}</div>`).join("");
+  const ini = (new Date(y, m - 1, 1).getDay() + 6) % 7, nd = new Date(y, m, 0).getDate();
+  for (let i = 0; i < ini; i++) g += `<div class="d fuera"></div>`;
+  for (let d = 1; d <= nd; d++) {
+    const f = S.calMes + "-" + p2(d), l = porDia[f] || [];
+    const pills = l.slice(0, 2).map(c => { const t = tipoCal(c, prox); return `<span class="ph p-${t}">${esc(c[1] || (c[2] === "festivo" ? "Fest." : "·"))}</span>`; }).join("") + (l.length > 2 ? `<span style="font-size:10.5px;color:#6B7780">+${l.length - 2}</span>` : "");
+    g += `<button type="button" class="d${f < hoyS ? " pas" : ""}${f === hoyS ? " hoy" : ""}${f === S.calSel ? " sel" : ""}" data-cald="${f}"><span class="n">${d}</span>${pills}</button>`;
+  }
+  const sel = cal.filter(c => c[0] === S.calSel), fs = fechaDe(S.calSel);
+  const det = S.calSel.slice(0, 7) !== S.calMes ? "" : `<div class="caldet">` + (sel.length ? sel.map(lineaClase).join("") : `<div class="lin">${bloqueDia(DIASL[fs.getDay()].slice(0, 3), fs.getDate(), true, MESC[fs.getMonth()])}<div class="x"><div class="d">No hay clase</div></div></div>`) + `</div>`;
+  const ley = [["prox", "Próxima"], ["fut", "Prevista"], ["dada", "Dada"], ["falta", "Falta"], ["camb", "Cambio / recuperación"], ["anu", "Anulada / no cuenta"]].map(([k, t]) => `<span><i class="p-${k}"></i>${t}</span>`).join("");
+  let h = PREV + bloqueHoras();
+  h += `<div class="card hC k1" style="gap:6px"><div class="mesbar"><button type="button" data-calm="${ant}"${ant ? "" : " disabled"}>‹</button><b>${MESL2[m - 1]} ${y}</b><button type="button" data-calm="${sig}"${sig ? "" : " disabled"}>›</button></div><div class="calh">${g}</div><div class="leg">${ley}</div>${det}</div>`;
+  h += `<div class="card hC k1" style="gap:0"><div class="tit" style="padding-bottom:4px">TU HORARIO FIJO</div>` + (P.fijo.length ? P.fijo.map(f => `<div class="lin">${bloqueDia(String(f[0]).slice(0, 3))}<div class="x"><div class="n">${f[2] ? esc(f[2]) : "Clase"}${tagG(f[3])}</div></div><span class="hr">${esc(f[1])}</span></div>`).join("") : `<div class="gris" style="padding:8px 0">Sin horario fijo.</div>`) + `</div>`;
+  return h;
+}
+// (19/11/2026, Alain) Horario: la lista de siempre y, con el iconito, el calendario (se recuerda la última que eligió)
+function horarioVista(P, D0) {
+  if (!(P.cal && (S.datos.admin || D0.hcal))) return pintarHorarioPrev(P);
+  if (!S.hVista) { let v = null; try { v = localStorage.getItem("gd_hvista"); } catch (e) { } S.hVista = v === "cal" ? "cal" : "lista"; }
+  const ic = (k, d, t) => `<button type="button" data-hv="${k}" class="${S.hVista === k ? "on" : ""}" aria-label="${t}" title="${t}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg></button>`;
+  const bar = `<div class="hvb">${ic("lista", "M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01", "Ver en lista")}${ic("cal", IC.Horario, "Ver en calendario")}</div>`;
+  return bar + (S.hVista === "cal" ? pintarHorarioCal(P) : pintarHorarioPrev(P));
+}
+function pintarHorarioPrev(P) {
+  let h = PREV;
+  h += bloqueHoras();
+  h += `<div class="card hC k1" style="gap:0"><div class="tit" style="padding-bottom:4px">TU HORARIO FIJO</div>` + (P.fijo.length ? P.fijo.map(f => `<div class="lin">${bloqueDia(String(f[0]).slice(0, 3))}<div class="x"><div class="n">${f[2] ? esc(f[2]) : "Clase"}${tagG(f[3])}</div></div><span class="hr">${esc(f[1])}</span></div>`).join("") : `<div class="gris" style="padding:8px 0">Sin horario fijo.</div>`) + `</div>`;
+  ["ESTA SEMANA", "LA SEMANA QUE VIENE"].forEach((t, i) => { const w = P.semanas[i]; if (!w) return; const l0 = fechaDe(w.lunes), l1 = new Date(l0); l1.setDate(l1.getDate() + 5);
+    h += `<div class="card hC ${i ? "k3" : "k2"}" style="gap:0"><div class="tit" style="padding-bottom:4px">${t} · ${l0.getDate()} ${MESC[l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div>` + (w.clases.length ? w.clases.map(lineaClase).join("") : `<div class="gris" style="padding:8px 0">No hay clases.</div>`) + `</div>`; });
+  return h;
+}
+// una falta solo se recupera en SU MISMA semana (en otra semana sería una clase extra): por cada semana con faltas sin
+// recuperar que aún no ha terminado, sus faltas y las horas disponibles de esa misma semana
+function recuperables(P) {
+  const ahora = new Date(), res = [];
+  P.semanas.forEach(w => {
+    const l0 = fechaDe(w.lunes), fin = new Date(l0); fin.setDate(fin.getDate() + 7); if (fin <= ahora) return;
+    const fal = w.clases.filter(c => (c[2] === "falta" || c[2] === "lesion") && c[3].indexOf("recuperada") < 0 && c[5] !== "Festivo");
+    const hu = (((typeof cuentaActual === "function" && cuentaActual()) || {}).disponibles || S.datos.disponibles || []).filter(x => { const t = fechaDe(x[0], x[1]); return t > ahora && t >= l0 && t < fin; });
+    // sin faltas esa semana, las horas libres salen igual: por si quiere hacer una clase extra
+    if (!fal.length && !hu.length) return;
+    res.push({ l0, fin, fal, hu });
+  });
+  return res;
+}
+// (7/11/2026, Alain) «HORAS LIBRES» y las horas, nada más (de hoy en adelante, hasta dos semanas)
+function bloqueHoras() {
+  const ahora = new Date(), hu = (((typeof cuentaActual === "function" && cuentaActual()) || {}).disponibles || S.datos.disponibles || []).filter(x => fechaDe(x[0], x[1]) > ahora);
+  if (!hu.length) return "";
+  const dias = []; hu.forEach(x => { let d = dias.find(y => y.f === x[0]); if (!d) { d = { f: x[0], h: [] }; dias.push(d); } d.h.push(x); });
+  return `<div class="aviso huecos avB az" style="display:flex;flex-direction:column;gap:6px"><div class="tt" style="font-size:12px;font-weight:700;letter-spacing:.06em">HORAS LIBRES</div>`
+    + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px">${esc(x[1])}</span>`).join("")}</div>`).join("") + `</div>`;
+}
+function bloqueRecuperar(r) {
+  const l1 = new Date(r.l0); l1.setDate(l1.getDate() + 5);
+  const dias = []; r.hu.forEach(x => { let d = dias.find(y => y.f === x[0]); if (!d) { d = { f: x[0], h: [] }; dias.push(d); } d.h.push(x); });
+  if (!r.fal.length) return `<div class="aviso huecos" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">HORAS LIBRES · SEMANA DEL ${r.l0.getDate()} ${MESC[r.l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div><div style="font-size:13px">Por si quieres hacer una clase extra esa semana:</div>`
+    + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px"${x[2] ? ` title="${esc(x[2])}"` : ""}>${esc(x[1])}</span>`).join("")}</div>`).join("")
+    + `<div style="font-size:12px;opacity:.85">Pide en clase que te la guarden.</div></div>`;
+  return `<div class="aviso huecos" style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:700;letter-spacing:.06em">PUEDES RECUPERAR · SEMANA DEL ${r.l0.getDate()} ${MESC[r.l0.getMonth()].toUpperCase()} AL ${l1.getDate()} ${MESC[l1.getMonth()].toUpperCase()}</div>`
+    + r.fal.map(c => `<div style="font-size:14.5px"><b>${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}</b>${c[4] ? " · " + esc(c[4]) : ""} · ${esc(c[5] || "falta")}</div>`).join("")
+    + (dias.length ? `<div style="font-size:13px;padding-top:4px">Horas libres esa semana:</div>` + dias.map(d => `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14.5px;font-weight:600;min-width:110px">${esc(diaTxt(d.f))}</span>${d.h.map(x => `<span style="font-size:14px;font-weight:600;background:#E3ECF4;color:#1D4F78;border-radius:10px;padding:8px 12px"${x[2] ? ` title="${esc(x[2])}"` : ""}>${esc(x[1])}</span>`).join("")}</div>`).join("") + `<div style="font-size:12px;opacity:.85">Pide en clase que te la guarden. Recuperarla en otra semana contaría como clase extra.</div>`
+      : `<div style="font-size:13px">Esa semana no hay horas libres; pregunta en clase.</div>`) + `</div>`;
+}
+// recuadro FALTAS de Inicio: naranja solo si hay alguna que se puede recuperar esta semana
+function tileFaltas(tile, a) {
+  const n = a.faltas.length || a.netas, rec = a.rec;
+  if (a.porRec > 0) return tile("t-nar", "FALTAS", String(n), a.porRec === 1 ? "1 esta semana" : a.porRec + " esta semana", "Faltas");
+  return tile("", "FALTAS", String(n), n === 0 ? "ninguna este curso" : rec === 1 ? "1 recuperada" : rec > 1 ? rec + " recuperadas" : "este curso", "Faltas");
+}
+// pestaña Faltas: cifras arriba y la lista agrupada por meses (la más reciente arriba)
+function resumenFaltas(el) {
+  const n = el.faltas.length;
+  let h = `<div class="tres" style="grid-template-columns:repeat(${el.porRec ? 3 : 2},1fr)"><div style="background:#fff;border:1px solid #D5DCE1"><div class="k gris">Faltas</div><div class="v">${n || el.netas}</div></div><div style="background:#DDEFE3;color:#22603A"><div class="k">Recuperadas</div><div class="v">${el.rec}</div></div>`
+    + (el.porRec ? `<div style="background:#FBE7D2;color:#7A3A05"><div class="k">Esta semana</div><div class="v">${el.porRec}</div></div>` : "") + `</div>`;
+  if (el.motivos && n) h += `<div class="gris" style="font-size:13.5px;padding:0 4px">${esc(el.motivos)}</div>`;
+  return h;
+}
+function pintarFaltas(el) {
+  const n = el.faltas.length;
+  let h = resumenFaltas(el);
+  if (!n) {
+    // sin el detalle día a día (cursos antiguos): las faltas de cada mes
+    const conF = el.meses.filter(m => m[2] > 0);
+    return h + `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px">` + (conF.length ? `<div class="gris" style="font-size:13.5px;padding:10px 0 4px">De este curso solo tengo cuántas faltas hubo cada mes.</div>` + conF.map(m => `<div class="lin"><div class="x"><div class="n">${esc(m[0])}</div></div><span class="chip c-pend">${m[2]} ${m[2] === 1 ? "falta" : "faltas"}</span></div>`).join("") : `<div class="gris" style="padding:12px 0">Ninguna falta este curso.</div>`) + `</div>`;
+  }
+  const grupos = []; el.faltas.forEach(f => { let g = grupos.find(x => x.mes === f.mes); if (!g) { g = { mes: f.mes, l: [] }; grupos.push(g); } g.l.push(f); });
+  return h + `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px">` + grupos.map(g => `<div class="mesf">${esc((g.mes || "").toUpperCase())} · ${g.l.length} ${g.l.length === 1 ? "FALTA" : "FALTAS"}</div>`
+    + g.l.map(f => `<div class="lin"${fexpPuede(f.m, f.fe) ? ` data-fexp="${esc(f.fe)}|${f.ai}" style="cursor:pointer"` : ""}><div class="x"><div class="n">${esc(f.dia)}</div><div class="d">${esc(conDesc(f.motivo, descF(f.fe, f.ai, f.desc)))}${fexpPuede(f.m, f.fe) ? ` <span style="color:#1D4F78;font-weight:600">${descF(f.fe, f.ai, f.desc) ? "✎" : "✎ Explicar"}</span>` : ""}</div></div>${f.est === 1 ? `<span class="chip c-rec largo">Recuperada${f.recEl ? " el " + esc(f.recEl) : ""}</span>` : f.est === 2 ? `<span class="chip c-pend largo">Puedes recuperarla esta semana</span>` : ""}</div>`).join("")).join("") + `</div>`;
+}
+// ---------------- Evolución (2/11/2026): puntuaciones por golpes en un gráfico de araña ----------------
+// d.evo = { cats: [7 nombres], personas: [ { nombre, lista: [ { f: "dd/MM/yyyy", c: [7 notas o null], m: media } ] } ] }
+function n1(v) { return v == null ? "—" : (Math.round(v * 10) / 10).toFixed(1).replace(".", ","); }
+function radarSVG(cats, vals, prev, tam, conTexto) {
+  // (2/11/2026) el nombre más largo (Competitividad) va abajo, donde cabe grande sin cortarse
+  {
+    const n0 = cats.length, abajo = [];
+    for (let i = 0; i < n0; i++) { const a = -Math.PI / 2 + 2 * Math.PI * i / n0; if (Math.sin(a) > 0.6) abajo.push(i); }
+    let L = 0; cats.forEach((c, i) => { if (c.length > cats[L].length) L = i; });
+    if (abajo.length && abajo.indexOf(L) < 0 && cats[L].length > 10) {   // (3/11/2026) solo si es muy largo: si no, se respeta el orden de Alain
+      const T = abajo.reduce((m, i) => Math.abs(i - L) < Math.abs(m - L) ? i : m, abajo[0]);
+      const sw = arr => { if (!arr) return arr; const b = arr.slice(); const t = b[L]; b[L] = b[T]; b[T] = t; return b; };
+      cats = sw(cats); vals = sw(vals); prev = sw(prev);
+    }
+  }
+  const n = cats.length, W = conTexto ? Math.round(tam * 1.3) : tam, H = tam, R = conTexto ? H * 0.40 : W * 0.44, cx = W / 2, cy = H / 2 + (conTexto ? 6 : 0);
+  const P = (i, v) => { const a = -Math.PI / 2 + 2 * Math.PI * i / n, r = R * Math.max(0, Math.min(10, v || 0)) / 10; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; };
+  const pol = arr => arr.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  let g = "";
+  for (let k = 2; k <= 10; k += 2) g += `<polygon points="${pol(cats.map((_, i) => P(i, k)))}" fill="none" stroke="${k === 10 ? "#C2CDD6" : "#E3E8EC"}" stroke-width="1"/>`;
+  // (3/11/2026) las puntas sin nota: eje claro y punteado, y la línea las salta (no baja a 0)
+  cats.forEach((_, i) => { const p = P(i, 10), sin = vals[i] == null; g += `<line x1="${cx}" y1="${cy}" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" stroke="${sin ? "#EEF1F3" : "#E3E8EC"}" stroke-width="1"${sin ? ' stroke-dasharray="4 4"' : ""}/>`; });
+  const conV = arr => arr.map((v, i) => v == null ? null : P(i, v)).filter(p => p);
+  if (prev && prev.filter(v => v != null).length >= 3) g += `<polygon points="${pol(conV(prev))}" fill="none" stroke="#8A96A0" stroke-width="${conTexto ? 1.6 : 1.2}" stroke-dasharray="4 3"/>`;
+  const pv = conV(vals);
+  if (pv.length >= 3) g += `<polygon points="${pol(pv)}" fill="rgba(29,79,120,.22)" stroke="#1D4F78" stroke-width="${conTexto ? 2.6 : 2}" stroke-linejoin="round"/>`;
+  else if (pv.length === 2) g += `<polyline points="${pol(pv)}" fill="none" stroke="#1D4F78" stroke-width="${conTexto ? 2.6 : 2}"/>`;
+  if (conTexto) {
+    vals.forEach((v, i) => { if (v == null) return; const p = P(i, v); g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.5" fill="#1D4F78" stroke="#fff" stroke-width="1.5"/>`; });
+    cats.forEach((c, i) => {
+      const a = -Math.PI / 2 + 2 * Math.PI * i / n, x = cx + Math.cos(a) * (R + 9), y = cy + Math.sin(a) * (R + 9);
+      const anc = Math.cos(a) > 0.25 ? "start" : Math.cos(a) < -0.25 ? "end" : "middle", dy = Math.sin(a) > 0.3 ? 11 : Math.sin(a) < -0.3 ? -14 : 0;
+      g += `<text x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anc}" font-size="11.5" font-weight="700" fill="${vals[i] == null ? "#AAB4BC" : "#13222B"}">${esc(c.toUpperCase())}</text>`;
+      g += `<text x="${x.toFixed(1)}" y="${(y + dy + 14).toFixed(1)}" text-anchor="${anc}" font-size="12.5" font-weight="750" fill="${vals[i] == null ? "#AAB4BC" : "#1D4F78"}">${vals[i] == null ? "aún no" : n1(vals[i])}</text>`;
+    });
+  }
+  return `<svg width="${conTexto ? "100%" : W}" ${conTexto ? "" : `height="${H}"`} viewBox="0 0 ${W} ${H}" style="overflow:visible" role="img" aria-label="Gráfico de araña de las puntuaciones">${g}</svg>`;
+}
+// la persona de la que se enseña la evolución (en una cuenta con varios: la elegida o la primera que tenga puntuaciones)
+function evoPersona(evo, per) {
+  const l = evo.personas, conDatos = l.filter(p => p.lista.length);
+  return l.find(p => p.nombre === per && p.lista.length) || l.find(p => p.nombre === S.evoPer) || conDatos[0] || l[0];
+}
+function flecha(a, b) {
+  if (a == null || b == null) return "";
+  const d = Math.round((b - a) * 10) / 10;
+  return d > 0 ? `<span class="sube">▲ +${n1(d)}</span>` : d < 0 ? `<span class="baja">▼ −${n1(-d)}</span>` : `<span class="igual">= 0,0</span>`;
+}
+// (3/11/2026) niveles: la anterior con la que se compara es la del MISMO nivel; insignia, barrita y enhorabuena al subir
+function antNivel(evo, l, i) {
+  if (i <= 0) return null; if (!evo.niveles) return l[i - 1];
+  for (let j = i - 1; j >= 0; j--) if ((l[j].n || "") === (l[i].n || "")) return l[j];
+  return null;
+}
+function bloqueNivel(evo, p, l, i) {
+  if (!evo.niveles || !p || !p.nivel) return "";
+  const N = evo.niveles, C = evo.colores_nivel || [], k = N.indexOf(p.nivel); if (k < 0) return "";
+  const u = l[i], ui = u ? N.indexOf(u.n || "") : -1;
+  // acaba de subir: esta es la primera de su nivel y hay alguna de un nivel más bajo antes
+  const primera = u && !l.slice(0, i).some(x => x.n === u.n), venia = u && l.slice(0, i).some(x => N.indexOf(x.n || "") >= 0 && N.indexOf(x.n || "") < ui);
+  let h = "";
+  if (i === l.length - 1 && primera && venia) h += `<div style="background:#E6F4EA;border:1px solid #B8DCC3;color:#22603A;border-radius:14px;padding:12px 14px;font-size:15px">⭐ <b>¡Has subido a ${esc(u.n)}!</b> Desde ahora tus notas cuentan sobre este nivel.</div>`;
+  h += `<div class="card" style="gap:8px"><div style="display:flex;align-items:center;gap:10px"><span style="background:${C[k] || "#1D4F78"};color:${k >= 3 ? "#fff" : "#133254"};border-radius:999px;padding:5px 13px;font-size:13px;font-weight:750;letter-spacing:.04em">NIVEL ${esc(p.nivel.toUpperCase())}</span></div>`
+    + `<div style="display:flex;gap:4px">` + N.map((x, j) => `<div style="flex:1;height:9px;border-radius:5px;background:${j <= k ? (C[j] || "#1D4F78") : "#E3E8EC"}${j === k ? ";box-shadow:0 0 0 2px #fff,0 0 0 3.5px " + (C[j] || "#1D4F78") : ""}"></div>`).join("") + `</div>`
+    + `<div style="display:flex;font-size:10.5px" class="gris">` + N.map((x, j) => `<span style="flex:1;text-align:center;${j === k ? "font-weight:750;color:#1D4F78" : ""}">${esc(x.length > 7 ? x.slice(0, 6) + "." : x)}</span>`).join("") + `</div>`
+    + `<div class="gris" style="font-size:12.5px">Tu nota es sobre tu nivel: un 8 en ${esc(p.nivel)} es ir muy bien en ${esc(p.nivel)}.</div></div>`;
+  return h;
+}
+function tileEvo(evo, per, varios) {
+  const p = evoPersona(evo, per), l = p ? p.lista : [];
+  if (!l.length) return `<button class="tile" data-evo="1"><span class="l">EVOLUCIÓN</span><span class="s">Todavía sin puntuar${varios && p ? " (" + esc(p.nombre) + ")" : ""}</span></button>`;
+  const u = l[l.length - 1], a = antNivel(evo, l, l.length - 1);
+  return `<button class="tile t-evo" data-evo="1"><span class="l">EVOLUCIÓN${varios ? " · " + esc(p.nombre.toUpperCase()) : ""}${evo.niveles && p.nivel ? " · " + esc(p.nivel.toUpperCase()) : ""}</span><span class="fila">${radarSVG(evo.cats, u.c, a ? a.c : null, 74, false)}<span style="display:flex;flex-direction:column"><span class="v" style="font-size:26px">${n1(u.m)}</span><span class="s">${a ? flecha(a.m, u.m) : "sobre 10"}</span></span></span></button>`;
+}
+
+// ---------- partidos (18/11/2026) ----------
+// Los apunta el alumno y se guardan EN SU MÓVIL. Cada vez que apunta, cambia o borra uno, la lista entera va cifrada con la
+// llave de su cuenta al buzón (Alain no la ve: su programa solo la guarda y la devuelve). Si cambia de móvil, al entrar la recupera.
+// Partido: { i, f: "yyyy-mm-dd", q: quién (si la cuenta tiene varios), m: "I"/"D", c: compañero, r: rival(es), k: tipo, s: [[tú, rival], …], g: 1/0, n: nota }
+const PK = () => "gd_par_" + S.id, PKP = () => "gd_par_pend_" + S.id;
+const TIPOS_P = ["Liga", "Torneo", "Amistoso", "Otro"];
+function partidosLocales() { const o = ls.get(PK()); return o && Array.isArray(o.l) ? o : { t: 0, l: [] }; }
+function guardarPartidos(l) { ls.set(PK(), { t: Date.now(), l }); ls.set(PKP(), 1); enviarPartidos(); }
+async function enviarPartidos() {
+  try {
+    if (!S.llave || !S.id || !S.datos) return;   // (también Alain, con sus partidos de prueba)
+    const o = partidosLocales();
+    const sobre = JSON.stringify({ t: o.t, c: await cerrar(enc.encode(JSON.stringify(o.l)), S.llave) });
+    const prueba = b64.a(await hmac(S.llave.slice(32, 64), enc.encode("partidos|" + S.id + "|" + sobre)));
+    const cuerpo = new URLSearchParams({ "form-name": "buzon", id: S.id, sal: "partidos", iter: "0", sobre, prueba });
+    const r = await buzonPost(cuerpo);
+    if ((r.ok || r.type === "opaque") && partidosLocales().t === o.t) { ls.del(PKP()); S.parFallo = false; } else S.parFallo = true;
+  } catch (e) { S.parFallo = true; }   // sin conexión: queda pendiente y se manda la próxima vez que abra la app
+}
+// la copia que guarda el programa vuelve con los datos: si es más nueva que la del móvil (o el móvil no tiene), se usa esa
+async function recuperarPartidos() {
+  try {
+    const rem = S.ficha && S.ficha.partidos; if (!rem || !rem.c || !S.llave || ls.get(PKP())) return;
+    const loc = partidosLocales(); if ((rem.t || 0) <= (loc.t || 0)) return;
+    const l = JSON.parse(dec.decode(await abrir(rem.c, S.llave)));
+    if (Array.isArray(l)) { ls.set(PK(), { t: rem.t, l }); if (S.tab === "Partidos" && S.pantalla === "app") pintar(); }
+  } catch (e) { }
+}
+const fechaCorta = f => { const d = new Date(f + "T12:00:00"); return d.getDate() + " " + ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"][d.getMonth()]; };
+const mesLargo = f => { const d = new Date(f + "T12:00:00"); return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][d.getMonth()] + " " + d.getFullYear(); };
+const setsTxt = p => (p.s || []).map(x => x[0] + "-" + x[1]).join("  ");
+const normRival = t => String(t || "").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function pintarPartidos(D, per, varios) {
+  if (S.parEd) return formPartido(D, varios);
+  S.parCtx = { per, varios, fuera: D.parFuera || [] };
+  // (Alain) en la principal: «+ Nuevo partido» y «Consultar partidos». Dentro de Consultar / Modificar / un partido: solo «← Volver»
+  const sub = S.parVista || S.parVer;
+  let h;
+  if (!sub) h = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="boton" id="parNuevo">+ Nuevo partido</button><button class="boton2" data-partodos="1" style="min-height:50px">Consultar partidos</button></div>`;
+  else {
+    h = `<button class="boton2" id="parAtras">← Volver</button>`;
+    // buscador y «ordenar por» solo en las listas (todos / modificar); al escribir solo se repinta lo de debajo (no se cierra el teclado)
+    if (!S.parVer) {
+      h += `<div class="pbus"><span aria-hidden="true">⌕</span><input type="search" id="parBus" placeholder="Buscar: rival, nota, fecha, 6-4, ganado…" value="${esc(S.parBusca || "")}" autocomplete="off"><button type="button" id="parBusX" aria-label="Borrar"${S.parBusca ? "" : " hidden"}>✕</button></div>`;
+      const OR = [["reciente", "Más recientes primero"], ["antiguo", "Más antiguos primero"], ["rival", "Rival (A-Z)"], ["comp", "Competición (A-Z)"], ["ganados", "Ganados primero"], ["perdidos", "Perdidos primero"]];
+      h += `<div style="display:flex;align-items:center;gap:8px"><label for="parOrd" class="gris" style="font-size:14px;white-space:nowrap">Ordenar por</label><select id="parOrd" style="flex:1;font-size:16px;padding:9px 10px;border:1.5px solid #9FB3C3;border-radius:10px;background:#fff;color:#13222B">${OR.map(o => `<option value="${o[0]}"${(S.parOrden || "reciente") === o[0] ? " selected" : ""}>${o[1]}</option>`).join("")}</select></div>`;
+    }
+  }
+  return h + `<div id="parCont" style="display:flex;flex-direction:column;gap:12px">${cuerpoPartidos(per, varios)}</div>`;
+}
+// lo que se mira al buscar en un partido (sin mayúsculas ni acentos, por trozos: «lucia nov»)
+const plano = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function textoPartido(p) {
+  const d = new Date((p.f || "") + "T12:00:00");
+  return plano([p.r, p.t, p.n, p.q, p.f, fechaCorta(p.f), mesLargo(p.f), d.getDate() + "/" + (d.getMonth() + 1), (p.s || []).map(x => x[0] + "-" + x[1]).join(" "), p.g ? "ganado victoria gane" : "perdido derrota perdi"].join(" "));
+}
+function cuerpoPartidos(per, varios) {
+  const todos = partidosLocales().l.slice().sort((a, b) => (b.f || "").localeCompare(a.f || "") || 0);
+  let l = (varios && per !== "Todos" ? todos.filter(p => p.q === per) : todos).filter(p => !p.q || (S.parCtx.fuera || []).indexOf(p.q) < 0);
+  const q = (S.parVista ? plano(S.parBusca || "") : "").trim(), trozos = q.split(/\s+/).filter(x => x);
+  let h = "";
+  if (trozos.length) {
+    const total = l.length; l = l.filter(p => { const t = textoPartido(p); return trozos.every(w => t.indexOf(w) >= 0); });
+    if (!S.parVer) h += `<div class="gris" style="font-size:13.5px;padding:0 4px">${l.length ? (l.length === 1 ? "1 partido" : l.length + " partidos") + " de " + total + " con «" + esc(S.parBusca.trim()) + "»" : "Ningún partido con «" + esc(S.parBusca.trim()) + "»."}</div>`;
+    if (!l.length && !S.parVer) return h;
+  }
+  // un partido (desde «Modificar resultado»): todo lo apuntado y el lápiz para cambiarlo
+  if (S.parVer) { const p = todos.find(x => x.i === S.parVer); if (p) return h + fichaPartido(p, varios); S.parVer = null; }
+  // todos (solo para mirar) o, desde «Modificar resultado», todos para elegir cuál cambiar; con el buscador de arriba
+  if (S.parVista === "todos" || S.parVista === "mod") {
+    if (!l.length) return h + `<div class="card"><div class="gris">Todavía no has apuntado partidos.</div></div>`;
+    // ordenar por… (por fecha, con el mes de cabecera; si no, la lista seguida)
+    const o = S.parOrden || "reciente", cmpTxt = (a, b) => plano(a).localeCompare(plano(b), "es");
+    const ord = l.slice();
+    if (o === "antiguo") ord.reverse();
+    else if (o === "rival") ord.sort((a, b) => cmpTxt(a.r, b.r) || (b.f || "").localeCompare(a.f || ""));
+    else if (o === "comp") ord.sort((a, b) => (a.t ? 0 : 1) - (b.t ? 0 : 1) || cmpTxt(a.t, b.t) || (b.f || "").localeCompare(a.f || ""));
+    else if (o === "ganados") ord.sort((a, b) => (b.g ? 1 : 0) - (a.g ? 1 : 0) || (b.f || "").localeCompare(a.f || ""));
+    else if (o === "perdidos") ord.sort((a, b) => (a.g ? 1 : 0) - (b.g ? 1 : 0) || (b.f || "").localeCompare(a.f || ""));
+    const porMes = o === "reciente" || o === "antiguo";
+    let mes = "", lista = "";
+    ord.forEach(p => { if (porMes) { const m = mesLargo(p.f); if (m !== mes) { mes = m; lista += `<div class="tit" style="padding:8px 4px 0">${esc(m.toUpperCase())}</div>`; } } lista += filaPartido(p, varios, per, S.parVista === "mod"); });
+    return h + `<div class="tit" style="padding:2px 4px">${S.parVista === "mod" ? "MODIFICAR · PULSA EL PARTIDO QUE QUIERES CAMBIAR" : "TUS PARTIDOS · " + l.length}</div>${lista}`;
+  }
+  if (!l.length) return h + `<div class="card"><div class="tit">TUS PARTIDOS</div><div class="gris" style="font-size:14.5px;line-height:1.5">Apunta aquí los partidos que juegues y verás cuántos ganas, tus rachas y contra quién juegas más.<br><br>Se guardan en tu móvil, y también una copia por si lo cambias: al volver a entrar con tu contraseña, los recuperas.</div></div>`;
+  const g = l.filter(p => p.g).length, n = l.length;
+  // racha: los últimos seguidos con el mismo resultado
+  let racha = 0; for (const p of l) { if (!!p.g === !!l[0].g) racha++; else break; }
+  // (Alain) sin las fichas de colores: un resumen sencillo
+  const cif = (v, lab, col) => `<div style="flex:1;text-align:center"><div style="font-size:26px;font-weight:800;color:${col}">${v}</div><div class="gris" style="font-size:12.5px;font-weight:700;letter-spacing:.06em">${lab}</div></div>`;
+  h += `<div class="card"><div class="tit">RESUMEN</div><div style="display:flex">${cif(n, "JUGADOS", "#13222B")}${cif(g, "GANADOS", "#22603A")}${cif(n - g, "PERDIDOS", "#9E2B2B")}</div>`
+    + `<div class="gris" style="font-size:14px;text-align:center">${Math.round(100 * g / n)} % de victorias · racha: ${racha} ${racha === 1 ? (l[0].g ? "ganado" : "perdido") : (l[0].g ? "ganados seguidos" : "perdidos seguidos")}</div></div>`;
+  // (Alain) en la principal, solo los 4 últimos; el 5.º es «Ver todos». Debajo, «Modificar resultado»
+  const ult = l.slice(0, 4);
+  h += `<div class="tit" style="padding:2px 4px">ÚLTIMOS PARTIDOS</div>` + ult.map(p => filaPartido(p, varios, per, false)).join("")
+    + (l.length > 4 ? `<button class="boton2" data-partodos="1">Ver todos (${l.length}) ›</button>` : "");
+  h += `<button class="boton2" data-parmod="1">${LAPIZ} Modificar resultado</button>`;
+  // por competición (si hay más de una)
+  const comps = {}; l.forEach(p => { const k = p.t ? plano(p.t) : ""; if (!k) return; if (!comps[k]) comps[k] = { t: p.t, g: 0, p: 0 }; p.g ? comps[k].g++ : comps[k].p++; });
+  const lc = Object.values(comps).sort((a, b) => (b.g + b.p) - (a.g + a.p));
+  if (lc.length > 1) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">POR COMPETICIÓN</div>` + lc.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.t)}</div><div class="d">${x.g + x.p} ${x.g + x.p === 1 ? "partido" : "partidos"}</div></div><span class="chip ${x.g >= x.p ? "c-rec" : "c-debe"}">${x.g} – ${x.p}</span></div>`).join("") + `</div>`;
+  // contra quién
+  const riv = {}; l.forEach(p => { String(p.r || "").split(/\s*(?:\/|,|\by\b)\s*/i).filter(x => x.trim()).forEach(x => { const k = normRival(x); if (!riv[k]) riv[k] = { nom: x.trim(), g: 0, p: 0 }; p.g ? riv[k].g++ : riv[k].p++; }); });
+  const top = Object.values(riv).sort((a, b) => (b.g + b.p) - (a.g + a.p) || b.g - a.g).slice(0, 5).filter(x => x.g + x.p > 1);
+  if (top.length) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">CONTRA QUIÉN JUEGAS MÁS</div>` + top.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.nom)}</div><div class="d">${x.g + x.p} partidos</div></div><span class="chip ${x.g >= x.p ? "c-rec" : "c-debe"}">${x.g} – ${x.p}</span></div>`).join("") + `</div>`;
+  if (S.parFallo && ls.get(PKP())) h += `<div class="gris" style="font-size:12.5px;text-align:center">La copia de seguridad se mandará en cuanto haya conexión.</div>`;
+  return h;
+}
+const LAPIZ = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="M15 5l4 4"/></svg>`;
+// (18/11/2026, como en Playtomic) el partido como marcador: una fila por jugador y los sets en columnas;
+// el número de quien gana el set, fuerte; el otro, gris. 🏆 junto al ganador.
+function marcador(p, varios, per) {
+  const yo = varios && p.q ? p.q + (per === "Todos" ? "" : " (tú)") : "Tú", s = p.s || [];
+  const num = (k, j) => { const x = s[k]; if (!x) return `<span></span>`; return `<span class="n${x[j] > x[1 - j] ? "" : " p"}">${x[j]}</span>`; };
+  // (18/11/2026) si ganas, tu fila en verde; si pierdes, la del rival en rojo (de punta a punta, hasta el 3.er set)
+  const fila = (nom, j, gana, fondo) => `<div class="mkf"${fondo ? ` style="background:${fondo}"` : ""}><div class="j"><span>${esc(nom)}</span>${gana ? `<b style="flex:none;font-size:14px">🏆</b>` : ""}</div>${num(0, j)}${num(1, j)}${num(2, j)}</div>`;
+  return `<div class="mk"><div class="mkf"><span></span><span class="h">SET 1</span><span class="h">SET 2</span><span class="h">SET 3</span></div>${fila(yo, 0, p.g, p.g ? "#DDF1E4" : "")}${fila(p.r || "—", 1, !p.g, p.g ? "" : "#FBE3E3")}</div>`;
+}
+function filaPartido(p, varios, per, pulsable) {
+  const d = new Date((p.f || "") + "T12:00:00"), dia = DIASL[d.getDay()].slice(0, 3);
+  const top = `<div class="mkt"><span><b>${dia.charAt(0).toUpperCase() + dia.slice(1)} ${fechaCorta(p.f)}</b>${p.t ? " · " + esc(p.t) : ""}</span><span style="display:flex;align-items:center;gap:6px"><span class="chip ${p.g ? "c-rec" : "c-debe"}">${p.g ? "Ganado" : "Perdido"}</span>${pulsable ? '<span style="color:#9FB3C3;font-size:18px">›</span>' : ""}</span></div>`;
+  const nota = p.n ? `<div class="gris" style="font-size:13px;font-style:italic">${esc(p.n)}</div>` : "";
+  return pulsable ? `<button class="mkc" data-parver="${esc(p.i)}">${top}${marcador(p, varios, per)}${nota}</button>` : `<div class="mkc">${top}${marcador(p, varios, per)}${nota}</div>`;
+}
+function fichaPartido(p, varios) {
+  const d = new Date((p.f || "") + "T12:00:00"), DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  const fila = (k, v) => v ? `<div class="lin"><div class="x"><div class="d">${k}</div><div class="n">${v}</div></div></div>` : "";
+  return `<div class="card" style="gap:0"><div style="display:flex;align-items:center;gap:10px;padding-bottom:6px"><span class="gp ${p.g ? "g" : "p"}" style="width:38px;height:38px;border-radius:19px;font-size:15px">${p.g ? "G" : "P"}</span><div style="flex-grow:1"><div style="font-size:18px;font-weight:750">${p.g ? "Ganado" : "Perdido"}</div><div class="gris" style="font-size:13.5px">${DIAS[d.getDay()]} ${fechaCorta(p.f)} ${d.getFullYear()}</div></div>`
+    + `<button type="button" data-parlapiz="1" aria-label="Modificar" style="border:1.5px solid #1D4F78;background:#fff;color:#1D4F78;border-radius:22px;width:46px;height:46px;display:flex;align-items:center;justify-content:center">${LAPIZ.replace('width="18" height="18"', 'width="22" height="22"').replace("vertical-align:-3px", "")}</button></div>`
+    + `<div style="padding:8px 0 4px">${marcador(p, varios, S.parCtx ? S.parCtx.per : "")}</div>` + fila("COMPETICIÓN", esc(p.t || "")) + (varios ? fila("QUIÉN JUGÓ", esc(p.q || "")) : "") + fila("NOTA", esc(p.n || "")) + `</div>`
+    ;
+}
+// las competiciones que ya ha usado: primero las más usadas; si ha empezado a escribir, solo las que encajan
+function titulosUsados() { const c = {}; partidosLocales().l.forEach(p => { if (p.t) { const k = plano(p.t); if (!c[k]) c[k] = { t: p.t, n: 0, f: "" }; c[k].n++; if ((p.f || "") > c[k].f) { c[k].f = p.f; c[k].t = p.t; } } }); return Object.values(c).sort((a, b) => b.n - a.n || b.f.localeCompare(a.f)).map(x => x.t); }
+// (Alain) un desplegable que hace de buscador: vacío de salida; al tocarlo, todas las que ha usado (con barra si son muchas);
+// según escribe, solo las que contienen lo escrito
+function sugerenciasTitulo(escrito) {
+  const q = plano(escrito).trim(), l = titulosUsados().filter(t => !q || (plano(t).indexOf(q) >= 0 && plano(t) !== q));
+  return l.map(t => `<button type="button" data-tit="${esc(t)}">${esc(t)}</button>`).join("");
+}
+function formPartido(D, varios) {
+  const e = S.parEd, nuevo = !e.i;
+  const seg = (nom, ops, val) => `<div class="segc" style="grid-template-columns:repeat(${ops.length},1fr)">` + ops.map(o => `<button type="button" data-seg="${nom}" data-v="${esc(o[0])}" class="${String(val) === String(o[0]) ? "on" : ""}">${esc(o[1])}</button>`).join("") + `</div>`;
+  const s = e.s || [], v = (i, j) => s[i] && s[i][j] != null ? s[i][j] : 0;
+  // (Alain) los dos primeros sets, una cifra (como mucho 7-6); el 3.º, dos (por si es un súper tie-break). Empiezan en 0.
+  const caja = (i, j) => `<input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-max="${i < 2 ? 1 : 2}" id="pf_s${i}${j ? "b" : "a"}" data-set="${i * 2 + j}" value="${v(i, j)}">`;
+  let h = `<form class="card pf" id="parF"><div class="tit">${nuevo ? "APUNTAR UN PARTIDO" : "CAMBIAR EL PARTIDO"}</div>`;
+  if (varios) h += `<label>QUIÉN HA JUGADO</label>` + seg("q", D.personas.map(p => [p.nombre, p.nombre]), e.q);
+  // (Alain) a la derecha de la fecha, la competición («Liga IALE», «Amistoso»…): debajo salen las que ya ha usado para no reescribirlas
+  h += `<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:10px"><div style="display:flex;flex-direction:column;gap:12px;min-width:0"><label for="pf_f">FECHA</label><input type="date" id="pf_f" value="${esc(e.f)}" required style="min-width:0"></div>`
+    + `<div style="display:flex;flex-direction:column;gap:12px;min-width:0"><label for="pf_t">COMPETICIÓN</label><div class="desp"><input type="text" id="pf_t" value="${esc(e.t || "")}" autocomplete="off" placeholder="Liga, amistoso…"><button type="button" id="pfTv" aria-label="Ver las que has usado">▾</button><div class="desp-l" id="pfSug" hidden></div></div></div></div>`
+    // (18/11/2026, como en Playtomic) tu fila y la del rival, con los sets en columnas
+    + `<label>RESULTADO</label><div class="mgr"><span></span><span class="h">SET 1</span><span class="h">SET 2</span><span class="h">SET 3</span>`
+    + `<span class="yo" id="pf_yo">${esc(varios && e.q ? e.q : "Tú")}</span>${caja(0, 0)}${caja(1, 0)}${caja(2, 0)}`
+    + `<input type="text" id="pf_r" value="${esc(e.r || "")}" autocomplete="off" placeholder="Rival" aria-label="Rival" style="min-width:0;font-size:16px;padding:10px 10px">${caja(0, 1)}${caja(1, 1)}${caja(2, 1)}</div>`
+    + `<div class="gris" style="font-size:12.5px">Escribe el rival en su casilla. El 3.º set, si lo hubo (también si fue un súper tie-break, hasta 2 cifras). Quién ha ganado sale solo.</div>`
+    + `<label for="pf_n">NOTA (OPCIONAL)</label><textarea id="pf_n" maxlength="200">${esc(e.n || "")}</textarea>`
+    + `<div id="pfErr" class="error" style="display:none"></div>`
+    + `<button class="boton" type="submit">Guardar</button><button class="boton2" type="button" id="pfNo">Cancelar</button>`
+    + (nuevo ? "" : `<button type="button" id="pfBorrar" style="border:0;background:none;color:#9E2B2B;font-weight:600;padding:10px">Borrar este partido</button>`)
+    + `</form>`;
+  return h;
+}
+function leerFormPartido() {
+  const e = S.parEd, val = id => { const x = document.getElementById(id); return x ? x.value : ""; };
+  e.f = val("pf_f"); e.t = val("pf_t").trim(); e.r = val("pf_r").trim(); e.n = val("pf_n").trim();
+  e.s = [0, 1, 2].map(i => [+(val("pf_s" + i + "a") || 0), +(val("pf_s" + i + "b") || 0)]).filter(x => x[0] + x[1] > 0);   // 0-0: ese set no se jugó
+}
+// lo de quién ganó sale solo de los sets (se puede cambiar, por si fue una retirada)
+function ganadorSets(s) { const a = s.filter(x => x[0] > x[1]).length, b = s.filter(x => x[1] > x[0]).length; return a > b ? 1 : b > a ? 0 : null; }
+function enlazarPartidos(D, varios) {
+  const nb = document.getElementById("parNuevo");
+  const at = document.getElementById("parAtras");
+  if (at) at.onclick = () => { if (S.parVer) S.parVer = null; else { S.parVista = null; S.parBusca = ""; } pintar(); window.scrollTo(0, 0); };
+  const po = document.getElementById("parOrd");
+  if (po) po.onchange = () => { S.parOrden = po.value; const c = document.getElementById("parCont"); if (c) { c.innerHTML = cuerpoPartidos(S.parCtx.per, S.parCtx.varios); enlazarListaPartidos(); } };
+  if (nb) nb.onclick = () => { const hoy = new Date(); hoy.setMinutes(hoy.getMinutes() - hoy.getTimezoneOffset()); S.parEd = { f: hoy.toISOString().slice(0, 10), q: varios ? (S.per !== "Todos" ? S.per : D.personas[0].nombre) : "" }; pintar(); window.scrollTo(0, 0); };
+  avisoPartidos();
+  const bus = document.getElementById("parBus"), busX = document.getElementById("parBusX");
+  const repinta = () => { const c = document.getElementById("parCont"); if (!c) return; c.innerHTML = cuerpoPartidos(S.parCtx.per, S.parCtx.varios); enlazarListaPartidos(); busX.hidden = !S.parBusca; };
+  if (bus) { bus.oninput = () => { S.parBusca = bus.value; repinta(); }; busX.onclick = () => { S.parBusca = ""; bus.value = ""; repinta(); bus.focus(); }; }
+  enlazarListaPartidos();
+  const f = document.getElementById("parF"); if (!f) return;
+  enlazarFormPartido(f, D, varios);
+}
+// (Alain) la primera vez que entran: que sepan que esto es solo suyo. Sale cada vez hasta que pulsan «Aceptar»
+function avisoPartidos() {
+  if (ls.get("gd_par_ok_" + S.id) || document.getElementById("capaPar")) return;
+  const c = document.createElement("div"); c.className = "capa"; c.id = "capaPar";
+  c.innerHTML = `<div class="hoja" role="dialog" aria-modal="true" aria-labelledby="tPar">
+<div id="tPar" style="font-size:19px;font-weight:750">Tus partidos son solo tuyos</div>
+<div style="font-size:15.5px;line-height:1.5">Los resultados que apuntes aquí <b>solo los ves tú</b>. No se le enseñan a nadie: solo se guarda una copia cifrada para devolvértela si cambias de móvil o borras la app.</div>
+<button class="boton" id="okPar">Aceptar</button></div>`;
+  document.body.appendChild(c);
+  document.getElementById("okPar").onclick = () => { ls.set("gd_par_ok_" + S.id, 1); c.remove(); };
+}
+function enlazarListaPartidos() {
+  const ir = f => () => { f(); pintar(); window.scrollTo(0, 0); };
+  $app.querySelectorAll("[data-partodos]").forEach(b => b.onclick = ir(() => { S.parVista = "todos"; S.parVer = null; S.parBusca = ""; }));
+  $app.querySelectorAll("[data-parmod]").forEach(b => b.onclick = ir(() => { S.parVista = "mod"; S.parVer = null; S.parBusca = ""; }));
+  $app.querySelectorAll("[data-parver]").forEach(b => b.onclick = ir(() => { S.parVer = b.dataset.parver; }));
+  $app.querySelectorAll("[data-parvolver]").forEach(b => b.onclick = ir(() => { S.parVer = null; S.parVista = "mod"; }));
+  $app.querySelectorAll("[data-parlapiz]").forEach(b => b.onclick = ir(() => { const p = partidosLocales().l.find(x => x.i === S.parVer); if (p) S.parEd = JSON.parse(JSON.stringify(p)); }));
+  $app.querySelectorAll("[data-par]").forEach(b => b.onclick = () => { const p = partidosLocales().l.find(x => x.i === b.dataset.par); if (p) { S.parEd = JSON.parse(JSON.stringify(p)); pintar(); window.scrollTo(0, 0); } });
+}
+function enlazarFormPartido(f, D, varios) {
+  const it = document.getElementById("pf_t"), sug = document.getElementById("pfSug"), tv = document.getElementById("pfTv");
+  const abrir = () => { sug.innerHTML = sugerenciasTitulo(it.value); sug.hidden = !sug.children.length;
+    // al tocar una (pointerdown: antes de que la casilla pierda el foco) se pone y se cierra la lista
+    sug.querySelectorAll("[data-tit]").forEach(b => b.onpointerdown = ev => { ev.preventDefault(); it.value = b.dataset.tit; S.parEd.t = it.value; sug.hidden = true; }); };
+  it.onfocus = abrir;
+  it.oninput = () => { S.parEd.t = it.value; abrir(); };
+  it.onblur = () => setTimeout(() => { sug.hidden = true; }, 150);
+  tv.onpointerdown = ev => { ev.preventDefault(); if (sug.hidden) { it.focus(); abrir(); } else sug.hidden = true; };
+  // «quién ha jugado»: se marca sin repintar (para no perder lo escrito ni el teclado)
+  $app.querySelectorAll("[data-seg]").forEach(b => b.onclick = () => { S.parEd[b.dataset.seg] = b.dataset.v; $app.querySelectorAll(`[data-seg="${b.dataset.seg}"]`).forEach(x => x.classList.toggle("on", x === b)); const yo = document.getElementById("pf_yo"); if (yo && b.dataset.seg === "q") yo.textContent = b.dataset.v; });
+  // los sets: al entrar en una casilla se selecciona el 0 (lo que escribas lo sustituye); con la cifra puesta, salta sola a la siguiente
+  // (en el 3.º set, si empieza por 1 espera a la segunda cifra: 10, 11…). El foco pasa dentro del mismo toque, así el teclado no se cierra.
+  const cajas = Array.from(f.querySelectorAll("[data-set]")).sort((a, b) => a.dataset.set - b.dataset.set);   // 1.º set tú, 1.º set rival, 2.º set…
+  cajas.forEach((c, k) => {
+    // (sin seleccionar el texto: en el iPhone eso saca «Cortar / Copiar / Pegar») al entrar, lo que había pasa a verse en gris
+    // y la casilla queda vacía para escribir; si sales sin escribir, vuelve lo de antes
+    c.onfocus = () => { if (c.value !== "") { c.placeholder = c.value; c.value = ""; } };
+    c.oninput = () => {
+      // la cifra nueva sustituye a lo que había (el 0 del principio o la de antes), aunque no estuviera seleccionado
+      const max = +c.dataset.max; let v = c.value.replace(/\D/g, "").replace(/^0+(?=\d)/, ""); if (v.length > max) v = v.slice(-max); c.value = v;
+      const listo = v.length >= max || (max === 2 && v.length === 1 && v !== "1");
+      if (listo && k + 1 < cajas.length) cajas[k + 1].focus();
+    };
+    c.onblur = () => { if (c.value === "") c.value = c.placeholder || "0"; };
+  });
+  document.getElementById("pfNo").onclick = () => { S.parEd = null; pintar(); window.scrollTo(0, 0); };
+  const bb = document.getElementById("pfBorrar");
+  if (bb) bb.onclick = () => { if (!confirm("¿Borrar este partido?")) return; guardarPartidos(partidosLocales().l.filter(x => x.i !== S.parEd.i)); S.parEd = null; S.parVer = null; S.parVista = "mod"; pintar(); window.scrollTo(0, 0); };
+  f.onsubmit = ev => {
+    ev.preventDefault(); leerFormPartido(); const e = S.parEd, err = document.getElementById("pfErr");
+    const mal = t => { err.textContent = t; err.style.display = "block"; };
+    if (!e.f) return mal("Falta la fecha.");
+    if (varios && !e.q) return mal("Elige quién ha jugado.");
+    if (!e.r) return mal("Escribe contra quién has jugado.");
+    if (!e.s.length) return mal("Pon el resultado.");
+    const w = ganadorSets(e.s); if (w === null) return mal(e.s.length === 2 ? "Vais un set a uno: falta el 3.º." : "Con ese resultado no se sabe quién ha ganado: revisa los sets.");
+    const p = { i: e.i || (Date.now().toString(36) + Math.random().toString(36).slice(2, 6)), f: e.f, r: e.r, s: e.s, g: w };
+    if (varios) p.q = e.q; if (e.n) p.n = e.n; if (e.t) p.t = e.t;
+    if (e.i && !confirm("¿Guardar los cambios de este partido?")) return;
+    const l = partidosLocales().l.filter(x => x.i !== p.i); l.push(p); guardarPartidos(l);
+    if (S.qApunta && !e.i) { const hq = ls.get(QH()) || {}; hq[S.qApunta] = 1; ls.set(QH(), hq); S.qApunta = null; }   // (Quedar) ya apuntado: esa partida deja de salir
+    S.parEd = null; if (e.i) S.parVer = p.i; pintar(); window.scrollTo(0, 0);
+  };
+}
+// ---------- (18/11/2026) «Quedar para jugar»: abrir una partida y que otros se unan ----------
+// Lo atiende un servicio en Cloudflare (QI().u), al momento y aunque el PC de Alain esté apagado. Las partidas las ven
+// todos con NOMBRE y NIVEL, nada más. El chat va cifrado de móvil a móvil: cada mensaje se cierra con la clave de cada
+// apuntado, y nadie más (ni el servicio) puede leerlo. Cada petición va firmada con una clave que sale de la de la cuenta.
+const QK = () => "gd_q_k_" + QI().id, QV = () => "gd_q_vis_" + QI().id, QS = () => "gd_q_sub_" + QI().id, QH = () => "gd_q_hecho_" + QI().id;
+
+// quién «soy» en Quedar: el de la cuenta; Alain, en sus pruebas, el alumno que está mirando (si el programa lo deja: D0.qp)
+function QI() {
+  const D0 = S.datos.admin && S.cuenta >= 0 ? S.datos.cuentas[S.cuenta] : null, qp = D0 && D0.qp;
+  const r = qp ? Object.assign({}, S.datos.q, qp, { como: true }) : Object.assign({}, S.datos.q, { id: S.id, como: false });
+  if (S.datos.admin) r.u = String(r.u || "").replace(/\/$/, "") + "/p";   // Alain: siempre en la caja de pruebas (los alumnos no la ven)
+  if (S.qQuien !== r.id) { if (S.qQuien !== undefined) { S.qVer = null; S.qEd = null; } S.qQuien = r.id; S.Q = null; S.qCl = null; S.qKq = null; S.qTxt = {}; S.qErr = ""; S.qT = 0; }
+  return r;
+}
+const QMAX = 500, QMAXAB = 3;
+function qMiNivel() { const q = QI(); return (q.niv || []).indexOf(q.nv); }
+async function qClaves() {
+  if (S.qCl) return S.qCl;
+  const al = { name: "ECDH", namedCurve: "P-256" };
+  const g = ls.get(QK());
+  if (g && g.priv && g.pub) { try { S.qCl = { priv: await crypto.subtle.importKey("jwk", g.priv, al, false, ["deriveBits"]), pub: g.pub }; return S.qCl; } catch (e) { } }
+  const kp = await crypto.subtle.generateKey(al, true, ["deriveBits"]);
+  const pub = b64.a(await crypto.subtle.exportKey("raw", kp.publicKey)), priv = await crypto.subtle.exportKey("jwk", kp.privateKey);
+  ls.set(QK(), { priv, pub }); S.qCl = { priv: kp.privateKey, pub }; return S.qCl;
+}
+const qSecretos = {};
+async function qSecreto(pubB64) {
+  const cl = await qClaves(), kc = cl.pub + "|" + pubB64;   // (cada «yo» tiene su clave: en las pruebas de Alain hay varias)
+  if (qSecretos[kc]) return qSecretos[kc];
+  const otra = await crypto.subtle.importKey("raw", b64.de(pubB64), { name: "ECDH", namedCurve: "P-256" }, false, []);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: "ECDH", public: otra }, cl.priv, 256));
+  const h = new Uint8Array(await crypto.subtle.digest("SHA-256", cat(enc.encode("gd-quedar|"), bits)));
+  return qSecretos[kc] = await crypto.subtle.importKey("raw", h, "AES-GCM", false, ["encrypt", "decrypt"]);
+}
+async function qCifrar(txt, pubB64) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await qSecreto(pubB64), enc.encode(txt));
+  return { iv: b64.a(iv), ct: b64.a(ct) };
+}
+async function qDescifrar(caja, pubB64) {
+  return dec.decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64.de(caja.iv) }, await qSecreto(pubB64), b64.de(caja.ct)));
+}
+const qAzar = n => Array.from(crypto.getRandomValues(new Uint8Array(n))).map(x => "abcdefghijklmnopqrstuvwxyz0123456789"[x % 36]).join("");
+// la suscripción de los avisos de este móvil (solo se manda si ha cambiado)
+async function qSub() {
+  try {
+    if (!avisosActivos()) { const v = ls.get(QS()); if (v) return { sub: null, fuera: v }; return null; }
+    const reg = await navigator.serviceWorker.ready, s = await reg.pushManager.getSubscription(); if (!s) return null;
+    const j = s.toJSON(); if (ls.get(QS()) === j.endpoint) return null;
+    return { sub: { e: j.endpoint, p: j.keys.p256dh, a: j.keys.auth } };
+  } catch (e) { return null; }
+}
+// una petición al servicio: firmada, y siempre devuelve cómo está todo
+async function qLlamar(o) {
+  const q = QI(), cl = await qClaves();
+  if (!S.qKq) S.qKq = q.kq ? b64.de(q.kq) : await hmac(S.llave.slice(32, 64), enc.encode("quedar-cf"));
+  o = Object.assign({}, o, { pk: cl.pub });
+  const sb = q.como ? null : await qSub();   // haciendo de un alumno: los avisos no van a su cuenta if (sb) { o.sub = sb.sub; if (sb.fuera) o.subFuera = sb.fuera; }
+  const ts = Date.now(), os = JSON.stringify(o);
+  const s = b64.a(await hmac(S.qKq, enc.encode("q|" + q.id + "|" + ts + "|" + os)));
+  let r;
+  try { r = await (await fetch(q.u.replace(/\/$/, "") + "/a", { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ id: q.id, ts, o: os, s }) })).json(); }
+  catch (e) { throw new Error("Sin conexión. Prueba en un momento."); }
+  if (!r || !Array.isArray(r.ps)) throw new Error((r && r.e) || "No se ha podido.");
+  if (sb) { if (sb.sub) ls.set(QS(), sb.sub.e); else ls.del(QS()); }
+  S.Q = r; S.qT = Date.now(); S.qErr = "";
+  await qLeerChats();
+  return r;
+}
+// trae cómo está todo (con la lista, cada 30 s; dentro de una partida, cada 6 s)
+async function cargarQuedar(ya) {
+  if (!S.datos || !S.datos.q || S.qCargando) return; QI();
+  if (!ya && Date.now() - (S.qT || 0) < (S.qVer ? 6000 : 30000)) return;
+  S.qCargando = true; const antes = S.Q ? JSON.stringify(S.Q.ps) : "";
+  try { await qLlamar({ a: "leer" }); } catch (e) { if (!S.Q) S.qErr = e.message; S.qT = Date.now(); }
+  finally { S.qCargando = false; }
+  if (!S.Q || JSON.stringify(S.Q.ps) !== antes || S.qErr) qRepintar();
+}
+async function qLeerChats() {
+  S.qTxt = S.qTxt || {};
+  for (const pa of S.Q.ps) for (const m of pa.m || []) {
+    if (m.ci in S.qTxt && S.qTxt[m.ci] != null) continue;
+    try { S.qTxt[m.ci] = m.c && m.pk ? await qDescifrar(m.c, m.pk) : null; } catch (e) { S.qTxt[m.ci] = null; }
+  }
+}
+function qRepintar() {
+  if (S.pantalla !== "app" || S.tab !== "Partidos" || S.parModo !== "q" || document.querySelector(".capa")) return;
+  const a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.value) return;   // no molestar mientras escribe
+  const ch = document.getElementById("qChat"), abajo = ch && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40;
+  const y = window.scrollY; pintar(); window.scrollTo(0, y);
+  if (S.qBajar || abajo) { S.qBajar = false; const c2 = document.getElementById("qChat"); if (c2) c2.scrollIntoView({ block: "end" }); }
+}
+const qPasada = p => fechaDe(p.d, p.h || "23:59") < new Date();
+function qVista() {
+  const hechas = ls.get(QH()) || {};
+  return ((S.Q && S.Q.ps) || []).filter(p => qSoyDe(p) ? !hechas[p.i] && !(p.x && qPasada(p)) : !qPasada(p));
+}
+const qCuando = p => { const d = fechaDe(p.d); return DIASL[d.getDay()].slice(0, 3) + " " + d.getDate() + " " + MESC[d.getMonth()] + (p.h ? " · " + p.h : ""); };
+function qFalta(p) {
+  const h = new Date(); h.setHours(0, 0, 0, 0); const n = Math.round((fechaDe(p.d) - h) / 864e5);
+  return n === 0 ? "hoy" : n === 1 ? "mañana" : n > 1 && n < 7 ? "en " + n + " días" : "";
+}
+function qNivelTxt(p) { const n = QI().niv || []; if (!p.nb || p.nb.length !== 2) return "nivel cualquiera"; const a = n[p.nb[0]] || "", b = n[p.nb[1]] || ""; return "nivel " + (a === b ? a : a + "–" + b); }
+function qBadge(nv) {
+  const q = QI(), i = (q.niv || []).indexOf(nv); if (!nv || i < 0) return "";
+  const c = (q.col || [])[i] || "#70A6D8", r = parseInt(c.slice(1, 3), 16), g = parseInt(c.slice(3, 5), 16), b = parseInt(c.slice(5, 7), 16);
+  const claro = 0.299 * r + 0.587 * g + 0.114 * b > 165;
+  return `<span style="background:${c};color:${claro ? "#13222B" : "#fff"};font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap">${esc(nv)}</span>`;
+}
+function qJugador(p, j, grande) {
+  const tu = j.j === QI().j;
+  return `<div style="display:flex;align-items:center;gap:8px;padding:${grande ? 4 : 3}px 0;flex-wrap:wrap"><span style="font-size:${grande ? 15.5 : 15}px;font-weight:600">${esc(j.n)}${tu ? " (tú)" : ""}</span>${qBadge(j.nv)}${j.j === p.c ? ` <span class="gris" style="font-size:12.5px">· la abrió</span>` : ""}</div>`;
+}
+const qLibres = p => Math.max(0, (p.pl || 2) - (p.j || []).length);
+const qSoyDe = p => (p.j || []).some(j => j.j === QI().j);
+function qNuevos(p) { const v = ls.get(QV()) || {}, n = (p.m || []).filter(m => m.de !== QI().j).length; return Math.max(0, n - (v[p.i] || 0)); }
+function qChip(p) {
+  if (p.x) return `<span class="chip c-debe">cancelada</span>`;
+  if (qPasada(p)) return `<span class="chip c-rec" style="background:#E8ECEF;color:#4F5D66">jugada</span>`;
+  const l = qLibres(p); return l === 0 ? `<span class="chip c-rec">completa</span>` : `<span class="chip c-rec">${l === 1 ? "1 plaza libre" : l + " plazas libres"}</span>`;
+}
+function qCabecera(p, grande) {
+  const f = qPasada(p) ? "" : qFalta(p);
+  return `<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><div style="font-size:${grande ? 18 : 17}px;font-weight:750">${esc(qCuando(p))}${f ? ` <span style="font-size:13.5px;font-weight:600;color:#1D4F78">· ${f}</span>` : ""}</div>${grande ? "" : `<div class="gris" style="font-size:14px">${esc(p.s || "")}</div>`}</div>${qChip(p)}</div>`;
+}
+function qTarjeta(p, mia) {
+  const nm = qNuevos(p);
+  let h = `<div class="card" style="gap:8px"><button type="button" data-qver="${esc(p.i)}" style="all:unset;display:flex;flex-direction:column;gap:6px;cursor:pointer">${qCabecera(p)}
+<div class="gris" style="font-size:13.5px">${p.ti === "D" ? "Dobles" : "Individual"} · ${esc(qNivelTxt(p))}</div>${(p.j || []).map(j => qJugador(p, j)).join("")}</button>`;
+  if (!mia) return h + `<button class="boton" data-qunir="${esc(p.i)}" style="min-height:44px">Unirme</button></div>`;
+  if (p.x) return h + `</div>`;
+  if (qPasada(p)) h += `<button class="boton" data-qres="${esc(p.i)}" style="min-height:44px">Apuntar el resultado</button>`;
+  return h + `<button class="boton2" data-qver="${esc(p.i)}" style="min-height:44px">💬 Chat${nm ? ` · ${nm === 1 ? "1 mensaje nuevo" : nm + " mensajes nuevos"}` : ""}</button></div>`;
+}
+function qBloqueAvisos() {
+  const P = S.datos.push; if (!P || !P.on || !P.k || !pushPosible()) return "";
+  const y = (S.Q && S.Q.yo) || {};
+  if (avisosActivos()) return `<label class="card" style="flex-direction:row;align-items:center;gap:12px;cursor:pointer"><input type="checkbox" id="qNuevas" ${y.nuevas ? "checked" : ""} style="width:22px;height:22px;flex:none"><span style="font-size:14.5px;line-height:1.4">Avisarme cuando alguien abra una partida</span></label>`;
+  if (Notification.permission === "denied") return "";
+  return `<div class="card" style="gap:8px"><div style="font-size:14.5px;line-height:1.4">¿Quieres enterarte cuando alguien abra una partida? Activa los avisos en este móvil.</div><button class="boton2" id="qActivar" style="min-height:44px">Activar avisos</button></div>`;
+}
+function pintarQuedar() {
+  const yo = QI();
+  let h = S.datos.admin ? `<div class="aviso" style="font-size:14px">${yo.como ? `Caja de pruebas: estás haciendo de <b>${esc(yo.n)}</b>, con su nombre y su nivel. Para hacer de otro, vuelve a «Todos los alumnos» y entra en él. Nada de esto lo ven los alumnos ni manda avisos.` : "Caja de pruebas: nada de esto lo ven los alumnos ni manda avisos."}</div>` : "";
+  if (S.qEd) return h + qForm();
+  if (!S.Q) { if (!S.qErr) cargarQuedar(true); return h + `<div class="cargando" style="padding:30px">${S.qErr ? esc(S.qErr) + `<br><br><button class="boton2" id="qReint">Reintentar</button>` : "Cargando partidas…"}</div>`; }
+  cargarQuedar();
+  const ps = qVista();
+  if (S.qVer) { const p = ps.find(x => x.i === S.qVer); if (p) return h + qDetalle(p); S.qVer = null; }
+  const mi = qMiNivel(), mias = ps.filter(qSoyDe);
+  const abiertas = ps.filter(p => !qSoyDe(p) && !p.x && qLibres(p) > 0 && (S.qFiltro !== "nivel" || mi < 0 || !p.nb || (mi >= p.nb[0] && mi <= p.nb[1])));
+  h += `<button class="boton" id="qAbrir">+ Abrir una partida</button>`
+    + `<div class="qf" style="grid-template-columns:1fr 1fr"><button data-qfil="todas" class="${S.qFiltro !== "nivel" ? "on" : ""}">Todas</button><button data-qfil="nivel" class="${S.qFiltro === "nivel" ? "on" : ""}">Para mi nivel</button></div>`;
+  if (mias.length) h += `<div class="tit" style="padding:2px 4px">TUS PARTIDAS</div>` + mias.map(p => qTarjeta(p, true)).join("");
+  h += `<div class="tit" style="padding:2px 4px">ABIERTAS · ${abiertas.length}</div>`
+    + (abiertas.length ? abiertas.map(p => qTarjeta(p, false)).join("") : `<div class="card gris" style="font-size:14.5px;line-height:1.45">${S.qFiltro === "nivel" ? "Ahora mismo no hay partidas abiertas para tu nivel." : "Ahora mismo no hay partidas abiertas."} Abre tú una y les llegará a los demás.</div>`);
+  return h + qBloqueAvisos();
+}
+function qDetalle(p) {
+  const mia = qSoyDe(p), yo = QI().j, creador = p.c === yo;
+  let h = `<button class="boton2" id="qAtras">← Volver</button><div class="card" style="gap:8px">${qCabecera(p, true)}
+<div class="gris" style="font-size:14px">${esc([p.s, p.ti === "D" ? "Dobles" : "Individual", qNivelTxt(p)].filter(x => x).join(" · "))}</div>`
+    + (p.no ? `<div class="gris" style="font-size:14px;font-style:italic">«${esc(p.no)}»</div>` : "")
+    + `<div class="tit" style="padding-top:6px">JUGADORES · ${(p.j || []).length} DE ${p.pl || 2}</div>${(p.j || []).map(j => qJugador(p, j, true)).join("")}`
+    + (!mia && !p.x && qLibres(p) > 0 ? `<button class="boton" data-qunir="${esc(p.i)}" style="min-height:44px">Unirme</button>` : "")
+    + (mia && !p.x && qPasada(p) ? `<button class="boton" data-qres="${esc(p.i)}" style="min-height:44px">Apuntar el resultado</button>` : "") + `</div>`;
+  if (p.x) return h + `<div class="aviso">Esta partida se ha cancelado.</div>`;
+  if (!mia) return h + `<div class="gris" style="font-size:13.5px;padding:0 4px">El chat de la partida solo lo ven los apuntados.</div>`;
+  h += `<div class="card" style="gap:10px;padding-bottom:12px" id="qChat"><div class="tit">CHAT DE LA PARTIDA</div>
+<div style="background:#FFF6DD;border:1px solid #F0D9A0;border-radius:10px;padding:9px 11px;font-size:13px;line-height:1.4;color:#5C4A12"><b>Chat privado:</b> solo lo leéis los apuntados a esta partida. Los mensajes pueden tardar unos segundos en llegar. Si es urgente, pasaos el teléfono.</div>`;
+  const nom = j => { const x = (p.j || []).find(y => y.j === j); return x ? x.n : "Alguien que ya no está"; };
+  for (const m of p.m || []) {
+    const t = S.qTxt ? S.qTxt[m.ci] : null, mio = m.de === yo;
+    const cuerpo = t == null ? `<i style="opacity:.75">(mensaje no disponible en este móvil)</i>` : esc(t).replace(/\n/g, "<br>");
+    h += mio ? `<div style="align-self:flex-end;max-width:80%;background:#1D4F78;color:#fff;border-radius:14px 14px 4px 14px;padding:8px 11px;font-size:15px;overflow-wrap:anywhere">${cuerpo}<div style="font-size:11px;opacity:.7;text-align:right">${esc(m.t || "")}</div></div>`
+      : `<div style="align-self:flex-start;max-width:80%;background:#E8ECEF;border-radius:14px 14px 14px 4px;padding:8px 11px;font-size:15px;overflow-wrap:anywhere"><div style="font-size:12px;font-weight:700;color:#1D4F78">${esc(nom(m.de))}</div>${cuerpo}<div style="font-size:11px;color:#6B7780">${esc(m.t || "")}</div></div>`;
+  }
+  if (!(p.m || []).length) h += `<div class="gris" style="font-size:13.5px">Aún no hay mensajes.</div>`;
+  h += `<div style="display:flex;gap:8px;align-items:flex-end"><textarea id="qTxt" rows="1" maxlength="${QMAX}" placeholder="Escribe un mensaje…" style="flex:1;font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid #9FB3C3;border-radius:20px;resize:none;min-width:0"></textarea><button class="boton" id="qEnviar" style="min-height:42px;width:auto;padding:0 16px;border-radius:20px">Enviar</button></div><div id="qMsgErr" class="error" hidden></div></div>`;
+  if (!qPasada(p)) h += `<button id="qSalir" style="border:0;background:none;color:#9E2B2B;font-weight:600;padding:8px;font-size:15px">${creador ? "Cancelar la partida" : "Salirme de esta partida"}</button>`;
+  return h;
+}
+function qForm() {
+  const e = S.qEd, n = QI().niv || [], mi = qMiNivel();
+  const sel = (id, v) => `<select id="${id}">${n.map((x, i) => `<option value="${i}" ${i === v ? "selected" : ""}>${esc(x)}</option>`).join("")}</select>`;
+  return `<form class="card pf" id="qF" autocomplete="off"><div class="tit">ABRIR UNA PARTIDA</div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px"><div style="display:flex;flex-direction:column;gap:12px;min-width:0"><label for="qD">DÍA</label><input type="date" id="qD" value="${esc(e.d)}" min="${esc(e.min)}"></div><div style="display:flex;flex-direction:column;gap:12px;min-width:0"><label for="qH">HORA</label><input type="time" id="qH" value="${esc(e.h)}" step="300"></div></div>
+<label for="qS">DÓNDE</label><input type="text" id="qS" maxlength="120" placeholder="Club, polideportivo, pistas…" value="${esc(e.s)}">
+<label>TIPO</label><div class="segc" style="grid-template-columns:1fr 1fr"><button type="button" data-qti="I" class="${e.ti !== "D" ? "on" : ""}">Individual (2)</button><button type="button" data-qti="D" class="${e.ti === "D" ? "on" : ""}">Dobles (4)</button></div>
+<label>NIVEL QUE BUSCAS</label><div class="segc" style="grid-template-columns:1fr${mi >= 0 ? " 1fr" : ""} 1fr"><button type="button" data-qnb="0" class="${e.nb === 0 ? "on" : ""}">Cualquiera</button>${mi >= 0 ? `<button type="button" data-qnb="1" class="${e.nb === 1 ? "on" : ""}">Como el mío</button>` : ""}<button type="button" data-qnb="2" class="${e.nb === 2 ? "on" : ""}">Elegir…</button></div>
+${e.nb === 2 ? `<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px"><div style="display:flex;flex-direction:column;gap:6px"><label for="qN1">DESDE</label>${sel("qN1", e.n1)}</div><div style="display:flex;flex-direction:column;gap:6px"><label for="qN2">HASTA</label>${sel("qN2", e.n2)}</div></div>` : ""}
+<label for="qNo">NOTA (OPCIONAL)</label><textarea id="qNo" maxlength="200" placeholder="Por ejemplo: llevo bolas, pista 3…">${esc(e.no)}</textarea>
+<div class="gris" style="font-size:13px;line-height:1.45">La verán todos los alumnos con tu <b>nombre</b> y tu <b>nivel</b>, nada más. Cuando alguien se una, te llegará un aviso. Puedes tener hasta ${QMAXAB} partidas abiertas.</div>
+<div id="qFErr" class="error" hidden></div>
+<button class="boton" type="button" id="qPub">Publicar la partida</button><button class="boton2" type="button" id="qCan">Cancelar</button></form>`;
+}
+function qLeerForm() {
+  const e = S.qEd, v = id => { const x = document.getElementById(id); return x ? x.value : null; };
+  e.d = v("qD") || ""; e.h = v("qH") || ""; e.s = v("qS") || ""; e.no = v("qNo") || "";
+  if (v("qN1") != null) { e.n1 = +v("qN1"); e.n2 = +v("qN2"); }
+}
+// hoja de abajo (confirmar unirse, «¡te has unido!»)
+function qHoja(html, botones) {
+  const c = document.createElement("div"); c.className = "capa";
+  c.innerHTML = `<div class="hoja" role="dialog" aria-modal="true">${html}${botones.map((b, i) => `<button class="${b.c || "boton"}" data-hb="${i}">${esc(b.t)}</button>`).join("")}</div>`;
+  document.body.appendChild(c);
+  const quitar = () => c.remove(); c.onclick = ev => { if (ev.target === c) quitar(); };
+  c.querySelectorAll("[data-hb]").forEach(x => x.onclick = () => { quitar(); const f = botones[+x.dataset.hb].f; if (f) f(); });
+}
+function hojaUnido(p) {
+  const P = S.datos.push, puede = P && P.on && P.k && pushPosible() && !avisosActivos() && Notification.permission !== "denied";
+  const cab = `<div style="font-size:19px;font-weight:750">¡Te has unido!</div><div style="font-size:15.5px;line-height:1.5">${esc(qCuando(p))}${p.s ? " · " + esc(p.s) : ""}.<br>`;
+  if (puede) qHoja(cab + `¿Quieres que te avisemos en el móvil cuando alguien se una, escriba en el chat o se cancele la partida?</div>`, [{ t: "Sí, activar avisos", f: () => activarAvisos() }, { t: "Ahora no", c: "boton2" }]);
+  else qHoja(cab + `En el chat de la partida podéis poneros de acuerdo.</div>`, [{ t: "Vale" }]);
+}
+// tras la partida: a «Mis resultados», con la fecha y el rival puestos
+function qApuntar(p, Dp, varios) {
+  const otros = (p.j || []).filter(j => j.j !== QI().j).map(j => j.n).join(" / ");
+  S.parModo = "r"; S.qVer = null; S.qApunta = p.i;
+  S.parEd = { f: p.d, r: otros, q: varios ? (S.per !== "Todos" ? S.per : Dp.personas[0].nombre) : "" };
+  pintar(); window.scrollTo(0, 0);
+}
+function enlazarQuedar(Dp, varios) {
+  const ir = f => () => { f(); pintar(); window.scrollTo(0, 0); };
+  const err = (t, id) => { const m = document.getElementById(id || "qMsgErr"); if (m) { m.hidden = false; m.textContent = t; } else alert(t); };
+  const re = document.getElementById("qReint"); if (re) re.onclick = () => { S.qErr = ""; pintar(); };
+  const ab = document.getElementById("qAbrir");
+  if (ab) ab.onclick = ir(() => { const hoy = new Date(); hoy.setMinutes(hoy.getMinutes() - hoy.getTimezoneOffset()); const d = hoy.toISOString().slice(0, 10), mi = Math.max(0, qMiNivel()); S.qEd = { d, min: d, h: "", s: "", ti: "I", nb: 0, n1: mi, n2: mi, no: "" }; });
+  $app.querySelectorAll("[data-qfil]").forEach(b => b.onclick = () => { S.qFiltro = b.dataset.qfil; pintar(); });
+  $app.querySelectorAll("[data-qver]").forEach(b => b.onclick = ir(() => { S.qVer = b.dataset.qver; S.qBajar = true; S.qT = 0; }));
+  $app.querySelectorAll("[data-qres]").forEach(b => b.onclick = () => { const p = qVista().find(x => x.i === b.dataset.qres); if (p) qApuntar(p, Dp, varios); });
+  $app.querySelectorAll("[data-qunir]").forEach(b => b.onclick = () => {
+    const p = qVista().find(x => x.i === b.dataset.qunir); if (!p) return;
+    qHoja(`<div style="font-size:19px;font-weight:750">¿Unirte a esta partida?</div><div style="font-size:15.5px;line-height:1.5">${esc(qCuando(p))}${p.s ? " · " + esc(p.s) : ""}<br>${p.ti === "D" ? "Dobles" : "Individual"} · con ${esc((p.j || []).map(j => j.n).join(", "))}</div>`,
+      [{ t: "Sí, unirme", f: async () => { try { const r = await qLlamar({ a: "unir", p: p.i }); if (r.e) return alert(r.e); S.qVer = p.i; S.qBajar = false; pintar(); window.scrollTo(0, 0); hojaUnido(p); } catch (e) { alert(e.message); } } }, { t: "No", c: "boton2" }]);
+  });
+  const nv = document.getElementById("qNuevas");
+  if (nv) nv.onchange = async () => { nv.disabled = true; try { await qLlamar({ a: "pref", nuevas: nv.checked }); } catch (e) { alert(e.message); nv.checked = !nv.checked; } nv.disabled = false; };
+  const act = document.getElementById("qActivar");
+  if (act) act.onclick = async () => { await activarAvisos(); if (avisosActivos()) { try { await qLlamar({ a: "pref", nuevas: true }); } catch (e) { } pintar(); } };
+  const at = document.getElementById("qAtras"); if (at) at.onclick = ir(() => { S.qVer = null; });
+  // ya vistos los mensajes de esta partida
+  if (S.qVer) { const p = qVista().find(x => x.i === S.qVer); if (p && qSoyDe(p)) { const v = ls.get(QV()) || {}; v[p.i] = (p.m || []).filter(m => m.de !== QI().j).length; ls.set(QV(), v); } }
+  const sal = document.getElementById("qSalir");
+  if (sal) sal.onclick = async () => {
+    const p = qVista().find(x => x.i === S.qVer); if (!p) return; const cre = p.c === QI().j;
+    if (!confirm(cre ? "¿Cancelar la partida? Se avisará a los apuntados y se borrará el chat." : "¿Salirte de esta partida?")) return;
+    try { await qLlamar({ a: cre ? "cancelar" : "salir", p: p.i }); if (!cre) S.qVer = null; pintar(); window.scrollTo(0, 0); } catch (e) { err(e.message); }
+  };
+  const tx = document.getElementById("qTxt"), en = document.getElementById("qEnviar");
+  if (tx) tx.oninput = () => { tx.style.height = "auto"; tx.style.height = Math.min(140, tx.scrollHeight + 2) + "px"; };
+  if (en) en.onclick = async () => {
+    const txt = tx.value.trim(); if (!txt) { tx.focus(); return; }
+    const p = qVista().find(x => x.i === S.qVer); if (!p) return;
+    en.disabled = true;
+    try {
+      const cl = await qClaves(), b = {};
+      b[QI().j] = await qCifrar(txt, cl.pub);
+      for (const j of p.j || []) if (j.j !== QI().j && j.pk) b[j.j] = await qCifrar(txt, j.pk);
+      const ci = qAzar(12); S.qTxt = S.qTxt || {}; S.qTxt[ci] = txt;
+      const r = await qLlamar({ a: "msg", p: p.i, ci, b }); if (r.e) throw new Error(r.e);
+      tx.value = ""; S.qBajar = true; qRepintar();
+    } catch (e) { err("No se ha podido enviar: " + e.message); en.disabled = false; }
+  };
+  const f = document.getElementById("qF"); if (!f) return;
+  f.querySelectorAll("[data-qti]").forEach(b => b.onclick = () => { qLeerForm(); S.qEd.ti = b.dataset.qti; pintar(); });
+  f.querySelectorAll("[data-qnb]").forEach(b => b.onclick = () => { qLeerForm(); S.qEd.nb = +b.dataset.qnb; pintar(); });
+  document.getElementById("qCan").onclick = ir(() => { S.qEd = null; });
+  document.getElementById("qPub").onclick = async () => {
+    qLeerForm(); const e = S.qEd, bt = document.getElementById("qPub");
+    const mal = t => err(t, "qFErr");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.d) || e.d < e.min) return mal("Elige un día (de hoy en adelante).");
+    if (!/^\d{1,2}:\d{2}$/.test(e.h)) return mal("Pon la hora.");
+    if (!e.s.trim()) return mal("Pon dónde se juega.");
+    if (fechaDe(e.d, e.h) < new Date()) return mal("Esa hora ya ha pasado.");
+    if (S.Q && S.Q.ps.filter(p => p.c === QI().j && !p.x && !qPasada(p)).length >= QMAXAB) return mal(`Ya tienes ${QMAXAB} partidas abiertas. Cancela alguna para abrir otra.`);
+    const mi = qMiNivel(); let nb = null;
+    if (e.nb === 1 && mi >= 0) nb = [mi, mi]; else if (e.nb === 2) nb = [Math.min(e.n1, e.n2), Math.max(e.n1, e.n2)];
+    const o = { a: "abrir", p: qAzar(10), d: e.d, h: e.h, s: e.s.trim(), ti: e.ti === "D" ? "D" : "I", no: e.no.trim() };
+    if (nb) o.nb = nb;
+    bt.disabled = true; bt.textContent = "Publicando…";
+    try { const r = await qLlamar(o); if (r.e) throw new Error(r.e); S.qEd = null; S.qVer = o.p; pintar(); window.scrollTo(0, 0); }
+    catch (x) { mal(x.message); bt.disabled = false; bt.textContent = "Publicar la partida"; }
+  };
+}
+// (18/11/2026) deslizar a la izquierda / derecha: la pestaña siguiente / anterior. La pantalla sigue al dedo; al soltar, entra la otra.
+(() => {
+  let x0 = null, y0 = 0, modo = null, dx = 0, cuerpo = null;
+  const scrollH = el => { for (; el && el !== document.body; el = el.parentElement) { const cs = getComputedStyle(el); if ((cs.overflowX === "auto" || cs.overflowX === "scroll") && el.scrollWidth > el.clientWidth + 2) return true; } return false; };
+  const vecina = d => { const bs = Array.from(document.querySelectorAll("nav.nav [data-tab]")), i = bs.findIndex(b => b.dataset.tab === S.tab); const j = i + d; return i >= 0 && j >= 0 && j < bs.length ? bs[j] : null; };
+  const mover = (el, x, t) => { el.style.transition = t ? "transform " + t + "ms ease-out" : "none"; el.style.transform = x ? "translate3d(" + x + "px,0,0)" : ""; };
+  document.addEventListener("touchstart", e => {
+    x0 = null; modo = null; dx = 0; if (e.touches.length !== 1 || S.pantalla !== "app" || document.querySelector(".capa") || S.parEd || S.qEd) return;
+    const t = e.target; if (t.closest && t.closest("input,textarea,select,[contenteditable],canvas,header,.seg")) return;
+    if (scrollH(t)) return;
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; if (x0 < 18 || x0 > window.innerWidth - 18) x0 = null;
+    cuerpo = document.querySelector("main.cuerpo");
+  }, { passive: true });
+  document.addEventListener("touchmove", e => {
+    if (x0 == null || !cuerpo) return; if (false) { if (modo === "h") mover(cuerpo, 0, 150); x0 = null; return; }
+    const p = e.touches[0], ax = p.clientX - x0, ay = p.clientY - y0;
+    // (v2.62) al deslizar de lado, la pantalla ya no sube ni baja: mientras se decide (más de lado que de arriba abajo) y después, se frena el desplazamiento vertical
+    if (!modo) { if (Math.abs(ax) > 12 && Math.abs(ax) > 1.5 * Math.abs(ay)) modo = "h"; else if (Math.abs(ay) > 10 && Math.abs(ay) >= Math.abs(ax)) { modo = "v"; x0 = null; return; } else { if (Math.abs(ax) > 3 && Math.abs(ax) > Math.abs(ay) && e.cancelable) e.preventDefault(); return; } }
+    if (e.cancelable) e.preventDefault();
+    dx = ax; const hay = vecina(dx < 0 ? 1 : -1); mover(cuerpo, hay ? dx : dx * 0.25, 0);   // sin pestaña a ese lado: se resiste
+  }, { passive: false });
+  const fin = () => {
+    if (x0 == null || modo !== "h" || !cuerpo) { x0 = null; return; } x0 = null;
+    const d = dx < 0 ? 1 : -1, b = vecina(d), w = window.innerWidth;
+    if (!b || Math.abs(dx) < Math.min(90, w * 0.22)) { mover(cuerpo, 0, 180); return; }
+    mover(cuerpo, -d * w, 140);
+    setTimeout(() => {
+      b.click();
+      const n = document.querySelector("main.cuerpo"); if (!n) return;
+      mover(n, d * w * 0.35, 0); n.getBoundingClientRect();
+      requestAnimationFrame(() => { mover(n, 0, 200); setTimeout(() => { n.style.transition = ""; n.style.transform = ""; }, 230); });
+    }, 140);
+  };
+  document.addEventListener("touchend", fin, { passive: true });
+  document.addEventListener("touchcancel", () => { if (cuerpo && modo === "h") mover(cuerpo, 0, 150); x0 = null; }, { passive: true });
+})();
+// al tocar un aviso de una partida (o abrir la app con #q=…), ir a ella
+function irQuedar(pid) { S.irQ = pid; if (S.pantalla === "app") pintar(); }
+(() => { const m = /^#q=([a-z0-9]{6,24})$/.exec(location.hash); if (m) { S.irQ = m[1]; try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { } } })();
+window.addEventListener("hashchange", () => { const m = /^#q=([a-z0-9]{6,24})$/.exec(location.hash); if (m) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { } irQuedar(m[1]); } });
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { const m = e.data && e.data.ir && /#q=([a-z0-9]{6,24})/.exec(e.data.ir); if (m) irQuedar(m[1]); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.pantalla === "app" && S.tab === "Partidos" && S.parModo === "q") cargarQuedar(); });
+setInterval(() => { if (document.visibilityState === "visible" && S.pantalla === "app" && S.tab === "Partidos" && S.parModo === "q" && !S.qEd) cargarQuedar(); }, 3000);
+function pintarEvolucion(D, evo, per, varios) {
+  const p = evoPersona(evo, per); S.evoPer = p ? p.nombre : null;
+  let h = `<button class="volver" data-tab="Inicio">← Inicio</button>`;
+  if (evo.personas.length > 1) h += `<div class="seg" style="grid-template-columns:repeat(${evo.personas.length},1fr);background:#1D4F78">` + evo.personas.map(x => `<button data-evoper="${esc(x.nombre)}" class="${p && x.nombre === p.nombre ? "on" : ""}">${esc(x.nombre)}</button>`).join("") + `</div>`;
+  const l = p ? p.lista : [];
+  if (!l.length) return h + `<div class="card"><div class="tit">EVOLUCIÓN</div><div class="gris">Todavía no hay ninguna puntuación${p && varios ? " de " + esc(p.nombre) : ""}. Cuando te puntúen, aquí verás cómo vas en cada golpe.</div></div>`;
+  if (S.evoSel == null || S.evoSel >= l.length || S.evoSelDe !== p.nombre) { S.evoSel = l.length - 1; S.evoSelDe = p.nombre; }
+  const u = l[S.evoSel], a = antNivel(evo, l, S.evoSel);
+  h += bloqueNivel(evo, p, l, S.evoSel);
+  h += `<div class="card" style="gap:6px"><div style="display:flex;align-items:baseline"><div class="tit" style="flex-grow:1">EVOLUCIÓN</div><div style="font-size:24px;font-weight:750;color:#1D4F78">${n1(u.m)}<span class="gris" style="font-size:13px;font-weight:600"> / 10</span></div></div>`
+    + `<div style="display:flex;gap:14px;font-size:12.5px" class="gris"><span><span style="display:inline-block;width:11px;height:11px;background:#1D4F78;border-radius:2px;vertical-align:-1px"></span> ${S.evoSel === l.length - 1 ? "Última" : "Esta"} · ${esc(u.f)}</span>${a ? `<span><span style="display:inline-block;width:10px;height:10px;border:1.5px dashed #8A96A0;vertical-align:-1px"></span> Anterior · ${esc(a.f)}</span>` : ""}</div>`
+    + radarSVG(evo.cats, u.c, a ? a.c : null, 340, true) + `</div>`;
+  // (2/11/2026) una sola nota por golpe y, al lado, la flecha y cuánto ha cambiado frente a la anterior
+  const fl = (x, y) => { if (x == null || y == null) return ["", ""]; const d = Math.round((y - x) * 10) / 10; return d > 0 ? [`<span class="sube">▲</span>`, `<span class="sube">+${n1(d)}</span>`] : d < 0 ? [`<span class="baja">▼</span>`, `<span class="baja">−${n1(-d)}</span>`] : [`<span class="igual">=</span>`, `<span class="igual">0,0</span>`]; };
+  // (v2.17) pulsar un golpe despliega sus subcategorías (▸ / ▾); en minúsculas, con la primera en mayúscula
+  if (!S.evoAbiertas) S.evoAbiertas = {};
+  const bonito = t => { t = String(t).toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1); };
+  const subsDe = i => (evo.subs && evo.subs[i] ? evo.subs[i] : []).filter(k => (u.s && u.s[k] != null) || (a && a.s && a.s[k] != null));
+  const filaG = (nom, x, y, cls, extra) => { const f = fl(x, y); return `<tr${cls ? ` class="${cls}"` : ""}${extra || ""}><td>${cls && cls.indexOf("cat") >= 0 ? `<span class="tri">${cls.indexOf("abierta") >= 0 ? "▼" : "▶"}</span>` : cls === "" || cls === "media" ? `<span class="tri"></span>` : ""}${esc(nom)}</td><td>${y == null ? `<span class="gris">aún no</span>` : `<b>${n1(y)}</b>`}</td>${a ? `<td style="text-align:center;width:28px">${f[0]}</td><td>${f[1]}</td>` : ""}</tr>`; };
+  h += `<div class="card" style="gap:4px"><div class="tit">${a ? "CADA GOLPE · FRENTE A LA DEL " + esc(a.f.slice(0, 5)) : "CADA GOLPE"}</div><table class="evo-tabla"><tr><th>Golpe</th><th>Nota</th>${a ? `<th></th><th>Variación</th>` : ""}</tr>`
+    + evo.cats.map((c, i) => {
+        const subs = subsDe(i); if (!subs.length || (subs.length === 1 && bonito(subs[0]).normalize("NFD").replace(/[\u0300-\u036f]/g, "") === bonito(c).normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) return filaG(c, a ? a.c[i] : null, u.c[i], "");
+        const ab = !!S.evoAbiertas[c];
+        return filaG(c, a ? a.c[i] : null, u.c[i], "cat" + (ab ? " abierta" : ""), ` data-evocat="${esc(c)}"`)
+          + (ab ? subs.map(k => filaG(bonito(k), a && a.s ? a.s[k] : null, u.s ? u.s[k] : null, "sub")).join("") : "");
+      }).join("")
+    + filaG("Media", a ? a.m : null, u.m, "media") + `</table>`
+    + `<div class="gris" style="font-size:12.5px;padding-top:6px">Notas del 1 al 10. Cada golpe es la media de lo que se puntúa de él (púlsalo para verlo)${u.c.some(v => v == null) ? "; «aún no» = todavía no lo habéis trabajado" : ""}.</div></div>`;
+  if (l.length > 1) h += `<div class="card"><div class="tit">TODAS LAS PUNTUACIONES · PULSA UNA PARA VERLA</div><div class="fechas">` + l.map((x, i) => `<button data-evosel="${i}" class="${i === S.evoSel ? "on" : ""}">${esc(x.f.slice(0, 5))} · ${n1(x.m)}</button>`).join("") + `</div></div>`;
+  return h;
+}
+function cuentaActual() { return S.datos.admin ? (S.cuenta >= 0 ? S.datos.cuentas[S.cuenta] : null) : S.datos; }
+// curso elegido: 0 = el actual; 1, 2… = los anteriores (histórico), con el mismo aspecto
+function cursoElegido(D0) {
+  const ant = D0.anteriores || []; if (!S.ci || S.ci > ant.length) { S.ci = 0; return D0; }
+  const A = ant[S.ci - 1];
+  return Object.assign({}, D0, { curso: A.curso, personas: A.personas, pagos: Object.assign({ quien: "" }, A.pagos), esteMes: null, pasado: true });
+}
+function pintarApp() {
+  if (S.datos.admin && S.cuenta < 0) return pintarAdmin();
+  const D0 = cuentaActual(), D = cursoElegido(D0), varios = D.personas.length > 1;
+  try { limpiarFexp(); } catch (e) { }
+  // Partidos: sin los que tienen su propia cuenta (p. ej. en la de Juanma no sale Charo, que entra con su teléfono)
+  const parNo = D0.parno || [], Dp = Object.assign({}, D, { personas: D.personas.filter(p => parNo.indexOf(p.nombre) < 0), parFuera: parNo }), variosP = Dp.personas.length > 1;
+  // vista previa (solo Alain): Clases y Faltas juntas en «Clases»; lo de recuperar, en Inicio
+  const PV = D0.previa && !D.pasado ? D0.previa : null;
+  // (v1.95) tiempo: lo guardado al momento; si es de hace más de una hora, se pide otra vez y se repinta
+  if (PV && D0.tiempo) {
+    if (!S.tiempo) S.tiempo = tiempoGuardado(D0.tiempo);
+    if (!S.tiempoPedido) { S.tiempoPedido = true; cargarTiempo(D0.tiempo).then(w => { if (w && w !== S.tiempo) { S.tiempo = w; if (S.tab === "Inicio" || S.tab === "Horario") pintar(); } }); }
+  }
+  if (PV && S.tab === "Faltas") S.tab = "Clases";
+  const verRes = S.datos.admin || D0.par, verParT = !D.pasado && (verRes || !!S.datos.q); if (S.tab === "Partidos" && !verParT) S.tab = "Inicio";
+  if (S.irQ && S.datos.q && !D.pasado) { S.tab = "Partidos"; S.parModo = "q"; S.qVer = S.irQ; S.qEd = null; S.parEd = null; S.qT = 0; S.irQ = null; setTimeout(() => window.scrollTo(0, 0)); }
+  const tab = S.tab;
+  if (tab === "Partidos" && S.datos.q && !verRes) S.parModo = "q";
+  const enQ = tab === "Partidos" && !!S.datos.q && S.parModo === "q";
+  if (varios && S.per !== "Todos" && !D.personas.some(p => p.nombre === S.per)) S.per = "Todos";
+  const per = varios ? S.per : (D.personas[0] ? D.personas[0].nombre : "");
+  const todos = agg(D, D.personas, varios);
+  const el = per === "Todos" ? todos : agg(D, D.personas.filter(p => p.nombre === per), false);
+  const P = D.pagos, debe = P.pend.length > 0;
+  // (25/11/2026, Alain) debajo del nombre, una estrellita dorada por cada temporada conmigo (cada curso en que ha estado, también el actual);
+  // el curso y «actualizado», en su propia línea debajo, para que quepa todo
+  const nEst = (() => { const pn = D0.personas || [], an = D0.anteriores || [], cuenta = nom => { const q = pn.find(p => p.nombre === nom); if (q && q.temp) return +q.temp; return (q ? 1 : 0) + an.filter(a => (a.personas || []).some(p => p.nombre === nom)).length; };
+    const ns = (per && per !== "Todos" ? [per] : pn.map(p => p.nombre)).map(cuenta); return Math.max(an.length ? 1 : 1, ...ns, 0); })();
+  const ESTR = `<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="#F5C542" stroke="#C99A12" stroke-width="1"/></svg>`;
+  let h = `<header class="cab"><div class="fila"><div style="flex-grow:1;min-width:0">${S.datos.admin ? `<button class="salir" id="volver" style="margin-bottom:6px">← Todos los alumnos</button>` : ""}<h1>${esc(D.titulo)}</h1>${nEst > 0 ? `<div class="estr" aria-label="${nEst} ${nEst === 1 ? "estrella" : "estrellas"}">${ESTR.repeat(Math.min(nEst, 30))}</div>` : ""}</div>${botonNovedades()}${S.datos.admin ? (S.datos.push && S.datos.push.k && !D.pasado ? botonCampana(true) : "") + `<button class="salir" id="salirPrev">Cerrar sesión</button>` : (avisosActivos() ? botonCampana(false) : "") + `<button class="salir" id="salir">Cerrar sesión</button>`}</div><div class="lin2"${enQ ? " hidden" : ""}>${(D0.anteriores || []).length ? `<select class="selcurso" id="selcurso" aria-label="Curso">` + [D0.curso].concat(D0.anteriores.map(a => a.curso)).map((c, i) => `<option value="${i}"${i === (S.ci || 0) ? " selected" : ""}>Curso ${esc(c)}${i === 0 ? "" : ""}</option>`).join("") + `</select>` : `Curso ${esc(D.curso)} · `}${D.pasado ? "curso anterior" : (D0.anteriores || []).length ? "actualizado " + esc(String(S.datos.actualizado).replace(" a las ", ", ")) : "actualizado el " + esc(S.datos.actualizado)}</div>`;
+  const verQ = tab === "Partidos" && !!S.datos.q; if (!verQ && S.parModo === "q") S.parModo = "r";
+  if (verQ && verRes && !S.parEd) h += `<div class="seg" style="grid-template-columns:1fr 1fr"><button data-pmodo="r" class="${S.parModo !== "q" ? "on" : ""}">Mis resultados</button><button data-pmodo="q" class="${S.parModo === "q" ? "on" : ""}">Quedar para jugar</button></div>`;
+  if (tab === "Partidos" ? variosP && !S.parEd && S.parModo !== "q" : varios && (tab === "Clases" || tab === "Faltas")) {
+    const nombres = ["Todos"].concat((tab === "Partidos" ? Dp : D).personas.map(p => p.nombre));
+    h += `<div class="seg" style="grid-template-columns:repeat(${nombres.length},1fr)">` + nombres.map(n => `<button data-per="${esc(n)}" class="${n === per ? "on" : ""}">${esc(n)}</button>`).join("") + `</div>`;
+  }
+  h += `</header><main class="cuerpo">`;
+  if (tab === "Inicio") {
+    if (!D.pasado) h += franjaMudanza() + franjaInstalar();
+    if (PV) {
+      const px = proximaClase(PV), cam = cambiosSemana(PV), an = anuladas(PV);
+      h += PREV;
+      an.forEach(c => { h += `<div style="background:#FBE3E3;border:1.5px solid #D9A3A3;color:#9E2B2B;border-radius:14px;padding:12px 16px;display:flex;gap:12px;align-items:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4M10 13l4 4M14 13l-4 4"/></svg><div><div style="font-size:12px;font-weight:700;letter-spacing:.06em">CLASE ANULADA</div><div style="font-size:18px;font-weight:750;text-decoration:line-through">${esc(diaTxt(c[0]))}${c[1] ? " · " + esc(c[1]) : ""}</div><div style="font-size:13px">${c[4] ? esc(c[4]) + " · " : ""}Está anulada. No se cobra ni cuenta como falta tuya.</div></div></div>`; });
+      if (px) h += `<div class="proxima"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C6D82A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC.Horario}"/></svg><div><div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#D6E3EE">TU PRÓXIMA CLASE</div><div style="font-size:20px;font-weight:750;line-height:1.2">${esc(diaTxt(px.c[0]))} · ${esc(px.c[1])}</div>${px.c[4] || px.c[6] ? `<div style="font-size:13px;color:#D6E3EE">${esc([px.c[6], px.c[4]].filter(x => x).join(" · "))}</div>` : ""}${lluviaProxima(px.c)}</div></div>`;
+      // (19/11/2026, Alain) primero sus cambios y luego las horas libres
+      if (cam.length) h += `<div class="aviso avB" style="display:flex;flex-direction:column;gap:6px"><div class="tt" style="font-size:12px;font-weight:700;letter-spacing:.06em">CAMBIOS EN LOS PRÓXIMOS DÍAS</div>${cam.map(x => `<div style="font-size:14.5px">${x}</div>`).join("")}</div>`;
+      h += bloqueHoras();   // (7/11/2026, Alain) fuera «Puedes recuperar»: solo las horas libres
+    }
+    const tile = (cl, l, v, s, t) => `<button class="tile ${cl}" data-tab="${t}"><span class="l">${l}</span><span class="v">${esc(v)}</span><span class="s">${esc(s)}</span></button>`;
+    const EVO = D0.evo && !D.pasado ? D0.evo : null;
+    if (EVO) {
+      // (2/11/2026) clases dadas y faltas en un solo recuadro; en el otro, la evolución (gráfico de araña en pequeño)
+      const nf = todos.faltas.length || todos.netas;
+      const sub = todos.porRec > 0 ? (todos.porRec === 1 ? "1 falta esta semana" : todos.porRec + " faltas esta semana") : nf === 0 ? "ninguna falta" : nf + (nf === 1 ? " falta" : " faltas") + (todos.rec ? " · " + todos.rec + (todos.rec === 1 ? " recuperada" : " recuperadas") : "");
+      h += `<div class="tiles">` + tile("t-azul", "ASISTENCIA", pct(todos.dadas, todos.netas), "del curso", "Clases") + tile(todos.porRec > 0 ? "t-nar" : "", "CLASES", fmt(todos.dadas), sub, "Clases") + tileEvo(EVO, per, varios);
+    } else
+      h += `<div class="tiles">` + tile("t-azul", "ASISTENCIA", pct(todos.dadas, todos.netas), "del curso", "Clases") + tile("", "CLASES DADAS", fmt(todos.dadas), "este curso", "Clases")
+      + tileFaltas(PV ? (cl, l, v, s2) => tile(cl, l, v, s2, "Clases") : tile, todos);
+    h += ""
+      + (debe ? tile("t-rojo", "PAGOS", P.debe, D.pasado ? "quedó pendiente" : "pendiente", "Pagos") : !D.pasado && D.esteMes && D.esteMes.listo ? tile("t-rojo", "PAGOS", D.esteMes.imp, "de " + D.esteMes.mes.toLowerCase(), "Pagos") : D.pasado ? tile("t-verde", "PAGADO", P.total && P.total !== "0 €" ? P.total : "—", P.total && P.total !== "0 €" ? "en el curso" : "sin datos de pagos", "Pagos") : tile("t-verde", "PAGOS", "Al día", "nada pendiente", "Pagos")) + `</div>`;
+    if (D.grupos && D.grupos.length && !D.pasado) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">${D.grupos.length > 1 ? "TUS GRUPOS" : "TU GRUPO"}</div>` + D.grupos.map(g => `<div class="lin"><div class="x"><div class="n">${esc(g.n)}</div><div class="d">${esc(g.h)}</div></div></div>`).join("") + `</div>`;   // (7/11/2026)
+    // (v3.03, Alain: «el 100 € le sale 2 veces») con el mes completo, el importe ya está en la casilla PAGOS: no se repite aquí
+    if (D.esteMes && !(D.esteMes.listo && !debe)) h += `<div class="card" style="flex-direction:row;align-items:center;gap:10px"><div style="flex-grow:1"><div class="tit">${D.esteMes.listo ? "ESTE MES · A PAGAR" : "ESTE MES · HASTA HOY"}</div><div style="font-size:15px">${esc(D.esteMes.mes)} · ${esc(D.esteMes.det)}</div>${D.esteMes.aviso ? `<div class="avisoMes">⚠ ${esc(D.esteMes.aviso)}</div>` : ""}</div><div style="font-size:22px;font-weight:750;white-space:nowrap${D.esteMes.listo ? ";color:#9E2B2B" : ""}">${esc(D.esteMes.imp)}</div></div>`;
+    if (varios) h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">CADA UNO</div>` + D.personas.map(p => { const a = agg(D, [p], false); return `<button class="persona" data-ver="${esc(p.nombre)}"><span style="font-size:16px;font-weight:650;flex-grow:1">${esc(p.nombre)}</span><span class="gris" style="font-size:13px">${fmt(a.dadas)} ${a.dadas === 1 ? "clase" : "clases"} · ${a.netas} ${a.netas === 1 ? "falta" : "faltas"}</span><span style="font-size:17px;font-weight:750;color:#1D4F78;width:52px;text-align:right">${pct(a.dadas, a.netas)}</span></button>`; }).join("") + `</div>`;
+    if (!S.datos.admin && !D.pasado) h += bloqueAvisos();
+    else if (S.datos.admin && !D.pasado) h += previaAvisos();
+    if (!S.datos.admin && !esApp() && !D.pasado) h += `<a href="#" id="instalar" style="text-align:center;font-size:14px;font-weight:600;padding:6px">Ponerla como app en el móvil</a>`;
+  } else if (tab === "Horario") {
+    h += PV ? horarioVista(PV, D0) : `<div class="gris" style="padding:12px">Solo en el curso actual.</div>`;
+  } else if (tab === "Clases") {
+    h += `<div class="card" style="flex-direction:row;align-items:center;gap:12px"><div style="flex-grow:1"><div class="tit">ASISTENCIA${per === "Todos" ? (varios ? " · TODOS" : "") : " · " + esc(per.toUpperCase())}</div><div class="gris" style="font-size:14px">${fmt(el.dadas)} ${el.dadas === 1 ? "clase dada" : "clases dadas"} · ${el.netas} ${el.netas === 1 ? "falta" : "faltas"} sin recuperar</div></div><div style="font-size:40px;font-weight:750;color:#1D4F78;line-height:1;white-space:nowrap">${pct(el.dadas, el.netas)}</div></div>`;
+    if (PV) h += PREV + resumenFaltas(el);
+    h += `<div class="card" style="gap:0"><div class="tit" style="padding-bottom:6px">MES A MES${PV ? " · PULSA UN MES" : ""}</div>` + (el.meses.length ? el.meses.map(m => { const v = m[1] + m[2] > 0 ? Math.round(100 * m[1] / (m[1] + m[2])) : 0;
+      const cuerpo = `<div style="display:flex;align-items:baseline"><span style="font-size:16px;font-weight:650;flex-grow:1">${esc(m[0])}${PV ? ` <span style="color:#6B7780;font-weight:400">${S.mesAb === m[0] ? "⌄" : "›"}</span>` : ""}</span><span style="font-size:16px;font-weight:750;color:#1D4F78">${pct(m[1], m[2])}</span></div><div class="barra"><div style="width:${v}%"></div></div><div class="d">${fmt(m[1])} ${m[1] === 1 ? "clase dada" : "clases dadas"} · ${m[2]} ${m[2] === 1 ? "falta" : "faltas"}</div>`;
+      return `<div class="lin" style="flex-direction:column;align-items:stretch;gap:6px">${PV ? `<button type="button" class="mesb" data-mes="${esc(m[0])}">${cuerpo}</button>` + (S.mesAb === m[0] ? calendarioMes(PV, m[0], D.curso, per) : "") : cuerpo}</div>`; }).join("") : `<div class="gris">Aún no hay clases este curso.</div>`) + `</div>`;
+  } else if (tab === "Faltas") {
+    h += pintarFaltas(el);
+  } else if (tab === "Partidos" && verParT && S.parModo === "q") {
+    h += pintarQuedar();
+  } else if (tab === "Partidos" && verParT) {
+    if (S.datos.admin && !S.parEd) h += `<div class="aviso" style="font-size:14px">Prueba: lo que apuntes aquí son <b>tus</b> partidos (los de cada alumno solo están en su móvil y tú no los ves).</div>`;
+    h += pintarPartidos(Dp, variosP && Dp.personas.some(p => p.nombre === per) ? per : "Todos", variosP);
+  } else if (tab === "Evolucion") {
+    h += D0.evo ? pintarEvolucion(D, D0.evo, per, varios) : `<div class="gris" style="padding:12px">Sin puntuaciones.</div>`;
+  } else {
+    if (D.pasado && !debe) h += `<div class="estado" style="background:#DDEFE3;border:1px solid #B9DCC4;color:#22603A"><div style="flex-grow:1"><div style="font-size:17px;font-weight:700">${P.total && P.total !== "0 €" ? "Pagado en el curso " + esc(D.curso) : "Curso " + esc(D.curso)}</div><div style="font-size:13.5px">${P.total && P.total !== "0 €" ? "Nada pendiente" : "No tengo apuntados los pagos de este curso"}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${P.total && P.total !== "0 €" ? esc(P.total) : ""}</div></div>`;
+    else if (!debe && D.esteMes && D.esteMes.listo) h += `<div class="estado" style="background:#FFF1DC;border:1px solid #F0C98A;color:#8A4B00"><div style="flex-grow:1"><div style="font-size:17px;font-weight:700">Ya puedes pagar ${esc(D.esteMes.mes.toLowerCase())}</div><div style="font-size:13.5px">${esc(P.quien || "Ya no quedan clases este mes")}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${esc(D.esteMes.imp)}</div></div>`;   // (v3.02)
+    else h += `<div class="estado" style="${debe ? "background:#FBE3E3;border:1px solid #EBB4B4;color:#9E2B2B" : "background:#DDEFE3;border:1px solid #B9DCC4;color:#22603A"}"><div style="flex-grow:1"><div style="font-size:17px;font-weight:700">${debe ? "Tienes pendiente" : "Estás al día"}</div><div style="font-size:13.5px">${esc(debe ? P.pend.map(x => x.mes).join(", ") : (P.quien || ""))}</div></div><div style="font-size:22px;font-weight:750;white-space:nowrap">${debe ? esc(P.debe) : ""}</div></div>`;
+    if (debe && P.quien) h += `<div class="gris" style="font-size:13.5px;padding:0 4px">${esc(P.quien)}</div>`;
+    if (debe) h += `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px"><div class="tit" style="color:#9E2B2B;padding:10px 0 4px">SIN PAGAR</div>` + P.pend.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.mes)}</div><div class="d">${esc(x.det)}</div></div><span class="chip c-debe">${esc(x.imp)}</span></div>`).join("") + `</div>`;
+    if (D.esteMes) h += `<div class="card" style="gap:6px"><div class="tit">${D.esteMes.listo ? (debe ? "ESTE MES · A PAGAR" : "DETALLE DE " + esc(D.esteMes.mes.toUpperCase())) : "ESTE MES · HASTA HOY"}</div><div style="display:flex;align-items:center"><div style="flex-grow:1"><div class="n" style="font-size:15.5px;font-weight:600">${esc(D.esteMes.mes)}</div><div class="d gris" style="font-size:13px">${esc(D.esteMes.det)}${D.esteMes.listo ? " · ya está completo" : ""}</div></div>${D.esteMes.listo && !debe ? "" : `<div style="font-size:19px;font-weight:750;white-space:nowrap${D.esteMes.listo ? ";color:#9E2B2B" : ""}">${esc(D.esteMes.imp)}</div>`}</div>${D.esteMes.aviso ? `<div class="avisoMes">⚠ ${esc(D.esteMes.aviso)}</div>` : ""}`
+      + (D.esteMes.desglose || []).map(x => `<div style="display:flex;gap:8px;font-size:13.5px" class="gris"><div style="flex-grow:1">${esc(x[0])}</div><div style="white-space:nowrap">${esc(x[1])}</div></div>`).join("") + `</div>`;
+    h += `<div class="card" style="gap:0;padding-top:4px;padding-bottom:4px"><div class="tit" style="padding:10px 0 4px">MESES PAGADOS</div>` + (P.pagados.length ? P.pagados.map(x => `<div class="lin"><div class="x"><div class="n">${esc(x.mes)}</div><div class="d">${esc(x.det)}</div></div><span class="chip c-ok">✓ ${esc(x.imp)}</span></div>`).join("") : `<div class="gris" style="padding:10px 0">${D.pasado ? "Sin datos de pagos de este curso." : "Todavía ninguno este curso."}</div>`) + `</div>`;
+  }
+  // «Partidos»: los alumnos, si Alain la ha activado; Alain la ve siempre (son sus partidos de prueba, no los del alumno)
+  const verPar = verParT;
+  // (19/11/2026, Alain) Pagos a la derecha del todo y Partidos en su sitio
+  const pestanas = (PV ? ["Inicio", "Horario", "Clases"] : ["Inicio", "Clases", "Faltas"]).concat(verPar ? ["Partidos"] : [], ["Pagos"]);
+  h += `</main><nav class="nav" style="grid-template-columns:repeat(${pestanas.length},1fr)">` + pestanas.map(n => `<button data-tab="${n}" class="${n === tab ? "on" : ""}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[n]}"/></svg><span>${n}</span></button>`).join("") + `</nav>`;
+  $app.innerHTML = h;
+  $app.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { if (b.dataset.tab !== S.tab) { S.parBusca = ""; S.parVista = null; S.parVer = null; S.qVer = null; S.qEd = null; } const cp = document.getElementById("capaPar"); if (cp) cp.remove(); S.tab = b.dataset.tab; S.parEd = null; contarPest(S.tab); pintar(); window.scrollTo(0, 0); });
+  $app.querySelectorAll("[data-per]").forEach(b => b.onclick = () => { S.per = b.dataset.per; pintar(); });
+  $app.querySelectorAll("[data-ver]").forEach(b => b.onclick = () => { S.per = b.dataset.ver; S.tab = "Clases"; pintar(); window.scrollTo(0, 0); });
+  const sal = document.getElementById("salir"); if (sal) sal.onclick = ev => { ev.preventDefault(); salir(); };
+  $app.querySelectorAll("[data-evo]").forEach(b => b.onclick = () => { S.tab = "Evolucion"; S.evoSel = null; contarPest("Evolución"); pintar(); window.scrollTo(0, 0); });
+  $app.querySelectorAll("[data-evoper]").forEach(b => b.onclick = () => { S.evoPer = b.dataset.evoper; S.evoSel = null; S.per = "Todos"; pintar(); });
+  $app.querySelectorAll("[data-evosel]").forEach(b => b.onclick = () => { S.evoSel = +b.dataset.evosel; pintar(); });
+  $app.querySelectorAll("[data-evocat]").forEach(b => b.onclick = () => { const k = b.dataset.evocat; S.evoAbiertas[k] = !S.evoAbiertas[k]; pintar(); });
+  $app.querySelectorAll("[data-mes]").forEach(b => b.onclick = () => { S.mesAb = S.mesAb === b.dataset.mes ? null : b.dataset.mes; pintar(); });
+  $app.querySelectorAll("[data-hv]").forEach(b => b.onclick = () => { S.hVista = b.dataset.hv; try { localStorage.setItem("gd_hvista", S.hVista); } catch (e) { } pintar(); });
+  $app.querySelectorAll("[data-cald]").forEach(b => b.onclick = () => { S.calSel = b.dataset.cald; pintar(); });   // (19/11/2026) Horario en calendario
+  $app.querySelectorAll("[data-calm]").forEach(b => b.onclick = () => { if (b.dataset.calm) { S.calMes = b.dataset.calm; pintar(); } });
+  $app.querySelectorAll("[data-fexp]").forEach(b => b.onclick = ev => { ev.stopPropagation(); const k = b.dataset.fexp.split("|"); hojaFexp(k[0], k[1]); });   // (18/11/2026) explicar una falta
+  const sc = document.getElementById("selcurso"); if (sc) sc.onchange = () => { S.ci = +sc.value; S.mesAb = null; contarPest("Cursos anteriores"); pintar(); window.scrollTo(0, 0); };
+  const vol = document.getElementById("volver"); if (vol) vol.onclick = () => { S.ci = 0; S.mesAb = null; S.cuenta = -1; S.tab = "Inicio"; S.per = "Todos"; pintar(); window.scrollTo(0, 0); };
+  const ins = document.getElementById("instalar"); if (ins) ins.onclick = ev => { ev.preventDefault(); verInstalar(true); };
+  $app.querySelectorAll("[data-pmodo]").forEach(b => b.onclick = () => { if (S.parModo === b.dataset.pmodo) return; S.parModo = b.dataset.pmodo; S.qVer = null; S.qEd = null; S.parVista = null; S.parVer = null; S.parBusca = ""; contarPest(S.parModo === "q" ? "Quedar para jugar" : "Partidos"); pintar(); window.scrollTo(0, 0); });
+  if (tab === "Partidos") { if (S.parModo === "q") enlazarQuedar(Dp, variosP); else enlazarPartidos(Dp, variosP); }
+  enlazarAvisos();
+}
+// vista de Alain: la lista de todas las cuentas; al pulsar una, se ve exactamente como la ve el alumno
+function pintarAdmin() {
+  const L = S.datos.cuentas;
+  $app.innerHTML = `<header class="cab"><div class="fila"><div style="flex-grow:1"><h1>Todos los alumnos</h1><div class="sub">Vista de ${esc(S.datos.saludo)} · actualizado el ${esc(S.datos.actualizado)}</div></div>${avisosActivos() ? botonCampana(false) : ""}<button class="salir" id="salir">Cerrar sesión</button></div></header>
+<main class="cuerpo" style="padding-bottom:24px">${franjaMudanza()}${bloqueAvisos()}<div class="card" style="gap:0"><div class="tit" style="padding-bottom:4px">${L.length} CUENTAS · PULSA PARA VER LO QUE VE CADA UNO</div>`
+    + L.map((c, i) => { const a = agg(c, c.personas, c.personas.length > 1); const debe = c.pagos.pend.length > 0;
+      return `<button class="persona" data-cuenta="${i}"><span style="flex-grow:1"><span style="display:block;font-size:16px;font-weight:650">${esc(c.titulo)}</span><span class="gris" style="font-size:12.5px">${esc(c.etiqueta || "")}</span></span><span class="chip ${debe ? "c-debe" : "c-rec"}">${debe ? esc(c.pagos.debe) : "al día"}</span><span style="font-size:16px;font-weight:750;color:#1D4F78;width:52px;text-align:right">${pct(a.dadas, a.netas)}</span></button>`; }).join("")
+    + `</div>${esApp() ? "" : `<a href="#" id="instalar" style="text-align:center;font-size:14px;font-weight:600;padding:6px">Ponerla como app en el móvil</a>`}</main>`;
+  $app.querySelectorAll("[data-cuenta]").forEach(b => b.onclick = () => { S.ci = 0; S.mesAb = null; S.cuenta = +b.dataset.cuenta; S.tab = "Inicio"; S.per = "Todos"; pintar(); window.scrollTo(0, 0); });
+  document.getElementById("salir").onclick = ev => { ev.preventDefault(); salir(); };
+  const ins = document.getElementById("instalar"); if (ins) ins.onclick = ev => { ev.preventDefault(); verInstalar(true); };
+  enlazarAvisos();
+}
+function salir() {
+  const capa = document.createElement("div"); capa.className = "capa";
+  capa.innerHTML = `<div class="hoja"><div style="font-size:20px;font-weight:700">¿Cerrar sesión?</div><div class="gris" style="font-size:15px;line-height:1.45">Solo hace falta si este móvil no es tuyo. Para cerrar la app, ciérrala como cualquier otra: la próxima vez entrarás directamente. Si cierras la sesión, tendrás que escribir otra vez tu contraseña.</div><button class="boton" id="siSalir">Cerrar sesión</button><button class="boton2" id="noSalir">Cancelar</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove();
+  capa.onclick = e => { if (e.target === capa) quitar(); };
+  document.getElementById("noSalir").onclick = quitar;
+  document.getElementById("siSalir").onclick = () => {
+    quitar(); ls.del("gd_sesion");
+    const id = S.id, ficha = S.ficha, conClave = !!(ficha && (ficha.modo === "clave" || ls.get("gd_pendiente_" + id)));
+    S = { pantalla: conClave ? "clave" : "entrar", tab: "Inicio", per: "Todos", ficha: conClave ? ficha : null, id: conClave ? id : null, llave: null, datos: null, cuenta: -1, error: "" };
+    pintar();
+  };
+}
+function pintar() {
+  if (S.pantalla === "entrar") pintarEntrar(); else if (S.pantalla === "clave") pintarClave(); else if (S.pantalla === "nueva") pintarNueva(); else pintarApp();
+  if (S.pantalla === "app" && !ls.get("gd_instalar_visto") && !esApp()) { ls.set("gd_instalar_visto", 1); setTimeout(() => verInstalar(false), 600); }
+}
+
+// ---------- ponerla como app ----------
+let avisoInstalar = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); avisoInstalar = e; });
+const esApp = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+const esIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function verInstalar(pedido) {
+  if (esApp()) return;
+  const ios = esIOS();
+  if (!ios && !avisoInstalar && !pedido) return;
+  const capa = document.createElement("div"); capa.className = "capa";
+  const flecha = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="icono Compartir" style="vertical-align:-4px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 11v9h14v-9"/></svg>`;
+  capa.innerHTML = `<div class="hoja"><div style="font-size:20px;font-weight:700">Ponla como app</div><div class="gris" style="font-size:14px">Así la tienes en la pantalla de inicio, con su icono.</div>`
+    + (ios ? `<div class="paso"><b class="num">1</b><div>Abajo, en Safari, pulsa <b>Compartir</b> ${flecha}</div></div><div class="paso"><b class="num">2</b><div>Baja y pulsa <b>«Añadir a pantalla de inicio»</b></div></div><div class="paso"><b class="num">3</b><div>Pulsa <b>«Añadir»</b> arriba a la derecha. Ya está.</div></div>`
+      : avisoInstalar ? `<button class="boton" id="inst" style="background:#2F7D4F">Instalar</button>` : `<div class="paso"><b class="num">1</b><div>Abre el menú del navegador (los tres puntos) y pulsa <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.</div></div>`)
+    + `<button class="boton2" id="cerrarI">Ahora no</button></div>`;
+  document.body.appendChild(capa);
+  const quitar = () => capa.remove();
+  capa.onclick = e => { if (e.target === capa) quitar(); };
+  document.getElementById("cerrarI").onclick = quitar;
+  const bi = document.getElementById("inst"); if (bi) bi.onclick = async () => { avisoInstalar.prompt(); try { await avisoInstalar.userChoice; } catch (e) {} avisoInstalar = null; quitar(); };
+}
+if ("serviceWorker" in navigator) window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+inicio();
+</script>
+</body>
+</html>
